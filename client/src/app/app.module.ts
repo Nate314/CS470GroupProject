@@ -8,6 +8,9 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { HelloWorldService } from './services/hello-world.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AddHeaderInterceptor } from './_angular/interceptors/AddHeaderInterceptor';
+import { AuthenticationService } from './services/authentication.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from './_angular/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -19,11 +22,15 @@ import { AddHeaderInterceptor } from './_angular/interceptors/AddHeaderIntercept
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [
     HttpClient,
+    AuthGuard,
     HelloWorldService,
+    AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

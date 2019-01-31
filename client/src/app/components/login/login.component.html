@@ -1,19 +1,48 @@
-<div class="container">
-    <div class="row">
-        <div class="col">Username</div>
-        <div class="col">
-            <input type="text" />
+<br />
+<div class="container border" style="background:#0c7a88; color:aliceblue;">
+    <form [formGroup]="form">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    Welcome to APPLICATION!
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-6">
+                    <pre style="color:aliceblue;">
+  ____   _____            _____    ____
+ /      /         |    |       |  |    |
+|       \____     |____|       |  |    |
+|            \         |       |  |    |
+ \____  _____/         |       |  |____|
+                    </pre>
+                </div>
+                <div class="col-6 border">
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col">Username</div>
+                        <div class="col">
+                            <input style="float:right;" type="text" formControlName="username"/>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col">Password</div>
+                        <div class="col">
+                            <input style="float:right;" type="password" formControlName="password"/>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sm" style="float:right;" (click)="login()">LOGIN</button>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">Password</div>
-        <div class="col">
-            <input type="password" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <button (click)="login()">LOGIN</button>
-        </div>
-    </div>
+    </form>
 </div>

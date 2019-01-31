@@ -6,7 +6,6 @@ class HelloWorldRepository:
     # initialize HelloWorldRepository
     def __init__(self):
         self.mysql = MySQL('localhost', 3306, 'root', 'root', 'stocks')
-        print('HelloWorldRepository init')
     
     # retrieve information for the get method on the controller
     def get_about(self):

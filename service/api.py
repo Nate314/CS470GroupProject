@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath('./helpers'))
 
 from helpers.Middleware import Middleware
 from endpoints.HelloWorldController import HelloWorldController, HelloWorldMultiController
+from endpoints.AuthenticationController import AuthenticationLoginController
 
 # initializing api
 def initializeAPI():
@@ -23,6 +24,7 @@ def addEndpoints(api):
     # this is where all of the controllers and endpoints are matched up
     api.add_resource(HelloWorldController, '/helloworld')
     api.add_resource(HelloWorldMultiController, '/helloworld/<int:num>')
+    api.add_resource(AuthenticationLoginController, '/auth/login')
 
 if __name__ == '__main__':
     app, api = initializeAPI()

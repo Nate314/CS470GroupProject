@@ -12,7 +12,6 @@ class Item {
 })
 export class HelloWorldComponent implements OnInit {
 
-    output: string;
     error: string;
     items: Item[] = [];
 

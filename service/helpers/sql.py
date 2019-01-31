@@ -29,6 +29,14 @@ class MySQL(object):
         cur.close()
         conn.close()
         return cur
+    
+    #PUBLIC
+    # check for malicious characters before running a query
+    def containsNoMaliciousCharacters(self, string):
+        for c in string:
+            if c in '~`!@#$%^&*()_+-=[]{}\\|;:\'"<>?,./':
+                return False
+        return True
 
     #PUBLIC
     # gets a database connection

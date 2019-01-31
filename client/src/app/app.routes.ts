@@ -5,13 +5,14 @@ import { LoginComponent } from './components/login/login.component';
 import { Constants } from './_helpers/Constants';
 import { Page } from './_models/application-models/Page';
 import { ComponentNames } from './_models/application-models/ComponentNames';
+import { AuthGuard } from './_angular/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'app/hello-world', component: HelloWorldComponent },
-  { path: 'not-found', component: NotFoundComponent },
-  { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent },
+    { path: 'app/hello-world', component: HelloWorldComponent, canActivate: [AuthGuard] },
+    { path: 'not-found', component: NotFoundComponent },
+    { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
 ];
 
 Constants.pages.push(<Page>{
