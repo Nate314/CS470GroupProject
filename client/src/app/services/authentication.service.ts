@@ -12,8 +12,9 @@ export class AuthenticationService extends BaseService {
         super(http);
     }
 
-    login(username: string, password: string): Observable<any> {
+    login(token: string, username: string, password: string): Observable<any> {
         const body = {
+            token: token,
             username: username,
             password: password
         };

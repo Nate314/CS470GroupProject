@@ -6,16 +6,25 @@ from StatusCodes import StatusCodes
 # Controller classes are used to connect api endpoints with the Repository
 class AuthenticationLoginController(Resource):
 
-    # initialize HelloWorldController
+    # initialize AuthenticationLoginController
     def __init__(self):
         self._authenticationRepository = AuthenticationRepository()
     
     # auth/login
     def post(self):
         body = request.get_json()
-        resp = self._authenticationRepository.login(body['username'], body['password'])
+        print(body)
+        resp = self._authenticationRepository.loginClient(body['token'], body['username'], body['password'])
         if resp == False:
             return Response('Invalid Credentials', StatusCodes.UNAUTHORIZED)
         else:
             return resp, StatusCodes.OK
- 
+
+    def put(self):
+        body = request.get_json()
+        print(body)
+        resp = self._authenticationRepository.loginBot(body)
+        if resp == False:
+            return Response('Invalid Credentials', StatusCodes.UNAUTHORIZED)
+        else:
+            return resp, StatusCodes.OK

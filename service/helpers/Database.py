@@ -1,17 +1,17 @@
 import pymysql
 
 # used to interact with the database
-class MySQL(object):
+class Database(object):
 
     #PUBLIC
-    # initialize MySQL
+    # initialize Database
     def __init__(self, host, port, user, passwd, db):
         self.host = host
         self.port = port
         self.user = user
         self.passwd = passwd
         self.db = db
-        print('MySQL object created')
+        print('Database object created')
 
     #PRIVATE
     # gets a database connection

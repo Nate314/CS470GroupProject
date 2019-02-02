@@ -1,15 +1,15 @@
-from sql import MySQL
+from Database import Database
 
 # Repositories retrieve data from the database
 class HelloWorldRepository:
 
     # initialize HelloWorldRepository
     def __init__(self):
-        self.mysql = MySQL('localhost', 3306, 'root', 'root', 'stocks')
+        self.db = Database('localhost', 3306, 'root', 'root', 'DiscordBot')
     
     # retrieve information for the get method on the controller
     def get_about(self):
-        dt = self.mysql.getDataTable("SELECT * FROM stockinfo")
+        dt = self.db.getDataTable("SELECT * FROM SocialMedias")
         return eval(str(dt))
     
     # retrieve information for the get id method on the controller

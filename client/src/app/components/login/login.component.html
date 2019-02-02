@@ -1,6 +1,6 @@
 <br />
 <div class="container border" style="background:#0c7a88; color:aliceblue;">
-    <form [formGroup]="form">
+    <form [formGroup]="form" (keydown)="submitIfEnter($event)">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -19,22 +19,39 @@
                     </pre>
                 </div>
                 <div class="col-6 border">
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <div class="col">Username</div>
-                        <div class="col">
-                            <input style="float:right;" type="text" formControlName="username"/>
+                    <div *ngIf="tokenLogin" >
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <div class="col">Token</div>
+                            <div class="col">
+                                <input style="float:right;" type="text" formControlName="token"/>
+                            </div>
                         </div>
+                        <div class="row">&nbsp;</div>
                     </div>
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <div class="col">Password</div>
-                        <div class="col">
-                            <input style="float:right;" type="password" formControlName="password"/>
+                    <div *ngIf="!tokenLogin">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <div class="col">Username</div>
+                            <div class="col">
+                                <input style="float:right;" type="text" formControlName="username"/>
+                            </div>
                         </div>
+                        <div class="row">&nbsp;</div>
+                        <div *ngIf="!tokenLogin" class="row">
+                            <div class="col">Password</div>
+                            <div class="col">
+                                <input style="float:right;" type="password" formControlName="password"/>
+                            </div>
+                        </div>
+                        <div class="row">&nbsp;</div>
                     </div>
-                    <div class="row">&nbsp;</div>
                     <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sm" style="float:left;" (click)="tokenLogin = !tokenLogin">
+                                {{ tokenLogin ? 'User/Pass' : 'Token' }}
+                            </button>
+                        </div>
                         <div class="col">
                             <button class="btn btn-sm" style="float:right;" (click)="login()">LOGIN</button>
                         </div>

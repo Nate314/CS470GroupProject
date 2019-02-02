@@ -19,7 +19,7 @@ class Middleware(object):
                 token = str(environ['HTTP_AUTHORIZATION'])
                 if len(token.split(' ')) > 1:
                     token = token.split(' ')[1]
-                jwt = JWTHelper('secretkey')
+                jwt = JWTHelper('secretkey', 'HS256')
                 if jwt.isExpired(token):
                     try:
                         abort(Response('Forbidden', StatusCodes.FORBIDDEN))
