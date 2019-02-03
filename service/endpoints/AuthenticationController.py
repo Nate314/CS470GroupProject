@@ -1,12 +1,12 @@
 from flask import Flask, request, Response
 from flask_restful import Resource
-from .AuthenticationRepository import AuthenticationRepository
+from AuthenticationRepository import AuthenticationRepository
 from StatusCodes import StatusCodes
 
 # Controller classes are used to connect api endpoints with the Repository
-class AuthenticationLoginController(Resource):
+class AuthenticationController(Resource):
 
-    # initialize AuthenticationLoginController
+    # initialize AuthenticationController
     def __init__(self):
         self._authenticationRepository = AuthenticationRepository()
     

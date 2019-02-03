@@ -6,10 +6,14 @@ import sys
 import os
 sys.path.append(os.path.abspath('./endpoints'))
 sys.path.append(os.path.abspath('./helpers'))
+sys.path.append(os.path.abspath('./dtos'))
 
 from helpers.Middleware import Middleware
-from endpoints.HelloWorldController import HelloWorldController, HelloWorldMultiController
-from endpoints.AuthenticationController import AuthenticationLoginController
+from endpoints.HelloWorldController import HelloWorldController
+from endpoints.HelloWorldMultiController import HelloWorldMultiController
+from endpoints.AuthenticationController import AuthenticationController
+from endpoints.DTOController import DTOController
+from endpoints.DTOMultiController import DTOMultiController
 
 # initializing api
 def initializeAPI():
@@ -24,7 +28,9 @@ def addEndpoints(api):
     # this is where all of the controllers and endpoints are matched up
     api.add_resource(HelloWorldController, '/helloworld')
     api.add_resource(HelloWorldMultiController, '/helloworld/<int:num>')
-    api.add_resource(AuthenticationLoginController, '/auth/login')
+    api.add_resource(AuthenticationController, '/auth/login')
+    api.add_resource(DTOController, '/api/dto')
+    api.add_resource(DTOMultiController, '/api/dto/<string:table>')
 
 if __name__ == '__main__':
     app, api = initializeAPI()

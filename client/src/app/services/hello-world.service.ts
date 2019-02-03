@@ -33,4 +33,31 @@ export class HelloWorldService extends BaseService {
     deleteExample(): Observable<any> {
         return this.http.delete<any>(`${this.API_URL}/helloworld/3`, this.getHttpOptions());
     }
+
+    // /api/todo
+    dtoSelectExample(table: string): Observable<any> {
+        return this.http.get<any>(`${this.API_URL}/api/dto/${table}`, this.getHttpOptions());
+    }
+    dtoInsertExample(table: string, entity: any): Observable<any> {
+        const body = {
+            'table': table,
+            'entity': entity
+        };
+        return this.http.post<any>(`${this.API_URL}/api/dto`, body, this.getHttpOptions());
+    }
+    dtoUpdateExample(table: string, entity: any, where: string): Observable<any> {
+        const body = {
+            'table': table,
+            'entity': entity,
+            'where': where
+        };
+        return this.http.put<any>(`${this.API_URL}/api/dto`, body, this.getHttpOptions());
+    }
+    dtoDeleteExample(table: string, where: string): Observable<any> {
+        const body = {
+            'table': table,
+            'where': where
+        };
+        return this.http.post<any>(`${this.API_URL}/api/dto/${table}`, body, this.getHttpOptions());
+    }
 }

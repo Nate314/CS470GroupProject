@@ -9,7 +9,7 @@ class HelloWorldRepository:
     
     # retrieve information for the get method on the controller
     def get_about(self):
-        dt = self.db.getDataTable("SELECT * FROM SocialMedias")
+        dt = self.db.select(['*'], 'SocialMedias')
         return eval(str(dt))
     
     # retrieve information for the get id method on the controller
