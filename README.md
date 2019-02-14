@@ -6,12 +6,11 @@ Information Collection and Requirements, Scope
 Architecture, Ideas, Platform, Team member role etc.
 
 Team Member Roles:
-Nathan - Primarily on the API/DB
-Ronny - Primarily on the UI
-Sam - Primarily working on the Bot
+- Nathan - Primarily on the API/DB
+- Ronny - Primarily on the UI
+- Sam - Primarily working on the Bot
 Information Collection:
-
-We will be collecting information on users on the Discord Server that this bot is on and inserting that information into the DB as needed.
+- We will be collecting information on users on the Discord Server that this bot is on and inserting that information into the DB as needed.
 
 Requirements:
 
@@ -33,7 +32,8 @@ Project Ideas/Features:
 - Rate my professor command		=> retrieves info from http://www.ratemyprofessors.com/
 - Wolfram alpha command			=> command to query https://www.wolframalpha.com/
 
-Architecture::
+Architecture:
+
      ____________________________ 
     |   _________    _________   |
     |  | Angular |  | Discord |  | Angular Site - Used by admins to look at information
@@ -54,18 +54,13 @@ Architecture::
     |____________________________|
 
 Tables and columns for the DB:
-----------------------------------------------------------------
-Servers - ServerID, URL
-DiscordUsers - DiscordUserID, UserName, Currency, LastDaily, RaffleID
-DiscordUserServers - DiscordUserID, ServerID, Date
-----------------------------------------------------------------
-Raffles - RaffleID, ServerID, Name, EndTime, Currency
-Collectibles - CollectableID, Name, Picture, Currency
-DiscordUserCollectables - DiscordUserID, CollectableID, Date
-----------------------------------------------------------------
-Command - CommandID, Name, Description
-Embeds - EmbedID, CommandID, Value
-----------------------------------------------------------------
-SocialMedias - SocialMediaID, Name, URL, Picture
-DiscordUserSocialMedia - DiscordUserID, SocialMediaID, Handle
-----------------------------------------------------------------
+- Servers - ServerID, URL
+- DiscordUsers - DiscordUserID, UserName, Currency, LastDaily, RaffleID
+- DiscordUserServers - DiscordUserID, ServerID, Date
+- Raffles - RaffleID, ServerID, Name, EndTime, Currency
+- Collectibles - CollectableID, Name, Picture, Currency
+- DiscordUserCollectables - DiscordUserID, CollectableID, Date
+- Command - CommandID, Name, Description
+- Embeds - EmbedID, CommandID, Value
+- SocialMedias - SocialMediaID, Name, URL, Picture
+- DiscordUserSocialMedias - DiscordUserID, SocialMediaID, Handle
