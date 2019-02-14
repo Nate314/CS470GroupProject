@@ -33,7 +33,7 @@ Project Ideas/Features:
 - Rate my professor command		=> retrieves info from http://www.ratemyprofessors.com/
 - Wolfram alpha command			=> command to query https://www.wolframalpha.com/
 
-Architecture:
+Architecture::
      ____________________________ 
     |   _________    _________   |
     |  | Angular |  | Discord |  | Angular Site - Used by admins to look at information
