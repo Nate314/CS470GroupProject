@@ -34,24 +34,24 @@ Project Ideas/Features:
 - Wolfram alpha command			=> command to query https://www.wolframalpha.com/
 
 Architecture:
- ____________________________ 
-|   _________    _________   |
-|  | Angular |  | Discord |  | Angular Site - Used by admins to look at information
-|  |   Site  |  |   Bot   |  |   about their server and perform simple queries
-|  |_________|  |_________|  |
-|  \                     /   | Discord Bot - available to use through discord
-|   \                   /    |   by sending commands as messages
-|    \_____       _____/     |
-|          \     /           | Python API - used under the hood of the Angular Site
-|         __\___/__          |   and the Discord Bot to parse requests and interact with the DB
-|        | Python  |         |
-|        |   API   |         | MySQL DB - we are using MySQL for the Database
-|        |_________|         |   which will be accessed through the Python API
-|         ____|____          |
-|        |  MySQL  |         |
-|        |    DB   |         |
-|        |_________|         |
-|____________________________|
+     ____________________________ 
+    |   _________    _________   |
+    |  | Angular |  | Discord |  | Angular Site - Used by admins to look at information
+    |  |   Site  |  |   Bot   |  |   about their server and perform simple queries
+    |  |_________|  |_________|  |
+    |  \                     /   | Discord Bot - available to use through discord
+    |   \                   /    |   by sending commands as messages
+    |    \_____       _____/     |
+    |          \     /           | Python API - used under the hood of the Angular Site
+    |         __\___/__          |   and the Discord Bot to parse requests and interact with the DB
+    |        | Python  |         |
+    |        |   API   |         | MySQL DB - we are using MySQL for the Database
+    |        |_________|         |   which will be accessed through the Python API
+    |         ____|____          |
+    |        |  MySQL  |         |
+    |        |    DB   |         |
+    |        |_________|         |
+    |____________________________|
 
 Tables and columns for the DB:
 ----------------------------------------------------------------
