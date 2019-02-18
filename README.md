@@ -9,14 +9,12 @@ Team Member Roles:
 - Nathan - Primarily on the API/DB
 - Ronny - Primarily on the UI
 - Sam - Primarily working on the Bot
+
 Information Collection:
 - We will be collecting information on users on the Discord Server that this bot is on and inserting that information into the DB as needed.
 
-Requirements:
-
-
 Scope:
-
+- We will be setting up two ends for user interaction, namely an Angular website for statistics and settings and a command interface on the Discord platform itself, connecting to a Python API and, in doing so, a MySQL database. We had thought of adding mobile applications for the project, but our current direction seems to leave the idea out of the scope of this course. We will be making neither a mobile end nor extending our bot to other messaging platforms.
 
 Project Ideas/Features:
 - Currency system
@@ -32,7 +30,7 @@ Project Ideas/Features:
 - Rate my professor command		=> retrieves info from http://www.ratemyprofessors.com/
 - Wolfram alpha command			=> command to query https://www.wolframalpha.com/
 
-Architecture:
+Architecture [Scope]:
 
      ____________________________ 
     |   _________    _________   |
@@ -53,7 +51,7 @@ Architecture:
     |        |_________|         |
     |____________________________|
 
-Tables and columns for the DB:
+Tables and columns for the DB [Information Collection and Requirements]:
 - Servers - ServerID, URL
 - DiscordUsers - DiscordUserID, UserName, Currency, LastDaily, RaffleID
 - DiscordUserServers - DiscordUserID, ServerID, Date
