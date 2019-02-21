@@ -33,34 +33,26 @@ export class RichCommandManager {
             if (Object.keys(this.commandCollection).includes(command))
                 return resolve(this.commandCollection[command]);
             else
-                return reject(`Command '${command}' not found in command collection from module '${this.file}'`);
+                return reject(`Command '${command}' not found in command collection from module '${this.commandPath}${this.file}'`);
         });
     }
-    set(command: RichCommand, mutateSource?: boolean): this {
-        if (mutateSource) {} else {
+    set(command: RichCommand): this {
+        this.commandCollection[command.title] = command;
+        return this;
+    }
+    remove(command: RichCommand): this {
+        delete this.commandCollection[command.title];
+        return this;
+    }
+    add(command: RichCommand): this {
+        if (!this.has(command)) {
             this.commandCollection[command.title] = command;
         }
         return this;
     }
-    remove(command: RichCommand, mutateSource?: boolean): this {
-        if (mutateSource) {} else {
-            delete this.commandCollection[command.title];
-        }
-        return this;
-    }
-    add(command: RichCommand, mutateSource?: boolean): this {
-        if (mutateSource) {} else {
-            if (!this.has(command)) {
-                this.commandCollection[command.title] = command;
-            }
-        }
-        return this;
-    }
-    update(command: RichCommand, mutateSource?: boolean): this {
-        if (mutateSource) {} else {
-            if (this.has(command)) {
-                this.commandCollection[command.title] = command;
-            }
+    update(command: RichCommand): this {
+        if (this.has(command)) {
+            this.commandCollection[command.title] = command;
         }
         return this;
     }

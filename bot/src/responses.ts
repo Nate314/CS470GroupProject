@@ -10,7 +10,7 @@ interface Dictionary<T> {
 export const responses: Dictionary<(client: Client) => Function> = {
     'ready': (client) => {
         return () => {
-            console.log("The Zucc:", client.shard.id);
+            console.log("Shard ID:", client.shard.id);
         }
     },
     'message': (client) => {
@@ -26,7 +26,7 @@ export const responses: Dictionary<(client: Client) => Function> = {
                 {
                     'client': client,
                     'message': message,
-                    'prefix': prefix
+                    'prefix': prefix,
                 }
             );
         }
