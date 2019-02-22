@@ -1,0 +1,24 @@
+class Config:
+
+    # db variables
+    host = None
+    port = None
+    user = None
+    password = None
+    db = None
+    # keys
+    rsaprivatekey = None
+    rsapublickey = None
+    secretkey = None
+
+    def __init__(self, configJSON, cryptJSON):
+        # setting db variables
+        Config.host = configJSON['host']
+        Config.port = configJSON['port']
+        Config.user = configJSON['user']
+        Config.password = configJSON['password']
+        Config.db = configJSON['db']
+        # setting keys
+        Config.rsaprivatekey = cryptJSON['rsaprivatekey']
+        Config.rsapublickey = cryptJSON['rsapublickey']
+        Config.secretkey = cryptJSON['secretkey']

@@ -2,6 +2,7 @@ from flask import Response, request
 from werkzeug.exceptions import abort, HTTPException
 from jwthelper import JWTHelper
 from StatusCodes import StatusCodes
+from Config import Config
 import time
 
 # Middlewares are used for code that needs to run
@@ -19,7 +20,7 @@ class Middleware(object):
                 token = str(environ['HTTP_AUTHORIZATION'])
                 if len(token.split(' ')) > 1:
                     token = token.split(' ')[1]
-                jwt = JWTHelper('secretkey', 'HS256')
+                jwt = JWTHelper(Config.secretkey, 'HS256')
                 if jwt.isExpired(token):
                     try:
                         abort(Response('Forbidden', StatusCodes.FORBIDDEN))

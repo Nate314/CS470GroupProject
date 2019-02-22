@@ -5,7 +5,7 @@ class HelloWorldRepository:
 
     # initialize HelloWorldRepository
     def __init__(self):
-        self.db = Database('localhost', 3306, 'root', 'root', 'DiscordBot')
+        self.db = Database()
     
     # retrieve information for the get method on the controller
     def get_about(self):

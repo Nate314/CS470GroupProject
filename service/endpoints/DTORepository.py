@@ -19,7 +19,7 @@ class DTORepository:
 
     # initialize DTORepository
     def __init__(self):
-        self.db = Database('localhost', 3306, 'root', 'root', 'DiscordBot')
+        self.db = Database()
     
     def __getDTO(self, table):
         dictionary = {

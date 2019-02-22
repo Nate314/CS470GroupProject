@@ -14,6 +14,23 @@ from endpoints.HelloWorldMultiController import HelloWorldMultiController
 from endpoints.AuthenticationController import AuthenticationController
 from endpoints.DTOController import DTOController
 from endpoints.DTOMultiController import DTOMultiController
+from Config import Config
+
+# reads in config files so that the Config class can be used later
+def configConfig(configFilename, cryptFilename):
+    configJSON = None
+    cryptJSON = None
+    with open(configFilename) as reader:
+        configJSON = eval(reader.read())
+    with open(cryptFilename) as reader:
+        cryptJSON = eval(reader.read())
+    print(configJSON)
+    print(cryptJSON)
+    if configJSON != None and cryptJSON != None:
+        Config(configJSON, cryptJSON)
+        return True
+    else:
+        return False
 
 # initializing api
 def initializeAPI():
@@ -33,10 +50,13 @@ def addEndpoints(api):
     api.add_resource(DTOMultiController, '/api/dto/<string:table>')
 
 if __name__ == '__main__':
-    app, api = initializeAPI()
-    addEndpoints(api)
-    # starts the api in debug mode
-    app.run(debug = True)
+    if configConfig('config.json', 'crypt.json'):
+        app, api = initializeAPI()
+        addEndpoints(api)
+        # starts the api in debug mode
+        app.run(debug = True)
+    else:
+        print('unsuccessful in reading configuration files')
 
 # ---RESOURCES---
 #https://www.youtube.com/watch?v=s_ht4AKnWZg

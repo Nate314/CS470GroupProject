@@ -1,16 +1,17 @@
 import pymysql
+from Config import Config
 
 # used to interact with the database
 class Database(object):
 
     #PUBLIC
     # initialize Database
-    def __init__(self, host, port, user, passwd, db):
-        self.host = host
-        self.port = port
-        self.user = user
-        self.passwd = passwd
-        self.db = db
+    def __init__(self):
+        self.host = Config.host
+        self.port = Config.port
+        self.user = Config.user
+        self.passwd = Config.password
+        self.db = Config.db
         print('Database object created')
 
     #PRIVATE
@@ -176,7 +177,7 @@ class DataRow(object):
 
 # example of how to use select, insertone, update, delete functions
 if __name__ == '__main__':
-    db = Database('localhost', 3306, 'root', 'root', 'DiscordBot')
+    db = Database()
     user = DiscordUser({'UserName': 'Nate314'})
     print(db.select(user.getProps(), 'DiscordUsers'))
     print(db.insertOne('DiscordUsers', ['UserName'], user))
