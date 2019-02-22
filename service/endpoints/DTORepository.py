@@ -1,13 +1,17 @@
 from Database import Database
+from Alias import Alias
+from Category import Category
 from Collectible import Collectible
 from Command import Command
+from Description import Description
 from DiscordUser import DiscordUser
 from DiscordUserCollectible import DiscordUserCollectible
 from DiscordUserServer import DiscordUserServer
 from DiscordUserSocialMedia import DiscordUserSocialMedia
-from Embed import Embed
 from Raffle import Raffle
+from Resource import Resource
 from Server import Server
+from ServerCategory import ServerCategory
 from SocialMedia import SocialMedia
 
 # Repositories retrieve data from the database
@@ -19,15 +23,19 @@ class DTORepository:
     
     def __getDTO(self, table):
         dictionary = {
+            'Aliases': Alias({}),
+            'Categories': Category({}),
             'Collectibles': Collectible({}),
             'Commands': Command({}),
+            'Descriptions': Description({}),
             'DiscordUsers': DiscordUser({}),
             'DiscordUserCollectibles': DiscordUserCollectible({}),
             'DiscordUserServers': DiscordUserServer({}),
             'DiscordUserSocialMedias': DiscordUserSocialMedia({}),
-            'Embeds': Embed({}),
             'Raffles': Raffle({}),
+            'Resources': Resource({}),
             'Servers': Server({}),
+            'ServerCategories': ServerCategory({}),
             'SocialMedias': SocialMedia({})
         }
         return dictionary[table]

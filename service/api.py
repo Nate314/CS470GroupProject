@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.path.abspath('./endpoints'))
 sys.path.append(os.path.abspath('./helpers'))
-sys.path.append(os.path.abspath('./dtos'))
+sys.path.append(os.path.abspath('./dtos/db'))
 
 from helpers.Middleware import Middleware
 from endpoints.HelloWorldController import HelloWorldController
