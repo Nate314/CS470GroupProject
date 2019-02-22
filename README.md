@@ -57,7 +57,7 @@ Tables and columns for the DB [Information Collection and Requirements]:
 - Raffles - RaffleID, ServerID, Name, EndTime, Currency
 - Collectibles - CollectableID, Name, Picture, Currency
 - DiscordUserCollectables - DiscordUserID, CollectableID, Date
-- Command - CommandID, Name, Description
+- Command - CommandID, Name, Description, Category, HasArgs, CommandAliasID, AliasArg, FileName
 - Embeds - EmbedID, CommandID, Value
 - SocialMedias - SocialMediaID, Name, URL, Picture
 - DiscordUserSocialMedias - DiscordUserID, SocialMediaID, Handle
