@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseService } from './_base.service';
+import { Constants } from '../_helpers/Constants';
 
 @Injectable({
     providedIn: 'root'

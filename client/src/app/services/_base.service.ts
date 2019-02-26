@@ -15,5 +15,9 @@ export class BaseService {
         return httpOptions;
     }
 
-    constructor(http: HttpClient) {}
+    constructor(http: HttpClient) {
+        setInterval(() => {
+            this.API_URL = Constants.API_URL;
+        }, 100);
+    }
 }

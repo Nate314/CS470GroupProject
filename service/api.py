@@ -54,7 +54,7 @@ if __name__ == '__main__':
         app, api = initializeAPI()
         addEndpoints(api)
         # starts the api in debug mode
-        app.run(debug = True)
+        app.run(debug = True, host = Config.hostip)
     else:
         print('unsuccessful in reading configuration files')
 

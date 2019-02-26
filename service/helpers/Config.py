@@ -6,6 +6,8 @@ class Config:
     user = None
     password = None
     db = None
+    # used to start up the server
+    hostip = None
     # keys
     rsaprivatekey = None
     rsapublickey = None
@@ -18,6 +20,8 @@ class Config:
         Config.user = configJSON['user']
         Config.password = configJSON['password']
         Config.db = configJSON['db']
+        # setting server variables
+        Config.hostip = configJSON['hostip']
         # setting keys
         Config.rsaprivatekey = cryptJSON['rsaprivatekey']
         Config.rsapublickey = cryptJSON['rsapublickey']

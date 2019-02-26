@@ -11,6 +11,7 @@ import { AddHeaderInterceptor } from './_angular/interceptors/AddHeaderIntercept
 import { AuthenticationService } from './services/authentication.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_angular/guards/auth.guard';
+import { Constants } from './_helpers/Constants';
 
 @NgModule({
   declarations: [
@@ -35,4 +36,10 @@ import { AuthGuard } from './_angular/guards/auth.guard';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor() {
+    Constants.API_URL = 'http://' + window['hostip'] + ':5000';
+  }
+
+}
