@@ -6,6 +6,7 @@ const manager = new Discord.ShardingManager(
     "./compiled/bot.js",
     {
         totalShards: 'auto',
+        shardArgs: process.argv.slice(2),
         token: getOptions(process).token
     }
 );
