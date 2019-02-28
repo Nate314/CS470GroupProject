@@ -1,4 +1,4 @@
-from DTO import DTO
+from helpers import DTO
 
 # Descriptions Table
 class Description(DTO):

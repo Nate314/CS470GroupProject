@@ -1,6 +1,4 @@
-from Database import Database
-from jwthelper import JWTHelper
-from Config import Config
+from helpers import Database, JWTHelper, Config
 import time
 
 # Repositories retrieve data from the database
@@ -47,6 +45,10 @@ class AuthenticationRepository:
     def loginBot(self, token):
         jwt = JWTHelper(Config.rsapublickey, 'RS256')
         decodedToken = jwt.decode(token)
+        print('loginBot')
+        print(token)
+        print(decodedToken)
+        print('loginBot')
         if decodedToken != 'Token Expired':
             jwt = JWTHelper(Config.secretkey, 'HS256')
             now = round(time.time())

@@ -4,17 +4,12 @@ from flask_cors import CORS
 
 import sys
 import os
-sys.path.append(os.path.abspath('./endpoints'))
-sys.path.append(os.path.abspath('./helpers'))
-sys.path.append(os.path.abspath('./dtos/db'))
 
-from helpers.Middleware import Middleware
-from endpoints.HelloWorldController import HelloWorldController
-from endpoints.HelloWorldMultiController import HelloWorldMultiController
-from endpoints.AuthenticationController import AuthenticationController
-from endpoints.DTOController import DTOController
-from endpoints.DTOMultiController import DTOMultiController
-from Config import Config
+import helpers
+from helpers import Middleware, Config
+
+from endpoints import HelloWorldController, HelloWorldMultiController
+from endpoints import AuthenticationController, DTOController, DTOMultiController
 
 # reads in config files so that the Config class can be used later
 def configConfig(configFilename, cryptFilename):

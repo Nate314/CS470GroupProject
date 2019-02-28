@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource
-from DTORepository import DTORepository
-from StatusCodes import StatusCodes
+from endpoints import DTORepository
+from helpers import StatusCodes
 
 # This is another controller for a slightly different endpoint
 class DTOMultiController(Resource):

@@ -1,7 +1,7 @@
 from flask import Flask, request, Response
 from flask_restful import Resource
-from AuthenticationRepository import AuthenticationRepository
-from StatusCodes import StatusCodes
+from endpoints import AuthenticationRepository
+from helpers import StatusCodes
 
 # Controller classes are used to connect api endpoints with the Repository
 class AuthenticationController(Resource):
@@ -13,7 +13,9 @@ class AuthenticationController(Resource):
     # auth/login
     def post(self):
         body = request.get_json()
+        print('body')
         print(body)
+        print('body')
         resp = self._authenticationRepository.loginClient(body['token'], body['username'], body['password'])
         if resp == False:
             return Response('Invalid Credentials', StatusCodes.UNAUTHORIZED)
@@ -27,4 +29,5 @@ class AuthenticationController(Resource):
         if resp == False:
             return Response('Invalid Credentials', StatusCodes.UNAUTHORIZED)
         else:
+            print(resp)
             return resp, StatusCodes.OK

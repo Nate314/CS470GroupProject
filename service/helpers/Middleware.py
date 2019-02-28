@@ -1,8 +1,8 @@
 from flask import Response, request
 from werkzeug.exceptions import abort, HTTPException
-from jwthelper import JWTHelper
-from StatusCodes import StatusCodes
-from Config import Config
+from .jwthelper import JWTHelper
+from .StatusCodes import StatusCodes
+from .Config import Config
 import time
 
 # Middlewares are used for code that needs to run

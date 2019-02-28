@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource
-from DTORepository import DTORepository
-from StatusCodes import StatusCodes
+from endpoints import DTORepository
+from helpers import StatusCodes
 
 # Controller classes are used to connect api endpoints with the Repository
 class DTOController(Resource):

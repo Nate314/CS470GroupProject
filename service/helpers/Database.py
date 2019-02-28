@@ -1,5 +1,5 @@
 import pymysql
-from Config import Config
+from .Config import Config
 
 # used to interact with the database
 class Database(object):

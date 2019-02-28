@@ -1,18 +1,8 @@
-from Database import Database
-from Alias import Alias
-from Category import Category
-from Collectible import Collectible
-from Command import Command
-from Description import Description
-from DiscordUser import DiscordUser
-from DiscordUserCollectible import DiscordUserCollectible
-from DiscordUserServer import DiscordUserServer
-from DiscordUserSocialMedia import DiscordUserSocialMedia
-from Raffle import Raffle
-from Resource import Resource
-from Server import Server
-from ServerCategory import ServerCategory
-from SocialMedia import SocialMedia
+from helpers import Database
+from dtos import Alias, Category, Collectible, Command
+from dtos import Description, DiscordUser, DiscordUserCollectible
+from dtos import DiscordUserServer, DiscordUserSocialMedia
+from dtos import Raffle, Resource, Server, ServerCategory, SocialMedia
 
 # Repositories retrieve data from the database
 class DTORepository:

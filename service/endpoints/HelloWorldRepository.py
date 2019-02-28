@@ -1,4 +1,4 @@
-from Database import Database
+from helpers import Database
 
 # Repositories retrieve data from the database
 class HelloWorldRepository:
