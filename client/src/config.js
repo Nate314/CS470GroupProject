@@ -1,1 +1,1 @@
-window['hostip'] = '10.151.1.244';
+window['hostip'] = '10.0.0.13';

@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_restful import Resource
-from endpoints import DTORepository
+from .DTORepository import DTORepository
 from helpers import StatusCodes
 
 # This is another controller for a slightly different endpoint
