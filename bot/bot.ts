@@ -3,10 +3,11 @@ import { getOptions } from "./auth";
 
 const bot = new Discord.Client();
 
-for (const event in EventResponse.responses) {
-    bot.on(event, EventResponse.responses[event](bot));
+const {token, ip} = getOptions(process);
+
+console.log("Before.");
+for (var event in EventResponse.responses) {
+    bot.on(event, EventResponse.responses[event](bot, {ip}));
 }
-
-const {token} = getOptions(process);
-
+console.log("After.");
 bot.login();

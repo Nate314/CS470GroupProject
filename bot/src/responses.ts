@@ -2,19 +2,23 @@ import { Client, Message } from "discord.js";
 import "./command";
 import "./resources/config";
 import { RichCommandManager } from "./command";
+import { authenticate, helloWorldApi } from "../request";
 
 interface Dictionary<T> {
     [index: string]: T;
 }
 
-export const responses: Dictionary<(client: Client) => Function> = {
-    'ready': (client) => {
+export const responses: Dictionary<(client: Client, options: any) => Function> = {
+    'ready': (client: Client, options: any) => {
         return () => {
             console.log("Shard ID:", client.shard.id);
+            authenticate(options.ip);
         }
     },
-    'message': (client) => {
+    'message': (client: Client, options: any) => {
         return (message: Message) => {
+            console.log("Called message.");
+            helloWorldApi(options.ip, `"someb0DY ONCE"`);
             const prefix = "r?";
             if (message.author.bot || !message.content.startsWith(prefix)) return;
 
@@ -31,9 +35,9 @@ export const responses: Dictionary<(client: Client) => Function> = {
             );
         }
     },
-    'error': (client) => {
+    'error': (client: Client, options: any) => {
         return (error: Error) => {
-        
+            console.error(error);
         }
     },
 

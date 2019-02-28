@@ -5,14 +5,16 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc && node compiled/sharding.js --token=''"
+        "build": "tsc && node compiled/sharding.js --token='' --ip=''"
     },
     "dependencies": {
         "@types/minimist": "^1.2.0",
         "@types/node": "^11.9.4",
         "discord.js": "^11.4.2",
+        "jwt-simple": "^0.5.5",
         "minimist": "^1.2.0",
         "node-fetch": "^2.3.0",
-        "node-fs": "^0.1.7"
+        "node-fs": "^0.1.7",
+        "request": "^2.88.0"
     }
 }
