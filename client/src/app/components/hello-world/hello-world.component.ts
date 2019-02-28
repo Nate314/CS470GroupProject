@@ -20,20 +20,20 @@ export class HelloWorldComponent implements OnInit {
     }
 
     ngOnInit() {
-        ['Aliases',
-        'Categories',
-        'Collectibles',
-        'Commands',
-        'Descriptions',
-        'DiscordUsers',
-        'DiscordUserCollectibles',
-        'DiscordUserServers',
-        'DiscordUserSocialMedias',
-        'Raffles',
-        'Resources',
-        'Servers',
-        'ServerCategories',
-        'SocialMedias'].forEach(table => {
+        ['aliases',
+        'categories',
+        'collectibles',
+        'commands',
+        'descriptions',
+        'discordusers',
+        'discordusercollectibles',
+        'discorduserservers',
+        'discordusersocialmedias',
+        'raffles',
+        'resources',
+        'servers',
+        'servercategories',
+        'socialmedias'].forEach(table => {
             this.helloWorldService.dtoSelectExample(table).subscribe(response => {
                 this.items.push(<Item>{
                     method: `SELECT * FROM ${table}`,

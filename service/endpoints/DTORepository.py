@@ -13,20 +13,20 @@ class DTORepository:
     
     def __getDTO(self, table):
         dictionary = {
-            'Aliases': Alias({}),
-            'Categories': Category({}),
-            'Collectibles': Collectible({}),
-            'Commands': Command({}),
-            'Descriptions': Description({}),
-            'DiscordUsers': DiscordUser({}),
-            'DiscordUserCollectibles': DiscordUserCollectible({}),
-            'DiscordUserServers': DiscordUserServer({}),
-            'DiscordUserSocialMedias': DiscordUserSocialMedia({}),
-            'Raffles': Raffle({}),
-            'Resources': Resource({}),
-            'Servers': Server({}),
-            'ServerCategories': ServerCategory({}),
-            'SocialMedias': SocialMedia({})
+            'aliases': Alias({}),
+            'categories': Category({}),
+            'collectibles': Collectible({}),
+            'commands': Command({}),
+            'descriptions': Description({}),
+            'discordusers': DiscordUser({}),
+            'discordusercollectibles': DiscordUserCollectible({}),
+            'discorduserservers': DiscordUserServer({}),
+            'discordusersocialmedias': DiscordUserSocialMedia({}),
+            'raffles': Raffle({}),
+            'resources': Resource({}),
+            'servers': Server({}),
+            'servercategories': ServerCategory({}),
+            'socialmedias': SocialMedia({})
         }
         return dictionary[table]
     

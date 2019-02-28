@@ -39,7 +39,7 @@ import { Constants } from './_helpers/Constants';
 export class AppModule {
 
   constructor() {
-    Constants.API_URL = 'http://' + window['hostip'] + ':5000';
+    Constants.API_URL = 'http://' + window['hostip'];
   }
 
 }
