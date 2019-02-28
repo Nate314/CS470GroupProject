@@ -9,16 +9,6 @@ class AuthenticationRepository:
         self.db = Database()
     
     def loginClient(self, token, username, password):
-        # this is how login would work if users were stored in the database
-        '''
-        if self.db.containsNoMaliciousCharacters(username):
-            query = 'SELECT * FROM Users WHERE Username = \'' + username.upper() + '\''
-            print(query)
-            dt = self.db.getDataTable(query)
-            if len(dt.getRows()) == 1:
-                # TODO Don't store the password as plain text in the database
-                if dt.getRows()[0]['Password'] == password:
-        '''
         if token != '' or (username == 'username' and password == 'password'):
             validToken = False
             jwt = JWTHelper(Config.secretkey, 'HS256')
@@ -33,6 +23,7 @@ class AuthenticationRepository:
                 payload = {
                     'iat': now,
                     'exp': now + 60,
+                    'discorduserid': 
                     'client': 'angular'
                 }
                 resp = {
