@@ -9,8 +9,9 @@ import helpers
 from helpers import Middleware, Config
 
 from endpoints import HelloWorldController, HelloWorldMultiController
-from endpoints import AuthenticationController, DTOController, DTOMultiController
-from endpoints import AddBatchMultiController
+from endpoints import AuthenticationController, AuthenticationMultiController
+from endpoints import DTOController, DTOMultiController
+from endpoints import AddBatchMultiController, GetUserInfoMultiController
 
 # reads in config files so that the Config class can be used later
 def configConfig(configFilename, cryptFilename):
@@ -42,9 +43,11 @@ def addEndpoints(api):
     api.add_resource(HelloWorldController, '/helloworld')
     api.add_resource(HelloWorldMultiController, '/helloworld/<int:num>')
     api.add_resource(AuthenticationController, '/auth/login')
+    api.add_resource(AuthenticationMultiController, '/auth/login/<string:username>')
     api.add_resource(DTOController, '/api/dto')
     api.add_resource(DTOMultiController, '/api/dto/<string:table>')
     api.add_resource(AddBatchMultiController, '/api/addbatch/<string:entity>')
+    api.add_resource(GetUserInfoMultiController, '/api/getuserinfo/<string:userid>')
 
 if __name__ == '__main__':
     if configConfig('config.json', 'crypt.json'):

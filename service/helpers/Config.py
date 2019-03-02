@@ -8,6 +8,7 @@ class Config:
     db = None
     # used to start up the server
     hostip = None
+    tokenlifetime = None
     # keys
     rsaprivatekey = None
     rsapublickey = None
@@ -22,6 +23,7 @@ class Config:
         Config.db = configJSON['db']
         # setting server variables
         Config.hostip = configJSON['hostip']
+        Config.tokenlifetime = configJSON['tokenlifetime']
         # setting keys
         Config.rsaprivatekey = cryptJSON['rsaprivatekey']
         Config.rsapublickey = cryptJSON['rsapublickey']

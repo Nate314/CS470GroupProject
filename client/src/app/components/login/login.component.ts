@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(token, username, password).subscribe(response => {
             console.log(response['jwt']);
             localStorage.setItem('AuthenticationToken', `"${response['jwt']}"`);
-            Utility.goto(ComponentNames.PAGE_HELLO_WORLD);
+            Utility.goto(ComponentNames.PAGE_DASHBOARD);
         }, data => console.log(data));
     }
 

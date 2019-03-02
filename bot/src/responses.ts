@@ -11,7 +11,8 @@ interface Dictionary<T> {
 export const responses: Dictionary<(client: Client, options: any) => Function> = {
     'ready': (client: Client, options: any) => {
         return () => {
-            console.log("Shard ID:", client.shard.id);
+            // console.log("Shard ID:", client.shard.id);
+            console.log("Ready");
             authenticate(options.ip);
         }
     },
@@ -31,6 +32,7 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
                     'client': client,
                     'message': message,
                     'prefix': prefix,
+                    'ip': options.ip
                 }
             );
         }

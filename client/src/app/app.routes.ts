@@ -6,11 +6,13 @@ import { Constants } from './_helpers/Constants';
 import { Page } from './_models/application-models/Page';
 import { ComponentNames } from './_models/application-models/ComponentNames';
 import { AuthGuard } from './_angular/guards/auth.guard';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'app/hello-world', component: HelloWorldComponent, canActivate: [AuthGuard] },
+    { path: 'app/dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
 ];
@@ -32,4 +34,10 @@ Constants.pages.push(<Page>{
     url: '/app/hello-world',
     icon: 'none',
     component: ComponentNames.PAGE_HELLO_WORLD
+});
+Constants.pages.push(<Page>{
+    title: 'Dashboard',
+    url: '/app/dashboard',
+    icon: 'none',
+    component: ComponentNames.PAGE_DASHBOARD
 });

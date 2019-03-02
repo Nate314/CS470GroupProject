@@ -12,13 +12,16 @@ import { AuthenticationService } from './services/authentication.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_angular/guards/auth.guard';
 import { Constants } from './_helpers/Constants';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardService } from './services/dashboard.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
     LoginComponent,
-    HelloWorldComponent
+    HelloWorldComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { Constants } from './_helpers/Constants';
     AuthGuard,
     HelloWorldService,
     AuthenticationService,
+    DashboardService,
     { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

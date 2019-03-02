@@ -15,7 +15,9 @@ class Middleware(object):
 
     # this code runs on every api call
     def __call__(self, environ, start_response):
-        if not environ['PATH_INFO'].startswith('/auth'):
+        shouldCheckForValidJWT = (not environ['PATH_INFO'].startswith('/auth'))
+        shouldCheckForValidJWT = shouldCheckForValidJWT or environ['PATH_INFO'].startswith('/auth/login/')
+        if shouldCheckForValidJWT:
             if not ('OPTIONS' in str(environ['werkzeug.request'])):
                 token = str(environ['HTTP_AUTHORIZATION'])
                 if len(token.split(' ')) > 1:

@@ -10,24 +10,20 @@ class AuthenticationController(Resource):
     def __init__(self):
         self._authenticationRepository = AuthenticationRepository()
     
-    # auth/login
+    # auth/login for client
     def post(self):
         body = request.get_json()
-        print('body')
-        print(body)
-        print('body')
         resp = self._authenticationRepository.loginClient(body['token'], body['username'], body['password'])
         if resp == False:
             return Response('Invalid Credentials', StatusCodes.UNAUTHORIZED)
         else:
             return resp, StatusCodes.OK
-
+    
+    # auth/login for bot login
     def put(self):
         body = request.get_json()
-        print(body)
         resp = self._authenticationRepository.loginBot(body)
         if resp == False:
             return Response('Invalid Credentials', StatusCodes.UNAUTHORIZED)
         else:
-            print(resp)
             return resp, StatusCodes.OK

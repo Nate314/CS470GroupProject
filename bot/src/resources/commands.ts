@@ -14,5 +14,13 @@ export = {
         "fileReference": "",
         "hasArgs": true,
         "isAlias": false
+    },
+    "logmein": {
+        "title": "logmein",
+        "description": "",
+        "category": "standard",
+        "fileReference": "logmein.js",
+        "hasArgs": false,
+        "isAlias": false
     }
 }

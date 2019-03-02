@@ -30,7 +30,7 @@ export const authenticate = (ip: string) => {
 }
 export const helloWorldApi = (ip: string, body: any) => {
     console.log(token);
-    request.post(
+    return request.post(
         {
             uri: `${ip}helloworld`,
             body: body,
@@ -46,7 +46,27 @@ export const helloWorldApi = (ip: string, body: any) => {
                 console.log(`${response}: ${body}`);
             }
         }
-    )
+    );
+}
+export const getLoginTokenForUser = (ip: string, username: string, callback): Promise<any> => {
+    console.log(token);
+    return request.get(
+        {
+            uri: `${ip}auth/login/${username}`,
+            headers: {
+                "content-type": 'application/json',
+                "Authorization": `Bearer ${token}`
+            }
+        },
+        (error, response, body) => {
+            callback(JSON.parse(response['body'])['jwt']);
+            if (error)
+                console.error(error);
+            else {
+                console.log(`${response}: ${body}`);
+            }
+        }
+    );
 }
 
 export const encode = (body: any) => jwt.encode(body, key, "RS256");

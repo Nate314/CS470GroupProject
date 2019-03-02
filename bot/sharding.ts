@@ -2,6 +2,8 @@ import { Discord } from "./src";
 import { getOptions } from "./auth";
 import "./src/resources/config";
 
+console.log(`INSIDE sharding.ts`);
+
 const manager = new Discord.ShardingManager(
     "./compiled/bot.js",
     {
@@ -15,5 +17,5 @@ manager.spawn();
 manager.on('launch', setupShard);
 
 function setupShard(shard: Discord.Shard): void {
-    console.log(``)
+    console.log(`INSIDE setupShard`);
 }

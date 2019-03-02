@@ -1,0 +1,24 @@
+Dashboard Works!
+
+<div *ngIf="user">
+    {{ userJSON }}
+    <br />
+    UserID: {{ user.DiscordUserID }}
+    <br />
+    UserHash: {{ user.UserHash }}
+    <br />
+    Currency: {{ user.Currency }}
+    <br />
+    RaffleID: {{ user.RaffleID }}
+    <br />
+    ProfilePicture:
+    <br />
+    <div [ngSwitch]="user.ProfilePictureURL === 'None'">
+        <span *ngSwitchCase="true">No Profile Picture</span>
+        <span *ngSwitchCase="false">
+            <img style="clip-path: ellipse(50px 50px at 50px 50px);" [src]="user.ProfilePictureURL"
+            width="100px" height="100px"/>
+        </span>
+    </div>
+    <br />
+</div>
