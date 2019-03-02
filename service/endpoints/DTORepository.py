@@ -3,6 +3,7 @@ from dtos import Alias, Category, Collectible, Command
 from dtos import Description, DiscordUser, DiscordUserCollectible
 from dtos import DiscordUserServer, DiscordUserSocialMedia
 from dtos import Raffle, Resource, Server, ServerCategory, SocialMedia
+import datetime
 
 # Repositories retrieve data from the database
 class DTORepository:
@@ -40,6 +41,7 @@ class DTORepository:
     def selectAll(self, table):
         dto = self.__getDTO(table)
         dt = self.db.select(['*'], table)
+        print(str(dt))
         return eval(str(dt))
     
     # retrieve information for the get id method on the controller

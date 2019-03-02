@@ -10,6 +10,7 @@ from helpers import Middleware, Config
 
 from endpoints import HelloWorldController, HelloWorldMultiController
 from endpoints import AuthenticationController, DTOController, DTOMultiController
+from endpoints import AddBatchMultiController
 
 # reads in config files so that the Config class can be used later
 def configConfig(configFilename, cryptFilename):
@@ -43,6 +44,7 @@ def addEndpoints(api):
     api.add_resource(AuthenticationController, '/auth/login')
     api.add_resource(DTOController, '/api/dto')
     api.add_resource(DTOMultiController, '/api/dto/<string:table>')
+    api.add_resource(AddBatchMultiController, '/api/addbatch/<string:entity>')
 
 if __name__ == '__main__':
     if configConfig('config.json', 'crypt.json'):

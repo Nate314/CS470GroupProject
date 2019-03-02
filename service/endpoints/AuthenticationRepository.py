@@ -23,7 +23,6 @@ class AuthenticationRepository:
                 payload = {
                     'iat': now,
                     'exp': now + 60,
-                    'discorduserid': 
                     'client': 'angular'
                 }
                 resp = {

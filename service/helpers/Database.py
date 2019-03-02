@@ -1,4 +1,5 @@
 import pymysql
+import datetime
 from .Config import Config
 
 # used to interact with the database
@@ -61,14 +62,14 @@ class Database(object):
     
     #PUBLIC
     # returns DataTable for inserting one item
-    def insertOne(self, table: str, props: str, entity):
+    def insertOne(self, table: str, props: list, entity):
         return self.insert(table, props, [entity])
     
     #PUBLIC
     # returns DataTable for inserting multiple items
     def insert(self, table: str, props: list, entities: list):
         try:
-            query = 'INSERT INTO ' + table
+            query = 'INSERT INTO ' + table + ' '
             query += '(' + ', '.join(props) + ')'
             query += ' VALUES '
             for entity in entities:
@@ -77,10 +78,10 @@ class Database(object):
                     if type(entity[key]) == type('str'):
                         query_entity += '\'' + entity[key] + '\', '
                     else:
-                        query_entity += entity[key] + ', '
-                query_entity = query_entity[0:-2] + ')'
+                        query_entity += str(entity[key]) + ', '
+                query_entity = query_entity[0:-2] + '),'
                 query += query_entity
-            query += ';'
+            query = query[:-1] + ';'
             self.__execute(query)
             return True
         except:
@@ -166,8 +167,10 @@ class DataRow(object):
     #PUBLIC
     # return DataRow as json
     def __str__(self):
-        return str(self.dictionary)
-
+        result = {}
+        for key in self.dictionary.keys():
+            result[key] = str(self.__getitem__(key))
+        return str(result)
 
 # ---RESOURCES---
 #https://stackoverflow.com/questions/51468059/mysql-package-for-python-3-7

@@ -6,3 +6,5 @@ from .DTORepository import DTORepository
 from .HelloWorldController import HelloWorldController
 from .HelloWorldMultiController import HelloWorldMultiController
 from .HelloWorldRepository import HelloWorldRepository
+from .AddBatchMultiController import AddBatchMultiController
+from .AddBatchMultiController import AddBatchRepository
