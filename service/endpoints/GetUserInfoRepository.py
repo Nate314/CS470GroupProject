@@ -12,5 +12,5 @@ class GetUserInfoRepository:
         dt = self.db.select(['DiscordUserID', 'UserName', 'UserHash', 'Currency',
             'LastDaily', 'RaffleID', 'Link AS ProfilePictureURL'],
             'discordusers LEFT OUTER JOIN resources ON resources.ResourceID = discordusers.ResourceID',
-            f'discorduserid = {userid}')
+            'discorduserid = ' + str(userid))
         return eval(str(dt.getRows()[0]))

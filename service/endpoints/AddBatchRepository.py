@@ -23,8 +23,8 @@ class AddBatchRepository:
     # add batch of users to the database
     def add_batch_users(self, users: list):
         # get list of serverids from the atabase
-        discordusers = self.db.select(['DiscordUserID'], 'DiscordUsers', '1')
-        servers = self.db.select(['ServerID'], 'Servers', '1')
+        discordusers = self.db.select(['DiscordUserID'], 'discordusers', '1')
+        servers = self.db.select(['ServerID'], 'servers', '1')
         serverids = []
         for server in servers.getRows():
             serverids.append(server['ServerID'])
@@ -59,7 +59,7 @@ class AddBatchRepository:
         userDTOs = [DiscordUser(user) for user in usersToAdd]
         # add users
         if len(usersToAdd) > 0:
-            self.db.insert('DiscordUsers', userDTOs[0].getProps(), userDTOs)
+            self.db.insert('discordusers', userDTOs[0].getProps(), userDTOs)
         if len(usersNotAdded) > 0:
             return usersNotAdded
         else:
