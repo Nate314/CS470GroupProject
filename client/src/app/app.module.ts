@@ -14,6 +14,8 @@ import { AuthGuard } from './_angular/guards/auth.guard';
 import { Constants } from './_helpers/Constants';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardService } from './services/dashboard.service';
+import { MaterialModule } from './material.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { DashboardService } from './services/dashboard.service';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [
     HttpClient,
@@ -40,6 +44,7 @@ import { DashboardService } from './services/dashboard.service';
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 
   constructor() {

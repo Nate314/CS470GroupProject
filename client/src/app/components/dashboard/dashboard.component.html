@@ -1,24 +1,44 @@
-Dashboard Works!
 
-<div *ngIf="user">
-    {{ userJSON }}
-    <br />
-    UserID: {{ user.DiscordUserID }}
-    <br />
-    UserHash: {{ user.UserHash }}
-    <br />
-    Currency: {{ user.Currency }}
-    <br />
-    RaffleID: {{ user.RaffleID }}
-    <br />
-    ProfilePicture:
-    <br />
-    <div [ngSwitch]="user.ProfilePictureURL === 'None'">
+<div style="background-color:lightgray">
+        <h1 style="text-align: center;">Dashboard Component</h1>
+        <button class="LabelLater">Label Later</button>
+        <button class="LabelLater">Label Later</button>
+        <button class="LabelLater">Label Later</button>
+</div>
+      
+<div [ngSwitch]="user.ProfilePictureURL === 'None'" style="text-align: center;">
         <span *ngSwitchCase="true">No Profile Picture</span>
         <span *ngSwitchCase="false">
             <img style="clip-path: ellipse(50px 50px at 50px 50px);" [src]="user.ProfilePictureURL"
             width="100px" height="100px"/>
         </span>
     </div>
-    <br />
+
+<table style="width:100px" style="margin: 0 auto; border:1px solid; text-align:center">    
+<div *ngIf="user">
+      <style>
+            table, th , td  {
+              border: 1px solid burlywood;
+              border-collapse: collapse;
+              padding: 10px;
+            }
+    </style>
+    <tr>
+            <th>DiscordUserID</th>
+            <th>UserName</th>
+            <th>UserHash</th>
+            <th>Currency</th>
+            <th>LastDaily</th>
+            <th>RaffleID</th>
+        </tr>
+    
+        <tr>
+            <td>{{user.DiscordUserID}}</td>
+            <td>{{user.UserName}}</td>
+            <td>{{user.UserHash}}</td>
+            <td>{{user.Currency}}</td>
+            <td>{{user.LastDaily}}</td>
+            <td>{{user.RaffleID}}</td>
+        </tr>
 </div>
+</table>
