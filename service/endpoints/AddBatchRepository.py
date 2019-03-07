@@ -14,6 +14,7 @@ class AddBatchRepository:
         try:
             dtoRepository = DTORepository()
             for server in servers:
+                server['ServerID'] = int(server['ServerID'])
                 dtoRepository.insert('servers', server)
             return True
         except Exception as e:
@@ -34,18 +35,13 @@ class AddBatchRepository:
         usersToAdd = []
         usersNotAdded = []
         for user in users:
-            add = True
             for server in user['Servers']:
                 if not server['ServerID'] in serverids:
-                    add = False
-            add = add and (not user['DiscordUserID'] in discorduserids)
-            # add user if all of the ServerIDs for that user have allready been added to the DB
-            if add:
-                # add each discorduserserver relationship to the DB
-                for server in user['Servers']:
+                    # add each discorduserserver relationship to the DB
                     server['DiscordUserID'] = user['DiscordUserID']
-                    print(server)
                     self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], Server(server))
+            # add user if all of the ServerIDs for that user have allready been added to the DB
+            if not user['DiscordUserID'] in discorduserids:
                 del user['Servers']
                 # insert the profile picture into the DB
                 self.db.insertOne('resources', ['Link'], {'Link': user['ProfilePicture']})
@@ -53,6 +49,7 @@ class AddBatchRepository:
                 del user['ProfilePicture']
                 user['ResourceID'] = id
                 # add the user to the list of users to add
+                user['DiscordUserID'] = int(user['DiscordUserID'])
                 usersToAdd.append(user)
             else:
                 usersNotAdded.append(user)

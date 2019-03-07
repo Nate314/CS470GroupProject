@@ -11,7 +11,7 @@ export = {
         "title": "manual",
         "description": "",
         "category": "standard",
-        "fileReference": "",
+        "fileReference": "manual.js",
         "hasArgs": true,
         "isAlias": false
     },
