@@ -14,6 +14,7 @@ class AddBatchRepository:
         try:
             dtoRepository = DTORepository()
             for server in servers:
+                server['ServerID'] = int(server['ServerID'])
                 dtoRepository.insert('servers', server)
             return True
         except Exception as e:

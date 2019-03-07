@@ -1,5 +1,6 @@
 import "./resources/config";
 import { Collection, RichEmbed } from "discord.js";
+import { reload } from "./resources/config";
 
 export type Alias = {
     isAlias: boolean,
@@ -13,12 +14,12 @@ interface Dictionary<T> {
 
 export class RichCommand {
     constructor(
-        public title: string,
-        public category: string,
+        public title:                   string,
+        public category:                string,
         public description: string | RichEmbed,
-        public hasArgs: boolean,
-        public alias: Alias,
-        public fileReference: string
+        public hasArgs:                boolean,
+        public alias:                    Alias,
+        public fileReference:           string,
     ) {
     }
 }
@@ -45,15 +46,11 @@ export class RichCommandManager {
         return this;
     }
     add(command: RichCommand): this {
-        if (!this.has(command)) {
-            this.commandCollection[command.title] = command;
-        }
+        if (!this.has(command)) this.commandCollection[command.title] = command;
         return this;
     }
     update(command: RichCommand): this {
-        if (this.has(command)) {
-            this.commandCollection[command.title] = command;
-        }
+        if (this.has(command)) this.commandCollection[command.title] = command;
         return this;
     }
     has(command: string | RichCommand): boolean {
@@ -64,26 +61,26 @@ export class RichCommandManager {
         return commands.reduce((acc: boolean, cur: string | RichCommand) => acc && this.has(cur), true);
     }
     launch(): this {
+        reload(this.file);
         this.commandCollection = require(this.file);
         return this;
     }
     execute(command: string, options?: Object): Promise<any> {
-        if (this.has(command)) {
+        if (!this.has(command)) return Promise.reject(`Command '${command}' not found in command collection from module '${this.commandPath}${this.file}'`);
+    
+        let item = this.commandCollection[command];
+        const args = options;
 
-            let item = this.commandCollection[command];
-            const args = options;
+        if (item.alias && item.alias.isAlias) {
+            Object.assign(args, item.alias.commandOptions);
+            item = this.commandCollection[item.alias.commandAlias];
+        }
 
-            if (item.alias && item.alias.isAlias) {
-                Object.assign(args, item.alias.commandOptions);
-                item = this.commandCollection[item.alias.commandAlias];
-            }
+        const path = this.commandPath + item.fileReference;
+        reload(path);
+        const commandFunction = require(path);
 
-            const path = this.commandPath + item.fileReference;
-            const commandFunction = require(path);
-
-            return commandFunction(args);
-        } else
-            return Promise.reject(`Command '${command}' not found in command collection from module '${this.commandPath}${this.file}'`);
+        return commandFunction(args);
     }
 
 }
