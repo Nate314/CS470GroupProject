@@ -1,0 +1,13 @@
+.card {
+    max-width: 450px;
+    margin: 0 auto; 
+    float: none; 
+    margin-bottom: 10px; 
+    border:px solid #333;
+}
+
+td, th {
+    border: 0.0px solid #fa8072;
+    text-align: center;
+    padding: 6px;
+}
