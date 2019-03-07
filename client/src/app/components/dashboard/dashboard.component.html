@@ -1,44 +1,39 @@
 
-<div style="background-color:lightgray">
-        <h1 style="text-align: center;">Dashboard Component</h1>
-        <button class="LabelLater">Label Later</button>
-        <button class="LabelLater">Label Later</button>
-        <button class="LabelLater">Label Later</button>
+<div class="container" style="margin-top: 5px;">
+        <button mat-button>Label Later</button>
+        <button mat-button [routerLink]="['../../login']">Logout</button>
+        <button mat-button>Label Later</button>
 </div>
-      
-<div [ngSwitch]="user.ProfilePictureURL === 'None'" style="text-align: center;">
-        <span *ngSwitchCase="true">No Profile Picture</span>
-        <span *ngSwitchCase="false">
-            <img style="clip-path: ellipse(50px 50px at 50px 50px);" [src]="user.ProfilePictureURL"
-            width="100px" height="100px"/>
-        </span>
-    </div>
 
-<table style="width:100px" style="margin: 0 auto; border:1px solid; text-align:center">    
-<div *ngIf="user">
-      <style>
-            table, th , td  {
-              border: 1px solid burlywood;
-              border-collapse: collapse;
-              padding: 10px;
-            }
-    </style>
-    <tr>
-            <th>DiscordUserID</th>
-            <th>UserName</th>
-            <th>UserHash</th>
-            <th>Currency</th>
-            <th>LastDaily</th>
-            <th>RaffleID</th>
-        </tr>
-    
-        <tr>
-            <td>{{user.DiscordUserID}}</td>
-            <td>{{user.UserName}}</td>
-            <td>{{user.UserHash}}</td>
-            <td>{{user.Currency}}</td>
-            <td>{{user.LastDaily}}</td>
-            <td>{{user.RaffleID}}</td>
-        </tr>
-</div>
-</table>
+<mat-card *ngIf="user" class="card" style="display:flex; justify-content:center; align-items:center; border-radius: 10%;" >
+        <mat-card-header>
+                <mat-card-title><h1>{{user.UserName}}</h1></mat-card-title>
+                <!-- <mat-card-subtitle><p>#{{user.UserHash}}</p></mat-card-subtitle> -->
+        </mat-card-header>
+         
+        <img mat-card-lg-image [src]="user.ProfilePictureURL"
+         height="300" [alt]="user.UserName">
+        <br />
+        <mat-card-content>
+                <tr>
+                        <th>DiscordUserID</th>
+                        <th>UserHash</th>
+                        <th>Currency</th>
+                        <th>LastDaily</th>
+                        <th>RaffleID</th>
+                    </tr>
+                    <tr>
+                        <td>{{user.DiscordUserID}}</td>
+                        <td>{{user.UserHash}}</td>
+                        <td>{{user.Currency}}</td>
+                        <td>{{user.LastDaily}}</td>
+                        <td>{{user.RaffleID}}</td>
+                    </tr>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <!-- <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button> -->
+        </mat-card-actions>
+</mat-card>
+

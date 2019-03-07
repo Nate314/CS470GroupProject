@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
         const discordUserID = decode(localStorage.getItem('AuthenticationToken'))['DiscordUserID'];
         this.dashboardService.getUserData(discordUserID).subscribe(user => {
             this.user = user;
+            console.log(this.user);
             this.userJSON = JSON.stringify(user);
         });
     }
