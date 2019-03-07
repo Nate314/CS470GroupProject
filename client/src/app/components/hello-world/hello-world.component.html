@@ -1,15 +1,13 @@
 <br />
-<div class="container border">
-    <div *ngFor="let item of items" class="row">
-        <div class="col-4">
-            {{item.method}}
-        </div>
-        <div class="col-8">
-            {{item.info}}
-        </div>
+<div *ngFor="let err of error" style="color:blue; text-align:center;">
+    {{ err }}
+    <br />
+</div>
+<br />
+<div class="container">
+    <div *ngFor="let table of tables">
+        <app-mat-table [table]="table" ></app-mat-table>
+        <br />
     </div>
 </div>
 <br />
-<div style="color: red;">
-    {{error}}
-</div>

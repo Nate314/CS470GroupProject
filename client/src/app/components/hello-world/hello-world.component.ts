@@ -1,11 +1,7 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HelloWorldService } from 'src/app/services/hello-world.service';
-import { TestingCompilerFactory } from '@angular/core/testing/src/test_compiler';
-
-class Item {
-    method: string;
-    info: string;
-}
+import { Table } from 'src/app/_angular/components/mat-table/mat-table.component';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: 'app-hello-world',
@@ -13,8 +9,8 @@ class Item {
 })
 export class HelloWorldComponent implements OnInit {
 
-    error: string;
-    items: Item[] = [];
+    error: string[] = [];
+    tables: Table[] = [];
 
     constructor(private helloWorldService: HelloWorldService) {
     }
@@ -35,10 +31,15 @@ export class HelloWorldComponent implements OnInit {
         'servercategories',
         'socialmedias'].forEach(table => {
             this.helloWorldService.dtoSelectExample(table).subscribe(response => {
-                this.items.push(<Item>{
-                    method: `SELECT * FROM ${table}`,
-                    info: JSON.stringify(response)
-                });
+                if (response.length > 0) {
+                    this.tables.push(<Table> {
+                        data: new MatTableDataSource(response),
+                        props: Object.keys(response[0]),
+                        titles: Object.keys(response[0])
+                    });
+                } else {
+                    this.error.push(`There are no rows in the ${table} table.`);
+                }
             });
         });
     }

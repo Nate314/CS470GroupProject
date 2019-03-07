@@ -15,7 +15,10 @@ import { Constants } from './_helpers/Constants';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardService } from './services/dashboard.service';
 import { MaterialModule } from './material.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableComponent } from './_angular/components/mat-table/mat-table.component';
+import { MatInputComponent } from './_angular/components/mat-input/mat-input.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,10 +26,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     NotFoundComponent,
     LoginComponent,
     HelloWorldComponent,
-    DashboardComponent
+    DashboardComponent,
+    MatTableComponent,
+    MatInputComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
