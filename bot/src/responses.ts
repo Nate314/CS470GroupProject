@@ -75,7 +75,6 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
         return (message: Message) => {
             console.log("Called message.");
             const {ip} = options;
-            helloWorldApi(ip, `"someb0DY ONCE"`);
             const prefix = "r?";
             if (message.author.bot || !message.content.startsWith(prefix)) return;
 
