@@ -14,7 +14,7 @@ class AddBatchRepository:
         try:
             dtoRepository = DTORepository()
             for server in servers:
-                server['ServerID'] = int(server['ServerID'])
+                server['ServerID'] = server['ServerID']
                 dtoRepository.insert('servers', server)
             return True
         except Exception as e:
@@ -49,7 +49,7 @@ class AddBatchRepository:
                 del user['ProfilePicture']
                 user['ResourceID'] = id
                 # add the user to the list of users to add
-                user['DiscordUserID'] = int(user['DiscordUserID'])
+                user['DiscordUserID'] = user['DiscordUserID']
                 usersToAdd.append(user)
             else:
                 usersNotAdded.append(user)

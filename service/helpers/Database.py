@@ -96,7 +96,7 @@ class Database(object):
                 if type(entity[prop]) == type('str'):
                     query += prop + ' = \'' + entity[prop] + '\', '
                 else:
-                    query += prop + ' = ' + entity[prop] + ', '
+                    query += prop + ' = ' + str(entity[prop]) + ', '
             query = query[0:-2] + ' WHERE ' + where
             query += ';'
             self.__execute(query)

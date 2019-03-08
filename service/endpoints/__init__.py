@@ -11,3 +11,5 @@ from .AddBatchMultiController import AddBatchMultiController
 from .AddBatchMultiController import AddBatchRepository
 from .GetUserInfoMultiController import GetUserInfoMultiController
 from .GetUserInfoRepository import GetUserInfoRepository
+from .CurrencyController import CurrencyController
+from .CurrencyRepository import CurrencyRepository
