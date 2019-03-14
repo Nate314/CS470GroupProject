@@ -8,3 +8,15 @@ mat-form-field {
 img {
     border-radius: 50%;
 }
+
+div.home {
+    position: absolute;
+    left: 30px;
+    width: 200px;
+    height: 120px;;
+  }
+
+  .navbar :hover{
+    background-color: #fa8072;
+  }
+

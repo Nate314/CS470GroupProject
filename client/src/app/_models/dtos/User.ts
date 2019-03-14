@@ -5,5 +5,6 @@ export class User {
     Currency: number;
     LastDaily: Date;
     RaffleID: number;
+    ResourceID: number;
     ProfilePictureURL: string;
 }
