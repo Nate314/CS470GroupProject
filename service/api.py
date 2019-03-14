@@ -12,6 +12,7 @@ from endpoints import HelloWorldController, HelloWorldMultiController
 from endpoints import AuthenticationController, AuthenticationMultiController
 from endpoints import DTOController, DTOMultiController
 from endpoints import AddBatchMultiController, GetUserInfoMultiController
+from endpoints import CurrencyController
 
 # reads in config files so that the Config class can be used later
 def configConfig(configFilename, cryptFilename):
@@ -48,6 +49,7 @@ def addEndpoints(api):
     api.add_resource(DTOMultiController, '/api/dto/<string:table>')
     api.add_resource(AddBatchMultiController, '/api/addbatch/<string:entity>')
     api.add_resource(GetUserInfoMultiController, '/api/getuserinfo/<string:userid>')
+    api.add_resource(CurrencyController, '/api/currency/transfer')
 
 if __name__ == '__main__':
     if configConfig('config.json', 'crypt.json'):
