@@ -17,11 +17,19 @@ class CurrencyController(Resource):
         receiver = body['Receiver']
         amount = body['amount']
         resp = False
+        # if 
         if sender == "0":
             resp = self._currencyRepository.daily(receiver, amount)
+            print('resp')
+            print(resp)
+            print('resp')
         else:
             resp = self._currencyRepository.transfer(sender, receiver, amount)
         if resp == False:
             return Response('Could not complete transaction', StatusCodes.INTERNAL_SERVER_ERROR)
+        elif type(resp) == int:
+            return resp, StatusCodes.IM_A_TEAPOT
+        elif type(resp) == str:
+            return resp, StatusCodes.RANGE_NOT_SATISFIABLE
         else:
             return resp, StatusCodes.OK

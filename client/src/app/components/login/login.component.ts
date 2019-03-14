@@ -23,6 +23,10 @@ export class LoginComponent implements OnInit {
         });
     }
 
+    getWidth() {
+        return window.innerWidth;
+    }
+
     ngOnInit() {
         localStorage.clear();
     }

@@ -1,18 +1,22 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
-export class Table {
-    props: string[];
-    titles: string[];
-    data: MatTableDataSource<any>;
-}
+export interface State {
+    flag: string;
+    name: string;
+    population: string;
+  }
 
 @Component({
   selector: 'app-mat-input',
   templateUrl: 'mat-input.component.html',
 })
 export class MatInputComponent implements OnInit {
+    formCtrl = new FormControl();
+    filteredOptions: Observable<any[]>;
 
     @ViewChild('input') input: ElementRef;
 
@@ -22,13 +26,28 @@ export class MatInputComponent implements OnInit {
     @Input() label: string;
     @Input() placeholder: string;
     @Input() autofocus: boolean;
+    @Input() options: any[];
+    @Input() filterkey: string;
+    @Input() imgkey: string;
+    @Input() displaykey: string;
 
     @Output() keyuped: EventEmitter<any> = new EventEmitter<any>();
     @Output() keydowned: EventEmitter<any> = new EventEmitter<any>();
     @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor() { }
-    ngOnInit() {
+    constructor() {
+        this.filteredOptions = this.formCtrl.valueChanges
+        .pipe(
+        startWith(''),
+        map(option => option ? this._filterStates(option) : this.options.slice())
+        );
+    }
+    private _filterStates(value: string): any[] {
+        const filterValue = value.toLowerCase();
+        return this.options.filter(option => option[this.filterkey].toLowerCase().indexOf(filterValue) === 0);
+    }
+
+    ngOnInit(): void {
         if (this.autofocus) {
             this.input.nativeElement.focus();
         }

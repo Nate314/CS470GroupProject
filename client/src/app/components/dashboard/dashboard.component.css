@@ -11,3 +11,7 @@ td, th {
     text-align: center;
     padding: 6px;
 }
+
+img {
+    border-radius: 50%;
+}

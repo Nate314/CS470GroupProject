@@ -20,18 +20,18 @@ class CurrencyRepository:
 
     def daily(self, discordUserID, amount):
         try:
-            dt = self.db.select(['*'], 'discordusers', 'DiscordUserID = ' + discordUserID)
+            dt = self.db.select(['*'], 'discordusers', 'DiscordUserID = \'' + discordUserID + '\'')
             user = dt.getRows()[0] if len(dt.getRows()) == 1 else None
             if user != None:
                 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                elapsedTime = 0
+                timeUntilNextDaily = 0
                 if user['LastDaily'] == None:
-                    elapsedTime = 60 * 60 * 24
+                    timeUntilNextDaily = 60 * 60 * 24
                 else:
                     nowtime = datetime.datetime.now().timestamp()
                     thentime = datetime.datetime.fromisoformat(str(user['LastDaily'])).timestamp()
-                    elapsedTime = int(nowtime - thentime)
-                if elapsedTime >= 60 * 60 * 24:
+                    timeUntilNextDaily = int(thentime + (60 * 60 * 24) - nowtime)
+                if timeUntilNextDaily < 0:
                     userJSON = eval(str(user))
                     userJSON['LastDaily'] = now
                     userJSON['Currency'] = int(userJSON['Currency']) + amount
@@ -41,7 +41,7 @@ class CurrencyRepository:
                         'DiscordUserID = ' + discordUserID)
                     return True
                 else:
-                    return 'It has only been ' + str(elapsedTime) + ' seconds since your last daily request.'
+                    return timeUntilNextDaily * 1000
             else:
                 return False
         except:
@@ -49,21 +49,24 @@ class CurrencyRepository:
     
     def transfer(self, senderID, receiverID, amount):
         try:
-            dt1 = self.db.select(['*'], 'discordusers', 'DiscordUserID = ' + senderID)
-            dt2 = self.db.select(['*'], 'discordusers', 'DiscordUserID = ' + receiverID)
-            sendingUser = dt1.getRows()[0] if len(dt1.getRows()) == 1 else None
-            receivingUser = dt2.getRows()[0] if len(dt2.getRows()) == 1 else None
-            if sendingUser != None and receivingUser != None:
-                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                sendingUserJSON = eval(str(sendingUser))
-                receivingUserJSON = eval(str(receivingUser))
-                sendingUserJSON['Currency'] = int(sendingUserJSON['Currency']) - amount
-                receivingUserJSON['Currency'] = int(receivingUserJSON['Currency']) + amount
-                self.insertTransaction(senderID, receiverID, now, amount)
-                self.db.update('discordusers', ['Currency'], sendingUserJSON, 'DiscordUserID = ' + senderID)
-                self.db.update('discordusers', ['Currency'], receivingUserJSON, 'DiscordUserID = ' + receiverID)
-                return True
+            if amount > 0:
+                dt1 = self.db.select(['*'], 'discordusers', 'DiscordUserID = \'' + senderID + '\'')
+                dt2 = self.db.select(['*'], 'discordusers', 'DiscordUserID = \'' + receiverID + '\'')
+                sendingUser = dt1.getRows()[0] if len(dt1.getRows()) == 1 else None
+                receivingUser = dt2.getRows()[0] if len(dt2.getRows()) == 1 else None
+                if sendingUser != None and receivingUser != None:
+                    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    sendingUserJSON = eval(str(sendingUser))
+                    receivingUserJSON = eval(str(receivingUser))
+                    sendingUserJSON['Currency'] = int(sendingUserJSON['Currency']) - amount
+                    receivingUserJSON['Currency'] = int(receivingUserJSON['Currency']) + amount
+                    self.insertTransaction(senderID, receiverID, now, amount)
+                    self.db.update('discordusers', ['Currency'], sendingUserJSON, 'DiscordUserID = \'' + senderID + '\'')
+                    self.db.update('discordusers', ['Currency'], receivingUserJSON, 'DiscordUserID = \'' + receiverID + '\'')
+                    return True
+                else:
+                    return False
             else:
-                return False
+                return 'You cannot transfer a negative amount.'
         except:
             return False

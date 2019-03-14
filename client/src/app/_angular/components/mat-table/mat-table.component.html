@@ -4,7 +4,14 @@ class="mat-elevation-z8" style="width:100%;">
     <!-- Row definition -->
     <ng-container *ngFor="let prop of table.props; let i = index;" [matColumnDef]="prop">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ table.titles[i] }} </th>
-        <td mat-cell *matCellDef="let row"> {{ row[prop] }} </td>
+        <td mat-cell *matCellDef="let row">
+            <div *ngIf="row[prop].includes('.png') || row[prop].includes('.jpg')">
+                <img [src]="row[prop]" height="50px"/>
+            </div>
+            <div *ngIf="!(row[prop].includes('.png') || row[prop].includes('.jpg'))">
+                {{ row[prop] }}
+            </div>
+        </td>
     </ng-container>
 
     <!-- Table definition -->

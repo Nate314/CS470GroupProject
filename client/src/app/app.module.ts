@@ -19,6 +19,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableComponent } from './_angular/components/mat-table/mat-table.component';
 import { MatInputComponent } from './_angular/components/mat-input/mat-input.component';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { CmdComponent } from './components/cmd/cmd.component';
+import { CmdService } from './services/cmd.service';
 
 @NgModule({
   declarations: [
@@ -28,10 +31,12 @@ import { CommonModule } from '@angular/common';
     HelloWorldComponent,
     DashboardComponent,
     MatTableComponent,
-    MatInputComponent
+    MatInputComponent,
+    CmdComponent
   ],
   imports: [
     BrowserModule,
+    RouterModule,
     CommonModule,
     AppRoutingModule,
     FormsModule,
@@ -46,6 +51,7 @@ import { CommonModule } from '@angular/common';
     HelloWorldService,
     AuthenticationService,
     DashboardService,
+    CmdService,
     { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
