@@ -14,6 +14,7 @@ const manager = new Discord.ShardingManager(
 );
 
 manager.spawn();
+console.log(`A.`);
 manager.on('launch', setupShard);
 
 function setupShard(shard: Discord.Shard): void {

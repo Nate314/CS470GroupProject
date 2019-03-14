@@ -4,3 +4,22 @@
 mat-form-field {
     width: 100%;
 }
+<<<<<<< HEAD
+=======
+
+img {
+    border-radius: 50%;
+}
+
+div.home {
+    position: absolute;
+    left: 30px;
+    width: 200px;
+    height: 120px;;
+  }
+
+  .navbar :hover{
+    background-color: #fa8072;
+  }
+
+>>>>>>> f9cb09317aa92d238eed7eab4ce4b06481528098

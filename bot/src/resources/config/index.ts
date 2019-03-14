@@ -6,3 +6,7 @@ export const dateToTimestamp = (date: Date) => JSON.parse(JSON.stringify(date.to
 export const reload = (path: string) => {
     if (require.cache[path]) delete require.cache[path];
 }
+
+export const defaults = {
+    dailyCurrency: 200,
+}

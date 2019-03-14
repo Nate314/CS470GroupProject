@@ -22,6 +22,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CmdComponent } from './components/cmd/cmd.component';
 import { CmdService } from './services/cmd.service';
+import { UserinfoComponent } from './components/userinfo/userinfo.component';
+import { userinfoService } from './services/userinfo.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { CmdService } from './services/cmd.service';
     DashboardComponent,
     MatTableComponent,
     MatInputComponent,
-    CmdComponent
+    CmdComponent,
+    UserinfoComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { CmdService } from './services/cmd.service';
     AuthenticationService,
     DashboardService,
     CmdService,
+    userinfoService,
     { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

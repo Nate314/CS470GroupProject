@@ -14,7 +14,7 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
         return () => {
             // console.log("Shard ID:", client.shard.id);
             console.log("Ready");
-            const {ip} = options;
+            const { ip } = options;
             authenticate(ip)
              .then(_ => 
                 fetchAll(ip, 'servers')
@@ -74,8 +74,8 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
     'message': (client: Client, options: any) => {
         return (message: Message) => {
             console.log("Called message.");
-            const {ip} = options;
-            const prefix = "r?";
+            const { ip } = options;
+            const prefix = options.prefix || "r?";
             if (message.author.bot || !message.content.startsWith(prefix)) return;
 
             const [command, ...args] = message.content.slice(prefix.length).split(' ');

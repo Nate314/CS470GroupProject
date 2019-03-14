@@ -8,6 +8,7 @@ import { ComponentNames } from './_models/application-models/ComponentNames';
 import { AuthGuard } from './_angular/guards/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CmdComponent } from './components/cmd/cmd.component';
+import { UserinfoComponent } from './components/userinfo/userinfo.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     { path: 'app/hello-world', component: HelloWorldComponent, canActivate: [AuthGuard] },
     { path: 'app/dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'app/cmd', component: CmdComponent, canActivate: [AuthGuard] },
+    { path: 'app/userinfo', component: UserinfoComponent, canActivate: [AuthGuard] },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
 ];

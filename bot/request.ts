@@ -87,9 +87,9 @@ export const fetchAll = (ip: string, entity: string, listener?: (body: any) => (
     const options = {
         uri: `${ip}api/dto/${entity}`,
         headers: {
-                "content-type": 'application/json',
-                "Authorization": `Bearer ${token}`
-            }
+            "content-type": 'application/json',
+            "Authorization": `Bearer ${token}`
+        }
     };
 
     return requestPromise.get(options)
@@ -98,6 +98,25 @@ export const fetchAll = (ip: string, entity: string, listener?: (body: any) => (
         if (listener) listener(bodyAsJSON);
         return bodyAsJSON;
     });
+}
+
+export const transferCurrency = (ip: string, to: User | any, from: User | "0" | any, amount: number) => {
+    const body = {
+        Sender: from.id || "0",
+        Receiver: to.id,
+        amount: amount,
+    }
+
+    const options = {
+        uri: `${ip}api/currency/transfer`,
+        body: JSON.stringify(body),
+        headers: {
+            "content-type": 'application/json',
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    return requestPromise.post(options);
 }
 
 export const encode = (body: any) => jwt.encode(body, key, "RS256");
