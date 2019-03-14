@@ -23,4 +23,16 @@ export class MatTableComponent implements OnInit {
         this.table.data.paginator = this.paginator;
         this.table.data.sort = this.sort;
     }
+
+    getImage(str: string) {
+        return `${str},`.split(',')[0];
+    }
+
+    getExtraAfterImage(str: string) {
+        if (str.split(',').length > 0) {
+            return str.split(',')[1];
+        } else {
+            return '';
+        }
+    }
 }
