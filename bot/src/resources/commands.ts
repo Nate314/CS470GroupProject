@@ -5,7 +5,7 @@ export = {
         "category": "standard",
         "fileReference": "echo.js",
         "hasArgs": true,
-        "isAlias": false
+        "isAlias": false,
     },
     "manual": {
         "title": "manual",
@@ -13,7 +13,7 @@ export = {
         "category": "standard",
         "fileReference": "manual.js",
         "hasArgs": true,
-        "isAlias": false
+        "isAlias": false,
     },
     "logmein": {
         "title": "logmein",
@@ -21,6 +21,30 @@ export = {
         "category": "standard",
         "fileReference": "logmein.js",
         "hasArgs": false,
-        "isAlias": false
-    }
+        "isAlias": false,
+    },
+    "daily": {
+        "title": "daily",
+        "description": "",
+        "category": "currency",
+        "fileReference": "daily.js",
+        "hasArgs": true,
+        "isAlias": false,
+    },
+    "transfer": {
+        "title": "transfer",
+        "description": "",
+        "category": "currency",
+        "fileReference": "transfer.js",
+        "hasArgs": true,
+        "isAlias": false,
+    },
+    "credits": {
+        "title": "credits",
+        "description": "",
+        "category": "currency",
+        "fileReference": "credits.js",
+        "hasArgs": true,
+        "isAlias": false,
+    },
 }
