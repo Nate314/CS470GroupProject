@@ -13,9 +13,14 @@ class AddBatchRepository:
     def add_batch_servers(self, servers: list):
         try:
             dtoRepository = DTORepository()
+            currentServers = dtoRepository.selectAll('servers')
+            dbserverids = [s['ServerID'] for s in currentServers]
             for server in servers:
-                server['ServerID'] = server['ServerID']
-                dtoRepository.insert('servers', server)
+                print(server['ServerID'])
+                if server['ServerID'] in dbserverids:
+                    dtoRepository.update('servers', server, 'ServerID = \'' + server['ServerID'] + '\'')
+                else:
+                    dtoRepository.insert('servers', server)
             return True
         except Exception as e:
             print(e)
@@ -23,41 +28,50 @@ class AddBatchRepository:
     
     # add batch of users to the database
     def add_batch_users(self, users: list):
-        # get list of serverids from the atabase
-        discordusers = self.db.select(['DiscordUserID'], 'discordusers', '1')
-        servers = self.db.select(['ServerID'], 'servers', '1')
-        serverids = []
-        for server in servers.getRows():
-            serverids.append(server['ServerID'])
-        discorduserids = []
-        for discorduser in discordusers.getRows():
-            discorduserids.append(discorduser['DiscordUserID'])
-        usersToAdd = []
-        usersNotAdded = []
-        for user in users:
-            for server in user['Servers']:
-                if not server['ServerID'] in serverids:
-                    # add each discorduserserver relationship to the DB
-                    server['DiscordUserID'] = user['DiscordUserID']
-                    self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], Server(server))
-            # add user if all of the ServerIDs for that user have allready been added to the DB
-            if not user['DiscordUserID'] in discorduserids:
+        try:
+            # get list of serverids from the atabase
+            dtoRepository = DTORepository()
+            currentServers = dtoRepository.selectAll('servers')
+            dbserverids = [s['ServerID'] for s in currentServers]
+            currentDiscordUsers = dtoRepository.selectAll('discordusers')
+            dbdiscorduserids = [d['DiscordUserID'] for d in currentDiscordUsers]
+            for user in users:
+                for server in user['Servers']:
+                    if not server['ServerID'] in dbserverids:
+                        # add each discorduserserver relationship to the DB
+                        server['DiscordUserID'] = user['DiscordUserID']
+                        self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], Server(server))
+                # add user if all of the ServerIDs for that user have allready been added to the DB
                 del user['Servers']
-                # insert the profile picture into the DB
-                self.db.insertOne('resources', ['Link'], {'Link': user['ProfilePicture']})
-                id = self.db.select(['MAX(ResourceID) AS id'], 'resources').getRows()[0]['id']
-                del user['ProfilePicture']
-                user['ResourceID'] = id
-                # add the user to the list of users to add
-                user['DiscordUserID'] = user['DiscordUserID']
-                usersToAdd.append(user)
-            else:
-                usersNotAdded.append(user)
-        userDTOs = [DiscordUser(user) for user in usersToAdd]
-        # add users
-        if len(usersToAdd) > 0:
-            self.db.insert('discordusers', userDTOs[0].getProps(), userDTOs)
-        if len(usersNotAdded) > 0:
-            return usersNotAdded
-        else:
+                # if the user is new, insert
+                if not user['DiscordUserID'] in dbdiscorduserids:
+                    # insert profile picture
+                    self.db.insertOne('resources', ['Link'], {'Link': user['ProfilePicture']})
+                    id = self.db.select(['MAX(ResourceID) AS id'], 'resources').getRows()[0]['id']
+                    del user['ProfilePicture']
+                    user['ResourceID'] = id
+                    # add the user to the list of users to add
+                    user['DiscordUserID'] = user['DiscordUserID']
+                    self.db.insertOne('discordusers',
+                        ['DiscordUserID', 'UserName', 'UserHash', 'Currency', 'LastDaily', 'RaffleID'],
+                        DiscordUser(user))
+                # if the user already exists in the db, update
+                else:
+                    oldUser = self.db.select(['DiscordUserID', 'ResourceID'],
+                        'discordusers', 'DiscordUserID = \'' + user['DiscordUserID'] + '\'').getRows()[0]
+                    oldProfilePictureLink = self.db.select(['Link'], 'resources',
+                        'ResourceID = \'' + str(oldUser['ResourceID']) + '\'').getRows()[0]['Link']
+                    id = str(oldUser['ResourceID'])
+                    # if the profilepicture is new, update resources table
+                    if not oldProfilePictureLink == user['ProfilePicture']:
+                        dtoRepository.update('resources', {'Link': user['ProfilePicture']},
+                            'ResourceID = \'' + str(oldUser['ResourceID']) + '\'')
+                    del user['ProfilePicture']
+                    user['ResourceID'] = id
+                    # update discorduser
+                    dtoRepository.update('discordusers', user,
+                        'DiscordUserID =  \'' + oldUser['DiscordUserID'] + '\'')
             return True
+        except Exception as e:
+            print(e)
+            return False

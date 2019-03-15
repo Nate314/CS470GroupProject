@@ -16,9 +16,7 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
             console.log("Ready");
             const { ip } = options;
             authenticate(ip)
-             .then(_ => 
-                fetchAll(ip, 'servers')
-                 .then(body => {
+             .then(_ => {
                     const servers = client.guilds.array()
                      .map(({id, createdAt, iconURL}) => 
                         ({
@@ -27,48 +25,34 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
                             "ServerURL":                       iconURL,
                         })
                      )
-                     .filter(x => !body.includes(x));
-                    if (servers)
-                        addBatch(ip, 'server', servers)
-                         .catch(() => console.error(`AddBatch[server] did not complete its action.`));
+                    // if (servers)
+                    //     addBatch(ip, 'server', servers)
+                    //      .catch(() => console.error(`AddBatch[server] did not complete its action.`));
 
-                    const allServers = body.concat(servers);
-
-                    fetchAll(ip, 'discorduserservers')
-                    .then(body => {
-                        console.log(body);
-                        const idArr = body.map((us: Object) => us['DiscordUserID']);
-
-                        const newUsers = client.users.array()
-                             .filter(user => !idArr.includes(user.id));
-
-                        const newUsersInfo = newUsers
-                             .map(({id, username, tag, displayAvatarURL, client}) =>
-                                ({
-                                    'DiscordUserID':                  id,
-                                    'UserName':                 username,
-                                    'UserHash':           tag.substr(-4),
-                                    'ProfilePicture':   displayAvatarURL,
-                                    'Servers':      client.guilds.array()
-                                                     .map(server => ({
-                                                        'ServerID':                         server.id,
-                                                        'JoinDate':  dateToTimestamp(server.joinedAt),
-                                                     })
-                                                    )
-                                })
-                        );
-                        if (newUsersInfo) {
-                            addBatch(ip, 'user', newUsersInfo)
-                             .then(body => console.log(`Added batch of users: ${body}`))
-                             .catch(console.error);
-                            fetchAll(ip, 'discorduserservers')
-                             .then(body => console.log(`Resultant batch of users on servers: ${body}`))
-                             .catch(console.error);
-                        }
-                    });
-                })
-                 .catch(console.error)
-             );
+                    const usersInfo = client.users.array()
+                            .map(({id, username, tag, displayAvatarURL, client}) =>
+                            ({
+                                'DiscordUserID':                  id,
+                                'UserName':                 username,
+                                'UserHash':           tag.substr(-4),
+                                'ProfilePicture':   displayAvatarURL,
+                                'Servers':      client.guilds.array()
+                                                    .map(server => ({
+                                                    'ServerID':                         server.id,
+                                                    'JoinDate':  dateToTimestamp(server.joinedAt),
+                                                    })
+                                                )
+                            })
+                    );
+                    if (usersInfo) {
+                        addBatch(ip, 'user', usersInfo)
+                            .then(body => console.log(`Added batch of users: ${body}`))
+                            .catch(console.error);
+                        fetchAll(ip, 'discorduserservers')
+                            .then(body => console.log(`Resultant batch of users on servers: ${body}`))
+                            .catch(console.error);
+                    }
+                });
         }
     },
     'message': (client: Client, options: any) => {

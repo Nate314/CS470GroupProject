@@ -1,6 +1,39 @@
 CMD
 <div *ngIf="!loading">
-    <app-mat-input [form]="form" [type]="'autocomplete'" [label]="'Username'" [fcn]="'user'"
-        [options]="states" [filterkey]="'name'" [imgkey]="'flag'" [displaykey]="'UserName'">
-    </app-mat-input>
+    <mat-grid-list cols="12" rowHeight="100px" gutterSize="15px">
+        <mat-grid-tile [colspan]="2" [rowspan]="2"></mat-grid-tile>
+        <mat-grid-tile [colspan]="8" [rowspan]="2">
+            <mat-card class="container mat-elevation-z4">
+                <div class="row">
+                    <div class="col">
+                        <app-mat-input [form]="form" [fcn]="'user'"
+                            [type]="'autocomplete'" [label]="'Username'" 
+                            [options]="allUsers" [filterkey]="'UserName'"
+                            [imgkey]="'ProfilePictureURL'" [displaykey]="'UserName'"
+                            (clicked)="userChosen($event)">
+                        </app-mat-input>
+                    </div>
+                    <div class="col">
+                        <app-mat-input [form]="form" [type]="'number'" [label]="'Amount'" [fcn]="'amount'">
+                        </app-mat-input>
+                    </div>
+                    <div class="col">
+                        <app-mat-input [form]="form" [type]="'button'" [label]="'TRANSFER'" (clicked)="btnTransfer()">
+                        </app-mat-input>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <app-mat-input [form]="form" [type]="'button'" [label]="'DAILY'" (clicked)="btnDaily()">
+                            </app-mat-input>
+                        </div>
+                        <div class="col">
+                            <span style="color:red;">{{ error }}</span>
+                            <span style="color:green;">{{ feedback }}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="2"></mat-grid-tile>
+    </mat-grid-list>
 </div>

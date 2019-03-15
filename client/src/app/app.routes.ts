@@ -17,6 +17,7 @@ export const routes: Routes = [
     { path: 'app/dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'app/cmd', component: CmdComponent, canActivate: [AuthGuard] },
     { path: 'app/userinfo', component: UserinfoComponent, canActivate: [AuthGuard] },
+    { path: 'app', redirectTo: '/app/dashboard', pathMatch: 'full' },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
 ];

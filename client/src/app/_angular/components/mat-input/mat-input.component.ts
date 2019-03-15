@@ -26,7 +26,7 @@ export class MatInputComponent implements OnInit {
     @Input() label: string;
     @Input() placeholder: string;
     @Input() autofocus: boolean;
-    @Input() options: any[];
+    @Input() options: string[];
     @Input() filterkey: string;
     @Input() imgkey: string;
     @Input() displaykey: string;
@@ -34,15 +34,17 @@ export class MatInputComponent implements OnInit {
     @Output() keyuped: EventEmitter<any> = new EventEmitter<any>();
     @Output() keydowned: EventEmitter<any> = new EventEmitter<any>();
     @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
+    @Output() blured: EventEmitter<any> = new EventEmitter<any>();
 
     constructor() {
         this.filteredOptions = this.formCtrl.valueChanges
         .pipe(
         startWith(''),
-        map(option => option ? this._filterStates(option) : this.options.slice())
+        map(option => option ? this._filterOptions(option) : this.options.slice())
         );
     }
-    private _filterStates(value: string): any[] {
+
+    private _filterOptions(value: string): any[] {
         const filterValue = value.toLowerCase();
         return this.options.filter(option => option[this.filterkey].toLowerCase().indexOf(filterValue) === 0);
     }
@@ -55,5 +57,12 @@ export class MatInputComponent implements OnInit {
 
     event(emitter: EventEmitter<any>, event) {
         emitter.emit(event);
+    }
+
+    optionChosen(option) {
+        console.log(option);
+        this.form.controls[this.fcn].setValue(option[this.displaykey]);
+        this.input.nativeElement.value = option[this.displaykey];
+        this.event(this.clicked, option);
     }
 }

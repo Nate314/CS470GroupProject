@@ -1,16 +1,20 @@
 
-<form *ngIf="type === 'text' || type === 'autocomplete'" [formGroup]="form">
-    <mat-form-field *ngIf="type === 'text'" stlye="width:100%;">
+<form *ngIf="['text', 'number', 'autocomplete'].includes(type)" [formGroup]="form">
+    <mat-form-field *ngIf="['text', 'number'].includes(type)" stlye="width:100%;">
         <mat-label>{{ label }}</mat-label>
-        <input matInput #input [placeholder]="placeholder" [formControlName]="fcn" autocomplete="off"
-            (keyup)="event(keyuped, $event)" (keydown)="event(keydowned, $event)"
+        <input matInput #input [type]="type" [placeholder]="placeholder" [formControlName]="fcn"
+            autocomplete="off" [min]="1" [max]="500"
+            (keyup)="event(keyuped, $event)"
+            (keydown)="event(keydowned, $event)"
             (click)="event(clicked, $event)">
     </mat-form-field>
     <mat-form-field *ngIf="type === 'autocomplete'">
         <mat-label>{{ label }}</mat-label>
-        <input matInput [placeholder]="placeholder" [matAutocomplete]="auto" [formControl]="formCtrl">
+        <input matInput [placeholder]="placeholder" [matAutocomplete]="auto" [formControl]="formCtrl"
+            #input>
         <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name"
+                (click)="optionChosen(option)">
                 <img class="example-option-img" aria-hidden [src]="option[imgkey]" height="25">
                 <span>&nbsp;&nbsp;</span>
                 <span>{{ option[filterkey] }}</span>

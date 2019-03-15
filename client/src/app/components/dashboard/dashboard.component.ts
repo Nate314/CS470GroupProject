@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { User } from 'src/app/_models/dtos/User';
 import * as decode from 'jwt-decode';
+import { Utility } from 'src/app/_helpers/Utility';
 
 @Component({
     selector: 'app-dashboard',
@@ -17,8 +18,7 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        const discordUserID = decode(localStorage.getItem('AuthenticationToken'))['DiscordUserID'];
-        this.dashboardService.getUserData(discordUserID).subscribe(user => {
+        this.dashboardService.getUserData(Utility.getDiscordUserID()).subscribe(user => {
             this.user = user;
             this.userJSON = JSON.stringify(user);
         });

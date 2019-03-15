@@ -23,5 +23,5 @@
 </nav>
 
 <div class="app-mat-table mat-elevation-z6 userinfo">
-    <app-mat-table [table]="table"></app-mat-table>
+    <app-mat-table *ngIf="table" [table]="table"></app-mat-table>
 </div>
