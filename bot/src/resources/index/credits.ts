@@ -1,5 +1,5 @@
 import { fetchAll } from "../../../request";
-
+import { pluralist } from "../config";
 
 export = ({message, prefix, ip}) => {
     //let [command, ...discard] = message.cleanContent.split(' ');
@@ -8,7 +8,7 @@ export = ({message, prefix, ip}) => {
     .then(body => {
         const [userInfo, ...discard] = body.filter(user => user["DiscordUserID"] === receiver.id);
         const amount = userInfo["Currency"];
-        message.channel.send(`${receiver} has ${amount} credits!`);
+        message.channel.send(`${receiver} has ${amount} credit${pluralist(amount)}!`);
     })
     .catch(error => {
         console.error(error);

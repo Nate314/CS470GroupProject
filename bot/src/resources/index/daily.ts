@@ -2,7 +2,7 @@ import { Message, User } from "discord.js";
 import { defaults } from "../config";
 import { transferCurrency, fetchAll } from "../../../request";
 
-const pluralist = unit => unit > 1 ? 's' : '';
+import { pluralist } from "../config";
 
 export = ({message, prefix, ip}) => {
     const sender: User = message.author;

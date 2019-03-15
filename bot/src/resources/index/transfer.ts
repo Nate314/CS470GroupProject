@@ -2,6 +2,8 @@ import { Message, User } from "discord.js";
 import { defaults } from "../config";
 import { transferCurrency } from "../../../request";
 
+import { pluralist } from "../config";
+
 export = ({message, prefix, ip}) => {
     const sender: User = message.author;
     const receiver: User = message.mentions.users.first();
@@ -13,9 +15,13 @@ export = ({message, prefix, ip}) => {
     let [command, mention, amount, ...discard] = message.cleanContent.split(' ');
     try {
         amount = parseInt(amount);
+        if (!amount) {
+            message.channel.send("Uh-oh! Transferring no credits wouldn't do very much, would it?");
+            return;
+        }
         transferCurrency(ip, receiver, sender, amount)
          .then(_ => {
-             message.channel.send(`${sender} transferred ${amount} credits to ${receiver}!`);
+             message.channel.send(`${sender} transferred ${amount} credit${pluralist(amount)} to ${receiver}!`);
          })
          .catch(error => {
              if (error.statusCode === 416) {

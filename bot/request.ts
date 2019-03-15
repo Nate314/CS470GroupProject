@@ -4,6 +4,7 @@ import * as crypt from './crypt.json';
 import './src/resources/config';
 import { User, Guild as Server } from 'discord.js';
 
+let globalIP: string;
 const key = crypt.rsaprivatekey;
 let token: string;
 
@@ -14,34 +15,50 @@ class HttpClient {
             uri: uri,
             headers: {
                 "content-type": 'application/json',
-                "Authorization": `Bearer ${token}`
             }
         };
         if (body) {
             options['body'] = body;
         }
+        if (!uri.includes('auth')) {
+            options.headers['Authorization'] = `Bearer ${token}`;
+        }
+        console.log(options);
         return options;
     }
 
+    public static requestWithAuthentication(requestMethod, options) {
+        if (options['uri'].includes('auth')) {
+            return requestMethod(options);
+        } else {
+            return authenticate(globalIP).then(_ => {
+                return requestMethod(options);
+            });
+        }
+    }
+
     public static get(uri: string) {
-        return requestPromise.get(this.getOptions(uri));
+        return HttpClient.requestWithAuthentication(requestPromise.get, this.getOptions(uri));
+        // return requestPromise.get(this.getOptions(uri));
     }
 
     public static post(uri: string, body: any) {
-        return requestPromise.post(this.getOptions(uri, body));
+        return HttpClient.requestWithAuthentication(requestPromise.post, this.getOptions(uri, body));
+        // return requestPromise.post(this.getOptions(uri, body));
     }
 
     public static put(uri: string, body: any) {
-        return requestPromise.put(this.getOptions(uri, body));
+        return HttpClient.requestWithAuthentication(requestPromise.put, this.getOptions(uri, body));
+        // return requestPromise.put(this.getOptions(uri, body));
     }
 }
 
 export const authenticate = (ip: string): Promise<any> => {
-
-    const body = encode({ "E.A.": "Sports" });
+    if (ip) globalIP = ip;
+    else ip = globalIP;
+    const body = JSON.stringify({token:crypt.token, username: '', password: ''}) || encode({ "E.A.": "Sports" });
     console.log(`${ip}: ${body}`);
-
-    return HttpClient.put(`${ip}auth/login`, `"${body}"`)
+    return HttpClient.post(`${ip}auth/login`, body)
     .then(body => {
         console.log(`${body}`);
         token = JSON.parse(body)['jwt'];

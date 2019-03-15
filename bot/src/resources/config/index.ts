@@ -7,6 +7,8 @@ export const reload = (path: string) => {
     if (require.cache[path]) delete require.cache[path];
 }
 
+export const pluralist = unit => unit > 1 ? 's' : '';
+
 export const defaults = {
     dailyCurrency: 200,
 }
