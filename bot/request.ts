@@ -20,7 +20,7 @@ class HttpClient {
         if (body) {
             options['body'] = body;
         }
-        if (!uri.includes('auth')) {
+        if (!uri.includes('auth') || uri.includes('auth/login/')) {
             options.headers['Authorization'] = `Bearer ${token}`;
         }
         console.log(options);

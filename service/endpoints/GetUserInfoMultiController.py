@@ -10,7 +10,7 @@ class GetUserInfoMultiController(Resource):
     def __init__(self):
         self._getUserInfoRepository = GetUserInfoRepository()
     
-    # example get method passing an number
+    # get info for a specific user
     def get(self, userid):
         resp = self._getUserInfoRepository.get_user(userid)
         return resp, StatusCodes.OK

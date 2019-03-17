@@ -13,6 +13,7 @@ from endpoints import AuthenticationController, AuthenticationMultiController
 from endpoints import DTOController, DTOMultiController
 from endpoints import AddBatchMultiController, GetUserInfoMultiController
 from endpoints import CurrencyController
+from endpoints import RaffleController, RaffleMultiController
 
 # reads in config files so that the Config class can be used later
 def configConfig(configFilename, cryptFilename):
@@ -50,6 +51,8 @@ def addEndpoints(api):
     api.add_resource(AddBatchMultiController, '/api/addbatch/<string:entity>')
     api.add_resource(GetUserInfoMultiController, '/api/getuserinfo/<string:userid>')
     api.add_resource(CurrencyController, '/api/currency/transfer')
+    api.add_resource(RaffleController, '/api/raffles')
+    api.add_resource(RaffleMultiController, '/api/raffles/<string:extension>')
 
 if __name__ == '__main__':
     if configConfig('config.json', 'crypt.json'):

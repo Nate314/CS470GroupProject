@@ -13,3 +13,6 @@ from .GetUserInfoMultiController import GetUserInfoMultiController
 from .GetUserInfoRepository import GetUserInfoRepository
 from .CurrencyController import CurrencyController
 from .CurrencyRepository import CurrencyRepository
+from .RaffleController import RaffleController
+from .RaffleMultiController import RaffleMultiController
+from .RaffleRepository import RaffleRepository
