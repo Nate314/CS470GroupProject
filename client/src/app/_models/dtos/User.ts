@@ -3,8 +3,7 @@ export class User {
     UserName: string;
     UserHash: number;
     Currency: number;
-    LastDaily: Date;
-    RaffleID: number;
+    LastDaily: string;
     ResourceID: number;
     ProfilePictureURL: string;
 }

@@ -24,6 +24,7 @@ import { CmdComponent } from './components/cmd/cmd.component';
 import { CmdService } from './services/cmd.service';
 import { UserinfoComponent } from './components/userinfo/userinfo.component';
 import { userinfoService } from './services/userinfo.service';
+import { HeadernavComponent } from './components/headernav/headernav.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { userinfoService } from './services/userinfo.service';
     MatTableComponent,
     MatInputComponent,
     CmdComponent,
-    UserinfoComponent
+    UserinfoComponent,
+    HeadernavComponent
   ],
   imports: [
     BrowserModule,
