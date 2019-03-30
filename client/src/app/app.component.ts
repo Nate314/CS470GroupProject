@@ -12,6 +12,9 @@ export class AppComponent {
   constructor(private router: Router) {
     Constants.router = this.router;
   }
+  isOnLogin() {
+    return window.location.href.includes("login");
+  }
 }
 
 
