@@ -47,9 +47,11 @@ class RaffleRepository:
                 userCurrency = userCurrenyQuery[0]['Currency']
                 # make sure the user has enough currency to start this raffle
                 if userCurrency >= rSeedAmount:
+                    endTime = None
                     # calculate end datetime of this raffle
-                    nowtime = datetime.datetime.now().timestamp()
-                    endTime = str(datetime.datetime.fromtimestamp(int(nowtime + (rDuration / 1000))))
+                    if rDuration >= 0:
+                        nowtime = datetime.datetime.now().timestamp()
+                        endTime = str(datetime.datetime.fromtimestamp(int(nowtime + (rDuration / 1000))))
                     # create raffle in Raffles table
                     if self.db.insertOne('raffles', ['ServerID', 'Name', 'EndTime', 'Currency', 'DiscordUserID'], {
                         'ServerID': rServerID,
@@ -140,6 +142,26 @@ class RaffleRepository:
         except:
             # some error has occurred
             return '', StatusCodes.INTERNAL_SERVER_ERROR
+
+
+    # returns all of the raffles that are currently available on the specified server
+    def get_historic_raffles(self, rDiscordUserID):
+        try:
+            result = self.db.select(['discorduserraffles.DiscordUserID', 'discorduserraffles.RaffleID',
+                'CASE WHEN rafflehistory.ServerID IS NOT NULL THEN rafflehistory.ServerID ELSE raffles.ServerID END AS ServerID',
+                'CASE WHEN rafflehistory.Name IS NOT NULL THEN rafflehistory.Name ELSE raffles.Name END AS Name',
+                'CASE WHEN rafflehistory.EndTime IS NOT NULL THEN rafflehistory.EndTime ELSE raffles.EndTime END AS EndTime',
+                'CASE WHEN rafflehistory.Currency IS NOT NULL THEN rafflehistory.Currency ELSE raffles.Currency END AS Currency',
+                'rafflehistory.WinnerDiscordUserID'], '''
+                discorduserraffles
+                LEFT JOIN rafflehistory ON discorduserraffles.RaffleID = rafflehistory.RaffleID
+                LEFT JOIN raffles ON discorduserraffles.RaffleID = raffles.RaffleID''',
+                f"discorduserraffles.DiscordUserID = '{rDiscordUserID}'")
+            # return list of raffleinfos
+            return eval(str(result)), StatusCodes.OK
+        except:
+            # some error has occurred
+            return '', StatusCodes.INTERNAL_SERVER_ERROR
     
     # returns all of the raffles that are going to end within the given number of milliseconds
     def get_raffles_ending_in_millis(self, rMillis):
@@ -170,6 +192,17 @@ class RaffleRepository:
                     winner = random.choice(discordusersinraffle)
                     # add the total currency for this raffle to the winner's currency
                     self.__add_to_user_currency(winner['DiscordUserID'], raffle[0]['Currency'])
+                    nowtime = datetime.datetime.now().timestamp()
+                    endTime = datetime.datetime.fromtimestamp(int(nowtime))
+                    self.db.insertOne('rafflehistory', ['RaffleID', 'ServerID', 'Name', 'EndTime', 'Currency', 'DiscordUserID', 'WinnerDiscordUserID'], {
+                        'RaffleID': raffle[0]['RaffleID'],
+                        'ServerID': raffle[0]['ServerID'],
+                        'Name': raffle[0]['Name'],
+                        'EndTime': str(endTime),
+                        'Currency': raffle[0]['Currency'],
+                        'DiscordUserID': raffle[0]['DiscordUserID'],
+                        'WinnerDiscordUserID': winner['DiscordUserID']
+                    })
                     # delete the raffle
                     self.db.delete('raffles', f"RaffleID = {raffle[0]['RaffleID']}")
                     return {
