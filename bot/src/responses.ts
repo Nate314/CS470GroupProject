@@ -28,7 +28,7 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
                     // if (servers)
                     //     addBatch(ip, 'server', servers)
                     //      .catch(() => console.error(`AddBatch[server] did not complete its action.`));
-
+                    
                     const usersInfo = client.users.array()
                             .map(({id, username, tag, displayAvatarURL, client}) =>
                             ({

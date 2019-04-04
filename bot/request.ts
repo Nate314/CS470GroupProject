@@ -31,9 +31,8 @@ class HttpClient {
         if (options['uri'].includes('auth')) {
             return requestMethod(options);
         } else {
-            return authenticate(globalIP).then(_ => {
-                return requestMethod(options);
-            });
+            authenticate(globalIP);
+            return requestMethod(options);
         }
     }
 
@@ -50,6 +49,10 @@ class HttpClient {
     public static put(uri: string, body: any) {
         return HttpClient.requestWithAuthentication(requestPromise.put, this.getOptions(uri, body));
         // return requestPromise.put(this.getOptions(uri, body));
+    }
+
+    public static delete(uri: string, body: any) {
+        return HttpClient.requestWithAuthentication(requestPromise.delete, this.getOptions(uri, body));
     }
 }
 
@@ -113,6 +116,45 @@ export const transferCurrency = (ip: string, to: User | any, from: User | "0" | 
     }
 
     return HttpClient.post(`${ip}api/currency/transfer`, JSON.stringify(body));
+}
+
+export const getRafflesByNumber = (ip: string, discriminator: string | number, type: 'discorduser' | 'server') => {
+   return HttpClient.get(`${ip}api/raffles/${type}.${discriminator}`)
+   .then(response => JSON.parse(response));
+}
+
+export const addToRaffle = (ip: string, sender: User, server: Server, amount: number, name: string) => {
+    return HttpClient.put(
+        `${ip}api/raffles`,
+        JSON.stringify({
+            DiscordUserID: sender.id,
+            ServerID: server.id,
+            Amount: amount,
+            Raffle: name,
+        })
+    );
+}
+
+export const addRaffle = (ip: string, name: string, sender: User, server: Server, amount: number, duration?: number) => {
+    let body = {
+        Name: name,
+        DiscordUserID: sender.id,
+        ServerID: server.id,
+        SeedAmount: amount,
+    }
+    if (duration) body['Duration'] = duration;
+    return HttpClient.post(`${ip}api/raffles`, JSON.stringify(body));
+}
+
+export const removeRaffle = (ip: string, sender: User, server: Server, raffle: string) => {
+    return HttpClient.delete(
+        `${ip}api/raffles`,
+        JSON.stringify({
+            DiscordUserID: sender.id,
+            ServerID: server.id,
+            Raffle: raffle,
+        })
+    )
 }
 
 export const encode = (body: any) => jwt.encode(body, key, "RS256");
