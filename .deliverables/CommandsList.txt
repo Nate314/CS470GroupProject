@@ -2,14 +2,14 @@ Most of the interaction with our database from the "front end" will be
 done through sending messages on discord to communicate with the bot.
 Below is a list of different commands that can be used with the bot:
 
-r?daily
-every day you can run this command to recieve 200 credits once every 24 hours
-the bot will check who sent this message and add 200 credits to that user in the
-DiscordUsers table if that user hasn't sent r?daily in the last 24 hours
+r?daily <@user>
+every day you can run this command to recieve 200 credits once every day
+the bot will check who sent this message and add 200 credits to <@user> in the
+DiscordUsers table if the sending user hasn't sent r?daily in the last day
 
-r?credits
+r?credits <@user>
 running this command tells the bot to query the DB and check for how many
-credits the sender of the message has
+credits <@user> has
 
 r?manual
 this command will cause the bot to query the DB for a list of commands
@@ -41,24 +41,24 @@ started the raffle with the name <name>
 when a raffle ends, all of the credits added to this raffle are awarded
 to a random user who participated in this raffle
 
-r?collectible available
+r?collectibles list
 lists the collectibles that are available for purchase
 
-r?collectibles list
-lists the collectibles that the sending user has purchased
+r?collectibles <@user>
+lists the collectibles that <@user> has purchased
 
 r?collectibles purchase <name>
 adds the specified collectible to the user's collection of collectibles
 if the user who sent the message has enough currency to purchase the collectible
 
-r?social options
+r?social list
 lists the different social media platforms that this bot supports
 
-r?social add <name> <handle>
-adds the specified social media platform and handle to the sending
+r?social add <socilamedia> <handle>
+adds the specified <socialmedia> platform and <handle> to the sending
 user's profile
 
-r?social list <@user>
+r?social <@user>
 lists the social media profiles of the specified <@user>
 
 r?profile <@user>
@@ -68,4 +68,4 @@ and the amount of currency that the user has
 
 r?logmein
 when this message is sent, the bot will reply to the sending user via a direct
-message with a token that is good for loging on to the angular client for 1 hour.
+message with a token that is good for loging on to the angular client for 1 hour

@@ -14,12 +14,3 @@ class DTOController(Resource):
         body = request.get_json()
         success = self._dtoRepository.insert(body['table'], body['entity'])
         return success
-
-    def put(self):
-        body = request.get_json()
-        success = self._dtoRepository.update(body['table'], body['entity'], body['where'])
-        return success
-    
-    def delete(self):
-        body = request.get_json()
-        success = self._dtoRepository.delete(body['table'], body['where'])

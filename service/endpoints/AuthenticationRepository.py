@@ -54,7 +54,7 @@ class AuthenticationRepository:
 
     def getTokenForUser(self, username):
         userid = ''
-        dt = self.db.select(['DiscordUserID'], 'discordusers', 'UserName = \'' + username + '\'')
+        dt = self.db.select(['DiscordUserID'], 'discordusers', 'UserName = %s', [username])
         print(dt.getRows()[0]['DiscordUserID'])
         if len(dt.getRows()) == 1:
             userid = dt.getRows()[0]['DiscordUserID']

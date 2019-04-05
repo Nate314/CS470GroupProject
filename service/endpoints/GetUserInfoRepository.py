@@ -10,7 +10,7 @@ class GetUserInfoRepository:
     # retrieve user from DB
     def get_user(self, userid):
         dt = self.db.select(['DiscordUserID', 'UserName', 'UserHash', 'Currency',
-            'LastDaily', 'RaffleID', 'Link AS ProfilePictureURL'],
+            'LastDaily', 'Link AS ProfilePictureURL'],
             'discordusers LEFT OUTER JOIN resources ON resources.ResourceID = discordusers.ResourceID',
             'discorduserid = ' + str(userid))
         return eval(str(dt.getRows()[0]))

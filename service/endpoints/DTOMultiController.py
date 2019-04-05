@@ -15,8 +15,7 @@ class DTOMultiController(Resource):
         resp = self._dtoRepository.selectAll(table)
         return resp, StatusCodes.OK
 
-    # used to delete
     def post(self, table):
         body = request.get_json()
-        resp = self._dtoRepository.delete(table, body['where'])
-        return resp, StatusCodes.OK
+        resp = self._dtoRepository.select(table, body['IDColumn'], body['ID'])
+        return resp
