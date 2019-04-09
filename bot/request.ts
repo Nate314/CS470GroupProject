@@ -135,7 +135,7 @@ export const addToRaffle = (ip: string, sender: User, server: Server, amount: nu
     );
 }
 
-export const addRaffle = (ip: string, name: string, sender: User, server: Server, amount: number, duration?: number) => {
+export const addRaffle = (ip: string, name: string, sender: User, server: Server, amount: number, duration: number) => {
     let body = {
         Name: name,
         DiscordUserID: sender.id,
@@ -154,7 +154,17 @@ export const removeRaffle = (ip: string, sender: User, server: Server, raffle: s
             ServerID: server.id,
             Raffle: raffle,
         })
-    )
+    ).then(resp => JSON.parse(resp));
+}
+
+export const purchaseCollectible = (ip: string, sender: User, name: string) => {
+    return HttpClient.post(
+        `${ip}api/collectibles/purchase`,
+        JSON.stringify({
+            DiscordUserID: sender.id,
+            CollectibleName: name,
+        })
+    ).then(resp => JSON.parse(resp));
 }
 
 export const encode = (body: any) => jwt.encode(body, key, "RS256");

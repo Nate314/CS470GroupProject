@@ -1,12 +1,12 @@
 import "../config";
 import {default as humanInterval} from "human-interval";
-import { Message, Channel } from "discord.js";
+import { Message, Channel, User } from "discord.js";
 import { addRaffle, addToRaffle, removeRaffle, getRafflesByNumber } from "../../../request";
 import { Discord } from "../..";
 import { statusCodes, pluralist, confirm } from "../config";
 
 export = ({message, prefix, ip}) => {
-    let [_, ...args] = message.content.split(' ');
+    let [ _, ...args ] = message.content.split(' ');
     let collected: string = args.join(' ');
     const sender = message.author;
     const server = message.guild;
@@ -39,15 +39,19 @@ export = ({message, prefix, ip}) => {
                 if (confirm("Would you like to set a deadline for this raffle?", message)) {
                     message.channel.send("Please send an amount of time for your raffle to complete. This operation will cancel automatically in 30 seconds and your raffle can only end manually.")
                     let millis: number;
-                    message.channel.awaitMessages(
+                    message.channel.createMessageCollector(
                         m => {
-                            if (m.author !== sender) return false;
+                            if (m.author !== sender || millis) return false;
                             try {
-                                if (!millis) {
-                                    millis = humanInterval(m.content);
-                                    parsedUnits = m.content;
+                                if (!m.content.split(/\s/).filter(string => string.isDigit() && parseInt(string) !== 0)) {
+                                    message.channel.send(`The amount of time entered is too short. Try again.`);
+                                    return false;
                                 }
-                                console.log(`human`)
+                                
+                                millis = humanInterval(m.content);
+                                
+                                parsedUnits = m.content;
+                                console.log(`human ${millis}`)
                                 return true;
                             } catch {
                                 console.log("Didn't work.")
@@ -57,18 +61,19 @@ export = ({message, prefix, ip}) => {
                         {
                             max: 1,
                             time: 30000,
-                            errors: [ 'time' ],
                         }
                     )
-                    .then(_ => _)
-                    .then(messageCollection => {
-                        const duration = millis;
+                    .on('end', collected => {
+                        const msg = collected.first();
+                        const duration: number = msg ? millis : -1;
                         console.log(`Duration: ${duration}`);
                         addRaffle(ip, name, sender, server, amount, duration)
                         .then(_ => {
+                            const time = (duration !== -1) ? `${duration} millis` : `no end date`;
                             message.channel.send({
                                 embed: {
-                                    title: `[Testing] Duration: ${duration} millis.`
+                                    title: `Started Raffle | ${name}`,
+                                    description: `Creator: ${sender.username}\nAmount: ${amount}\nDuration: ${duration}`
                                 }
                             });
                         })
@@ -76,9 +81,6 @@ export = ({message, prefix, ip}) => {
                             //error codes
                             console.error(error);
                         })
-                    })
-                    .catch(_ => {
-                        message.channel.send("Your transaction has been cancelled.");
                     });
                     
                 } else {
@@ -119,7 +121,7 @@ export = ({message, prefix, ip}) => {
                 .then(_ => {
                     message.channel.send({
                         embed: {
-                            title: `${sender.username} added ${amount} credits to ${name}`
+                            title: `${sender.username} added ${amount} credit${pluralist(amount)} to ${name}`
                         }
                     })
                 })
@@ -148,7 +150,9 @@ export = ({message, prefix, ip}) => {
             const name = args.join(' ');
             removeRaffle(ip, sender, server, name)
             .then(response => {
+                console.log(response);
                 const { Winner, RaffleInfo } = Object(response);
+                console.log(Winner);
                 const { Raffle, DiscordUsers } = Object(RaffleInfo);
                 const { Currency, Name } = Object(Raffle);
                 const numParticipants = Object(DiscordUsers).length;
@@ -158,7 +162,7 @@ export = ({message, prefix, ip}) => {
                     embed: {
                         color: 0xff00ff,
                         title: `Completed Raffle | ${Name}`,
-                        description: `${(UserName + '#' + UserHash)} won the raffle and has gained ${Currency} credits! ${numParticipants} participants in this raffle.`
+                        description: `${UserName}#${'0'.repeat(4 - UserHash.toString().length)}${UserHash} won the raffle and has gained ${Currency} credit${pluralist(parseInt(Currency))}! ${numParticipants} participant${pluralist(numParticipants)} in this raffle.`
                     }
                 })
             })

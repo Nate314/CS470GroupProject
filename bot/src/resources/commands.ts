@@ -68,5 +68,15 @@ export = {
         "alias": {
             "isAlias": false,
         },
+    },
+    "collectibles": {
+        "title": "collectibles",
+        "description": "",
+        "category": "collectibles",
+        "fileReference": "collectibles.js",
+        "hasArgs": true,
+        "alias": {
+            "isAlias": false,
+        },
     }
 }
