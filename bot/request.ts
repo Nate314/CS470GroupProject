@@ -167,6 +167,12 @@ export const purchaseCollectible = (ip: string, sender: User, name: string) => {
     ).then(resp => JSON.parse(resp));
 }
 
+export const getUserCollectibles = (ip: string, user: User) => {
+    return HttpClient.get(
+        `${ip}api/collectibles/user.${user.id}`
+    ).then(resp => JSON.parse(resp));
+}
+
 export const encode = (body: any) => jwt.encode(body, key, "RS256");
 
 /*

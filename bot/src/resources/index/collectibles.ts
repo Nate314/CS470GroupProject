@@ -1,5 +1,5 @@
-import { fetchAll, purchaseCollectible } from "../../../request";
-import { pluralist } from "../config";
+import { fetchAll, purchaseCollectible, getUserCollectibles } from "../../../request";
+import { pluralist, statusCodes } from "../config";
 
 let lastFetched: Date;
 let collectibles: any[];
@@ -8,6 +8,7 @@ const getCollectibles = (ip: string): Promise<any[]> => {
     if (!lastFetched || (new Date().valueOf() - lastFetched.valueOf()) > 300000)
         return fetchAll(ip, 'collectibles')
         .then(resp => {
+            console.log(resp);
             lastFetched = new Date();
             return collectibles = resp;
         });
@@ -26,7 +27,27 @@ export = ({message, prefix, ip}) => {
     action = action.toLowerCase();
     const collected = args.join(' ');
     switch(action) {
-        case 'list':
+        case 'l': case 'list':
+            const receiver = message.mentions.users.first() || sender;
+            getUserCollectibles(ip, receiver)
+            .then(collectibles => {
+                const fields = collectibles.map(collectible => {
+                    const { Name, Currency } = collectible;
+                    return {
+                        name: `${Name}`,
+                        value: `Worth ${Currency} credit${pluralist(Currency)}`
+                    }
+                });
+                message.channel.send({
+                    embed: {
+                        title: `${receiver.username}'s collectibles | Number: ${fields.length}`,
+                        fields: fields
+                    }
+                })
+            })
+            .catch(console.error);
+            break
+        case 'a': case 'avail': case 'available':
             getCollectibles(ip)
             .then(collectibles => {
                 const fields = collectibles.map(collectible => {
@@ -45,7 +66,7 @@ export = ({message, prefix, ip}) => {
             })
             .catch(console.error);
             break
-        case 'purchase': case 'buy':
+        case 'p': case 'b': case 'purchase': case 'buy':
             if (!args.length) {
                 message.channel.send(`Uh-oh! You cannot ${action} a collectible without a name.`);
                 return;
@@ -54,7 +75,7 @@ export = ({message, prefix, ip}) => {
             .then(resp => {
                 message.channel.send({
                     embed: {
-                        title: `Purchased collectible | by ${sender}`,
+                        title: `Purchased collectible | by ${sender.username}`,
                         description: `You've successfully purchased the collectible \`${collected}\``
                     }
                 })
@@ -62,12 +83,17 @@ export = ({message, prefix, ip}) => {
             .catch(error => {
                 if (!error) {
                     message.channel.send(`[Testing] Problem on bot code.`);
-                } else if (error.statusCode) {
-                    message.channel.send(`The collectible ${collected} could not be purchased.`);
+                    return;
+                } else if (error.statusCode === statusCodes.NOT_FOUND) {
+                    message.channel.send(`No collectible could be found with the name ${collected}.`);
+                } else if (error.statusCode === statusCodes.IM_A_TEAPOT) {
+                    message.channel.send(`The collectible ${collected} could not be purchased because you do not have sufficient credits.`);
+                } else if (error.statusCode === statusCodes.CONFLICT) {
+                    message.channel.send(`Uh-oh! You already have this collectible. Use \`${prefix}collectibles list\` to find out what you have.`);
                 }
             })
             break
         default:
-        message.channel.send(`Uh-oh! I don't recognise the command ${action}. Available options are: \`\`\`list\npurchase\`\`\``);
+        message.channel.send(`Uh-oh! I don't recognise the command ${action}. Available options are: \`\`\`\navailable\nlist\npurchase\`\`\``);
     }
 }
