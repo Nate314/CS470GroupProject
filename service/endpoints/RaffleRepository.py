@@ -187,8 +187,10 @@ class RaffleRepository:
                         'DiscordUserID': raffle[0]['DiscordUserID'],
                         'WinnerDiscordUserID': winner['DiscordUserID']
                     })
+                    print('before delete')
                     # delete the raffle
-                    self.db.delete('raffles', f"RaffleID = {raffle[0]['RaffleID']}")
+                    self.db.delete('raffles', 'RaffleID = %s', [raffle[0]['RaffleID']])
+                    print('after delete')
                     return {
                         'Winner': winner,
                         'RaffleInfo': {

@@ -27,24 +27,28 @@ class CollectiblesRepository:
                 collectibleQuery = self.db.select(['*'], 'collectibles', 'Name = %s', [rCollectibleName]).getRows()
                 if len(collectibleQuery) > 0:
                     collectibleItem = collectibleQuery[0]
-                    # make sure the user has enough currency to purchase this collectible
-                    collectiblePrice = int(collectibleItem['Currency'])
-                    if userCurrency >= collectiblePrice:
-                        # insert into DiscorduserCollectibles table
-                        self.db.insertOne('discordusercollectibles', ['DiscordUserID', 'CollectibleID', 'Date'], {
-                            'DiscordUserID': rDiscordUserID,
-                            'CollectibleID': collectibleItem['CollectibleID'],
-                            'Date': str(datetime.datetime.now())
-                        })
-                        # decrement the user's currency
-                        print('line 40')
-                        self._commonRepository.subtract_from_user_currency(rDiscordUserID, collectiblePrice)
-                        print('line 42')
-                        # return OK
-                        return f'Successfully purchased {rCollectibleName}', StatusCodes.OK
+                    if len(self.db.select(['*'], 'discordusercollectibles', 'DiscordUserID = %s AND CollectibleID = %s', [rDiscordUserID, collectibleItem['CollectibleID']]).getRows()) == 0:
+                        # make sure the user has enough currency to purchase this collectible
+                        collectiblePrice = int(collectibleItem['Currency'])
+                        if userCurrency >= collectiblePrice:
+                            # insert into DiscorduserCollectibles table
+                            self.db.insertOne('discordusercollectibles', ['DiscordUserID', 'CollectibleID', 'Date'], {
+                                'DiscordUserID': rDiscordUserID,
+                                'CollectibleID': collectibleItem['CollectibleID'],
+                                'Date': str(datetime.datetime.now())
+                            })
+                            # decrement the user's currency
+                            print('line 40')
+                            self._commonRepository.subtract_from_user_currency(rDiscordUserID, collectiblePrice)
+                            print('line 42')
+                            # return OK
+                            return f'Successfully purchased {rCollectibleName}', StatusCodes.OK
+                        else:
+                            # the user does not have enough currency to purchase this collectible
+                            return 'Insufficient funds', StatusCodes.IM_A_TEAPOT
                     else:
-                        # the user does not have enough currency to purchase this collectible
-                        return 'Insufficient funds', StatusCodes.IM_A_TEAPOT
+                        # the user has already purchased this collectible
+                        return 'the user has already purchased this collectible', StatusCodes.CONFLICT
                 else:
                     # no collectibles in the DB with a matching name
                     return f"Could not find a collectible with name '{rCollectibleName}'", StatusCodes.NOT_FOUND
