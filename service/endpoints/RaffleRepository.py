@@ -2,6 +2,7 @@ import datetime
 import random
 from helpers import Database
 from helpers import StatusCodes
+from .CommonRepository import CommonRepository
 
 # Repositories retrieve data from the database
 class RaffleRepository:
@@ -9,6 +10,7 @@ class RaffleRepository:
     # initialize RaffleRepository
     def __init__(self):
         self.db = Database()
+        self._commonRepository = CommonRepository()
     
     # returns JSON representing all of the users participating in this raffle
     def __get_discordusers_in_raffle(self, raffleID):
@@ -19,24 +21,6 @@ class RaffleRepository:
             LEFT OUTER JOIN discordusers ON discordusers.DiscordUserID = discorduserraffles.DiscordUserID
             LEFT OUTER JOIN resources ON resources.ResourceID = discordusers.ResourceID''',
             f"discorduserraffles.RaffleID = '{raffleID}'")))
-    
-    def __add_currency_to_table(self, table, idcolumn, id, amount):
-        self.db.update(table, ['Currency'], {
-            'Currency': int(self.db.select(['Currency'], table,
-                f"{idcolumn} = '{id}'").getRows()[0]['Currency']) + int(amount)
-        }, f"{idcolumn} = '{id}'")
-    
-    # adds amount to specified users's currency
-    def __add_currency_to_raffle(self, raffleid, amount):
-        self.__add_currency_to_table('raffles', 'RaffleID', raffleid, amount)
-    
-    # adds amount to specified users's currency
-    def __add_to_user_currency(self, discorduserid, amount):
-        self.__add_currency_to_table('discordusers', 'DiscordUserID', discorduserid, amount)
-    
-    # subtracts amount from specified users's currency
-    def __subtract_from_user_currency(self, discorduserid, amount):
-        self.__add_to_user_currency(discorduserid, -1 * amount)
     
     # starts a new raffle
     def start_raffle(self, rName, rDiscordUserID, rServerID, rDuration, rSeedAmount):
@@ -72,7 +56,7 @@ class RaffleRepository:
                             'JoinDate': str(datetime.datetime.now())
                         })
                         # decrement the user's currency
-                        self.__subtract_from_user_currency(rDiscordUserID, rSeedAmount)
+                        self._commonRepository.subtract_from_user_currency(rDiscordUserID, rSeedAmount)
                         # return OK
                         return '', StatusCodes.OK
                     else:
@@ -109,9 +93,9 @@ class RaffleRepository:
                             'JoinDate': str(datetime.datetime.now())
                         })
                         # update the Raffles table
-                        self.__add_currency_to_raffle(raffleID, rAmount)
+                        self._commonRepository.add_currency_to_raffle(raffleID, rAmount)
                         # decrement the user's currency
-                        self.__subtract_from_user_currency(rDiscordUserID, rAmount)
+                        self._commonRepository.subtract_from_user_currency(rDiscordUserID, rAmount)
                         # query the DB for the return statement
                         raffle = eval(str(self.db.select(['*'], 'raffles', f"RaffleID = '{raffleID}'").getRows()[0]))
                         discordusers = self.__get_discordusers_in_raffle(raffleID)
@@ -191,7 +175,7 @@ class RaffleRepository:
                     discordusersinraffle = self.__get_discordusers_in_raffle(raffle[0]['RaffleID'])
                     winner = random.choice(discordusersinraffle)
                     # add the total currency for this raffle to the winner's currency
-                    self.__add_to_user_currency(winner['DiscordUserID'], raffle[0]['Currency'])
+                    self._commonRepository.add_to_user_currency(winner['DiscordUserID'], raffle[0]['Currency'])
                     nowtime = datetime.datetime.now().timestamp()
                     endTime = datetime.datetime.fromtimestamp(int(nowtime))
                     self.db.insertOne('rafflehistory', ['RaffleID', 'ServerID', 'Name', 'EndTime', 'Currency', 'DiscordUserID', 'WinnerDiscordUserID'], {

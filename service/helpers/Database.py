@@ -55,19 +55,19 @@ class Database(object):
 
     #PUBLIC
     # returns DataTable for query
-    def getDataTable(self, query):
-        cur = self.__execute(query)
+    def getDataTable(self, query, values):
+        cur = self.__executesafe(query, values)
         dt = DataTable(cur)
         return dt
     
     #PUBLIC
     # returns DataTable for select
-    def select(self, columns: list, table: str, where = ''):
+    def select(self, columns: list, table: str, where = '', values: list = []):
         if len(columns) > 0:
             query = 'SELECT ' + ', '.join(columns) + ' FROM ' + table
             query += ' WHERE ' + where if where != '' else ''
             query += ';'
-            dt = self.getDataTable(query)
+            dt = self.getDataTable(query, tuple(values))
             return dt
         else:
             return False
@@ -100,7 +100,7 @@ class Database(object):
     
     #PUBLIC
     # returns DataTable for updating one to many items
-    def update(self, table: str, props: list, entity, where: str):
+    def update(self, table: str, props: list, entity, where: str, values: list):
         try:
             query = 'UPDATE ' + table + ' SET '
             for prop in props:
@@ -110,19 +110,19 @@ class Database(object):
                     query += prop + ' = ' + str(entity[prop]) + ', '
             query = query[0:-2] + ' WHERE ' + where
             query += ';'
-            self.__execute(query)
+            self.__executesafe(query, tuple(values))
             return True
         except:
             return False
     
     #PUBLIC
     # returns DataTable for deleting one to many items
-    def delete(self, table: str, where: str):
+    def delete(self, table: str, where: str, values: list):
         try:
             dt = self.select('*', table, where)
             query = 'DELETE FROM ' + table + ' WHERE ' + where
             query += ';'
-            self.__execute(query)
+            self.__executesafe(query, tuple(values))
             return dt
         except:
             return False

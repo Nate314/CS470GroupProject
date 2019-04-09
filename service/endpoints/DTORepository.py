@@ -1,8 +1,4 @@
 from helpers import Database
-from dtos import Alias, Category, Collectible, Command
-from dtos import Description, DiscordUser, DiscordUserCollectible
-from dtos import DiscordUserServer, DiscordUserSocialMedia
-from dtos import Raffle, Resource, Server, ServerCategory, SocialMedia
 import datetime
 
 # Repositories retrieve data from the database
@@ -12,25 +8,6 @@ class DTORepository:
     def __init__(self):
         self.db = Database()
     
-    def __getDTO(self, table):
-        dictionary = {
-            'aliases': Alias({}),
-            'categories': Category({}),
-            'collectibles': Collectible({}),
-            'commands': Command({}),
-            'descriptions': Description({}),
-            'discordusers': DiscordUser({}),
-            'discordusercollectibles': DiscordUserCollectible({}),
-            'discorduserservers': DiscordUserServer({}),
-            'discordusersocialmedias': DiscordUserSocialMedia({}),
-            'raffles': Raffle({}),
-            'resources': Resource({}),
-            'servers': Server({}),
-            'servercategories': ServerCategory({}),
-            'socialmedias': SocialMedia({})
-        }
-        return dictionary[table]
-    
     def __getKeys(self, entity):
         props = []
         for key in entity.keys():
@@ -39,9 +16,10 @@ class DTORepository:
 
     # returns the table passed
     def selectAll(self, table):
-        dto = self.__getDTO(table)
         dt = self.db.select(['*'], table)
+        print('asdf')
         print(str(dt))
+        print('asdf')
         return eval(str(dt))
     
     # retrieve information for the get id method on the controller
@@ -49,10 +27,15 @@ class DTORepository:
         props = self.__getKeys(entity)
         return self.db.insertOne(table, props, entity)
     
-    def update(self, table, entity, where):
-        props = self.__getKeys(entity)
-        return self.db.update(table, props, entity, where)
+    def select(self, table, IDColumn, ID):
+        dt = self.db.select(['*'], table, f"{IDColumn} = %s", [ID])
+        print(str(dt))
+        return eval(str(dt))
     
-    def delete(self, table, where):
-        dt = self.db.delete(table, where)
+    def update(self, table, entity, where = '', values = []):
+        props = self.__getKeys(entity)
+        return self.db.update(table, props, entity, where, values)
+    
+    def delete(self, table, where = '', values = []):
+        dt = self.db.delete(table, where, values)
         return eval(str(dt))

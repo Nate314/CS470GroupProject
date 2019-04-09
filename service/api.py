@@ -2,17 +2,12 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_cors import CORS
 
-import sys
-import os
-
-import helpers
 from helpers import Middleware, Config
-
 from endpoints import HelloWorldController, HelloWorldMultiController
 from endpoints import AuthenticationController, AuthenticationMultiController
 from endpoints import DTOController, DTOMultiController
 from endpoints import AddBatchMultiController, GetUserInfoMultiController
-from endpoints import CurrencyController
+from endpoints import CurrencyController, CollectiblesMultiController
 from endpoints import RaffleController, RaffleMultiController
 
 # reads in config files so that the Config class can be used later
@@ -53,6 +48,7 @@ def addEndpoints(api):
     api.add_resource(CurrencyController, '/api/currency/transfer')
     api.add_resource(RaffleController, '/api/raffles')
     api.add_resource(RaffleMultiController, '/api/raffles/<string:extension>')
+    api.add_resource(CollectiblesMultiController, '/api/collectibles/<string:extension>')
 
 if __name__ == '__main__':
     if configConfig('config.json', 'crypt.json'):

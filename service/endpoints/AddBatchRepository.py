@@ -1,5 +1,4 @@
 from helpers import Database
-from dtos import Server, DiscordUser
 from .DTORepository import DTORepository
 
 # Repositories retrieve data from the database
@@ -18,7 +17,7 @@ class AddBatchRepository:
             for server in servers:
                 print(server['ServerID'])
                 if server['ServerID'] in dbserverids:
-                    dtoRepository.update('servers', server, 'ServerID = \'' + server['ServerID'] + '\'')
+                    dtoRepository.update('servers', server, 'ServerID = %s', [server['ServerID']])
                 else:
                     dtoRepository.insert('servers', server)
             return True
@@ -40,7 +39,7 @@ class AddBatchRepository:
                     if not server['ServerID'] in dbserverids:
                         # add each discorduserserver relationship to the DB
                         server['DiscordUserID'] = user['DiscordUserID']
-                        self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], Server(server))
+                        self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], eval(server))
                 # add user if all of the ServerIDs for that user have allready been added to the DB
                 del user['Servers']
                 # if the user is new, insert
@@ -58,7 +57,7 @@ class AddBatchRepository:
                 # if the user already exists in the db, update
                 else:
                     oldUser = self.db.select(['DiscordUserID', 'ResourceID'],
-                        'discordusers', 'DiscordUserID = \'' + user['DiscordUserID'] + '\'').getRows()[0]
+                        'discordusers', 'DiscordUserID = %s', [user['DiscordUserID']]).getRows()[0]
                     oldProfilePictureLink = self.db.select(['Link'], 'resources',
                         'ResourceID = \'' + str(oldUser['ResourceID']) + '\'').getRows()[0]['Link']
                     id = str(oldUser['ResourceID'])
