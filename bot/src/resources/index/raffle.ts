@@ -35,7 +35,7 @@ export = ({message, prefix, ip}) => {
                 name = name.join(' ');
                 console.log("line 35 passed");
                 let millis: number = 0;
-                let parsedUnits: String = "";
+                let parsedUnits: string = "";
                 if (confirm("Would you like to set a deadline for this raffle?", message)) {
                     message.channel.send("Please send an amount of time for your raffle to complete. This operation will cancel automatically in 30 seconds and your raffle can only end manually.")
                     let millis: number;
@@ -43,13 +43,9 @@ export = ({message, prefix, ip}) => {
                         m => {
                             if (m.author !== sender || millis) return false;
                             try {
-                                if (!m.content.split(/\s/).filter(string => string.isDigit() && parseInt(string) !== 0)) {
-                                    message.channel.send(`The amount of time entered is too short. Try again.`);
-                                    return false;
-                                }
-                                
+                                console.log(`Here.`)
                                 millis = humanInterval(m.content);
-                                
+                                console.log(`There.`);
                                 parsedUnits = m.content;
                                 console.log(`human ${millis}`)
                                 return true;
@@ -78,6 +74,9 @@ export = ({message, prefix, ip}) => {
                             });
                         })
                         .catch(error => {
+                            if (error.statusCode === statusCodes.CONFLICT) {
+                                message.channel.send(`Uh-oh! A raffle already exists with that name.`);
+                            }
                             //error codes
                             console.error(error);
                         })
