@@ -76,6 +76,8 @@ export = ({message, prefix, ip}) => {
                         .catch(error => {
                             if (error.statusCode === statusCodes.CONFLICT) {
                                 message.channel.send(`Uh-oh! A raffle already exists with that name.`);
+                            } else if (error.statusCode === statusCodes.IM_A_TEAPOT) {
+                                message.channel.send(`Uh-oh! You don't have enough credits to ${action} this raffle.`);
                             }
                             //error codes
                             console.error(error);
@@ -93,8 +95,14 @@ export = ({message, prefix, ip}) => {
                         })
                     })
                     .catch(error => {
+                        if (error.statusCode === statusCodes.CONFLICT) {
+                            message.channel.send(`Uh-oh! A raffle already exists with that name.`);
+                        } else if (error.statusCode === statusCodes.IM_A_TEAPOT) {
+                            message.channel.send(`Uh-oh! You don't have enough credits to ${action} this raffle.`);
+                        }
+                        //error codes
                         console.error(error);
-                    });
+                    })
                 }
             } catch {
                 console.log("Line 85");

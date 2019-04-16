@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc && node compiled/sharding.js --token='NDgzNDk4NzYwODI4MDkyNDE2.XKZRog.cMH8ExdXWoaUnVBPFzR4TL_8dLA' --ip='http://10.151.1.95:5000/' --prefix='g!'"
+        "build": "tsc && node compiled/sharding.js --token='' --ip='http://136.61.166.109:575/' --prefix=''"
     },
     "dependencies": {
         "@types/minimist": "^1.2.0",

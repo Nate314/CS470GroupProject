@@ -28,12 +28,10 @@ class HttpClient {
     }
 
     public static requestWithAuthentication(requestMethod, options) {
-        if (options['uri'].includes('auth')) {
-            return requestMethod(options);
-        } else {
+        if (!options['uri'].includes('auth')) {
             authenticate(globalIP);
-            return requestMethod(options);
         }
+        return requestMethod(options);
     }
 
     public static get(uri: string) {
@@ -120,7 +118,7 @@ export const transferCurrency = (ip: string, to: User | any, from: User | "0" | 
 
 export const getRafflesByNumber = (ip: string, discriminator: string | number, type: 'discorduser' | 'server') => {
    return HttpClient.get(`${ip}api/raffles/${type}.${discriminator}`)
-   .then(response => JSON.parse(response));
+   .then(JSON.parse);
 }
 
 export const addToRaffle = (ip: string, sender: User, server: Server, amount: number, name: string) => {
@@ -154,7 +152,7 @@ export const removeRaffle = (ip: string, sender: User, server: Server, raffle: s
             ServerID: server.id,
             Raffle: raffle,
         })
-    ).then(resp => JSON.parse(resp));
+    ).then(JSON.parse);
 }
 
 export const purchaseCollectible = (ip: string, sender: User, name: string) => {
@@ -164,13 +162,32 @@ export const purchaseCollectible = (ip: string, sender: User, name: string) => {
             DiscordUserID: sender.id,
             CollectibleName: name,
         })
-    ).then(resp => JSON.parse(resp));
+    ).then(JSON.parse);
 }
 
 export const getUserCollectibles = (ip: string, user: User) => {
     return HttpClient.get(
         `${ip}api/collectibles/user.${user.id}`
-    ).then(resp => JSON.parse(resp));
+    ).then(JSON.parse);
+}
+
+export const getSocial = (ip: string) => {
+    return HttpClient.get(`${ip}api/social`).then(JSON.parse);
+}
+
+export const getSocialByUser = (ip: string, sender: User, social?: string) => {
+    if (social) social = social[0].toUpperCase() + social.substr(1).toLowerCase();
+    return HttpClient.get(`${ip}api/social/${sender.id}${social ? '.' + social : ''}`).then(JSON.parse);
+}
+
+export const addSocial = (ip: string, sender: User, platform: string, link: string) => {
+    if (platform) platform = platform[0].toUpperCase() + platform.substr(1).toLowerCase();
+    const body = {
+        DiscordUserID: sender.id,
+        Platform: platform,
+        Link: link
+    }
+    return HttpClient.post(`${ip}api/social`, JSON.stringify(body)).then(JSON.parse);
 }
 
 export const encode = (body: any) => jwt.encode(body, key, "RS256");
