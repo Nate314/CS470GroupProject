@@ -52,8 +52,14 @@ class AddBatchRepository:
                     # add the user to the list of users to add
                     user['DiscordUserID'] = user['DiscordUserID']
                     self.db.insertOne('discordusers',
-                        ['DiscordUserID', 'UserName', 'UserHash', 'Currency', 'LastDaily', 'RaffleID'],
-                        DiscordUser(user))
+                        ['DiscordUserID', 'UserName', 'UserHash', 'Currency', 'LastDaily', 'RaffleID'], user)
+                    # insert into discordusersocialmedias
+                    self.db.insertOne('discordusersocialmedias', ['DiscordUserID', 'SocialMediaID', 'Handle'],
+                        {
+                            'DiscordUserID': user['DiscordUserID'],
+                            'SocialMediaID': '8',
+                            'Handle': f"{user['UserName']}#{user['UserHash']}"
+                        })
                 # if the user already exists in the db, update
                 else:
                     oldUser = self.db.select(['DiscordUserID', 'ResourceID'],
@@ -70,6 +76,22 @@ class AddBatchRepository:
                     # update discorduser
                     dtoRepository.update('discordusers', user,
                         'DiscordUserID =  \'' + oldUser['DiscordUserID'] + '\'')
+                    # insert or update discordusersocialmedias
+                    if len(self.db.select(['*'], 'discordusersocialmedias', 'DiscordUserID = %s AND SocialMediaID = 8',
+                        [user['DiscordUserID']]).getRows()) > 0:
+                        self.db.update('discordusersocialmedias', ['DiscordUserID', 'SocialMediaID', 'Handle'],
+                            {
+                                'DiscordUserID': user['DiscordUserID'],
+                                'SocialMediaID': '8',
+                                'Handle': f"{user['UserName']}#{user['UserHash']}"
+                            }, 'DiscordUserID =  %s', [user['DiscordUserID']])
+                    else:
+                        self.db.insertOne('discordusersocialmedias', ['DiscordUserID', 'SocialMediaID', 'Handle'],
+                            {
+                                'DiscordUserID': user['DiscordUserID'],
+                                'SocialMediaID': '8',
+                                'Handle': f"{user['UserName']}#{user['UserHash']}"
+                            })
             return True
         except Exception as e:
             print(e)
