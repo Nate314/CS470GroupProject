@@ -78,5 +78,15 @@ export = {
         "alias": {
             "isAlias": false,
         },
+    },
+    "social": {
+        "title": "social",
+        "description": "",
+        "category": "social",
+        "fileReference": "social.js",
+        "hasArgs": true,
+        "alias": {
+            "isAlias": false,
+        },
     }
 }
