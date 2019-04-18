@@ -18,38 +18,71 @@ export class RaffleInfoComponent implements OnInit {
 
     users: User[];
     usersJSON: string;
-    table: Table;
-    
+    completedTable: Table;
+    ongoingTable: Table;
+    serverTables: Table[];
+    serverIDList: string[];
 
     constructor(private raffleInfoService: RaffleInfoService, private dashboardService: DashboardService) {
     }
 
     ngOnInit() {
-        this.raffleInfoService.getUserData().subscribe(Raffle => {
-            console.log(Raffle)
-            Raffle.forEach(raffle =>{
+        this.raffleInfoService.getUserRaffleData().subscribe(Raffle => {
+            const completedRaffles = [];
+            const ongoingRaffles = [];
+            console.log(Raffle);
+            Raffle.forEach(raffle => {
                 this.dashboardService.getUserData(raffle.DiscordUserID).subscribe(user => {
-                // raffle.DiscordUserID = user.UserName;
-                raffle.DiscordUserID = user.ProfilePictureURL + ','  + user.UserName;
-            });})
-            Raffle.forEach(raffle =>{
+                    // raffle.DiscordUserID = user.UserName;
+                    raffle.DiscordUserID = user.ProfilePictureURL + ','  + user.UserName;
+                });
                 this.dashboardService.getUserData(raffle.WinnerDiscordUserID).subscribe(user => {
                     raffle.WinnerDiscordUserID = user.UserName;
                     raffle.WinnerDiscordUserID = user.ProfilePictureURL + ','  + user.UserName;
-            });})
-                this.table = <Table> {
-                    data: new MatTableDataSource(Raffle),
-                    props: ['DiscordUserID','ServerID','Name','WinnerDiscordUserID','EndTime'],
-                    titles: ['Discord User iD','Server Name','Raffle Name','Raffle Winner','Ended']
-                };
+                });
+                if (raffle.WinnerDiscordUserID === 'None') {
+                    ongoingRaffles.push(raffle);
+                } else {
+                    completedRaffles.push(raffle);
+                }
+            });
+            this.completedTable = <Table> {
+                data: new MatTableDataSource(completedRaffles),
+                props: ['DiscordUserID','ServerID','Name','WinnerDiscordUserID','EndTime'],
+                titles: ['Discord User iD','Server Name','Raffle Name','Raffle Winner','Ended']
+            };
+            this.ongoingTable = <Table> {
+                data: new MatTableDataSource(ongoingRaffles),
+                props: ['DiscordUserID','ServerID','Name','EndTime'],
+                titles: ['Discord User iD','Server Name','Raffle Name','Ended']
+            };
         });
-        this.raffleInfoService.getServerID('540715907312254976').subscribe(ServerID => {
-            ServerID.forEach(Raffle => {
-                console.log(Raffle)
-            })
-                this.raffleInfoService.getUserData()
+        this.raffleInfoService.getDiscorduserServers().subscribe(userserverpairs => {
+            this.serverIDList = [];
+            userserverpairs.forEach(pair => {
+                if (pair['DiscordUserID'] === Utility.getDiscordUserID()) {
+                    this.serverIDList.push(pair['ServerID']);
+                }
+            });
+            this.serverTables = [];
+            this.serverIDList.forEach(serverID => {
+                this.raffleInfoService.getServerRaffles(serverID).subscribe(raffles => {
+                    const serverTableRaffles = [];
+                    raffles.forEach(raffle => {
+                        this.dashboardService.getUserData(raffle.Raffle.DiscordUserID).subscribe(user => {
+                            raffle.Raffle.DiscordUserID = user.ProfilePictureURL + ','  + user.UserName;
+                        });
+                        serverTableRaffles.push(raffle.Raffle);
+                    });
+                    console.log(raffles);
+                    this.serverTables.push(<Table> {
+                        data: new MatTableDataSource(serverTableRaffles),
+                        props: ['DiscordUserID','Name','Currency','EndTime'],
+                        titles: ['Discord User ID','Server Name','Curerency','End Time']
+                    });
+                });
+            });
         });
-        
     }
 }
 //api call to raffle ongoing in the server***

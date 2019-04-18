@@ -22,3 +22,11 @@ class SocialMediaMultiController(Resource):
             # returns information about the all social medias for the specified user
             resp, statusCode = self._socialMediaRepository.get_social_medias(DiscordUserID)
         return resp, statusCode
+    
+    # returns information about the social media(s) for the specified user
+    def delete(self, extension):
+        DiscordUserID = extension[:extension.index('.')]
+        SocialMediaName = extension[extension.index('.') + 1:]
+        # returns information about the specific social media for the specified user
+        resp, statusCode = self._socialMediaRepository.delete_social_media(DiscordUserID, SocialMediaName)
+        return resp, statusCode

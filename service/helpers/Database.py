@@ -119,7 +119,7 @@ class Database(object):
     # returns DataTable for deleting one to many items
     def delete(self, table: str, where: str, values: list):
         try:
-            dt = self.select('*', table, where)
+            dt = self.select('*', table, where, values)
             query = 'DELETE FROM ' + table + ' WHERE ' + where
             query += ';'
             self.__executesafe(query, tuple(values))

@@ -13,7 +13,7 @@ export class DashboardService extends BaseService {
         super(http);
     }
 
-    getUserData(userID: number): Observable<User> {
+    getUserData(userID: string): Observable<User> {
         return this.http.get<User>(`${this.API_URL}/api/getuserinfo/${userID}`);
     }
 }

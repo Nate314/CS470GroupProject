@@ -1,17 +1,25 @@
 
 <mat-tab-group>
-    <mat-tab label="First"> 
+    <mat-tab label="Completed Raffles"> 
         <div class="app-mat-table mat-elevation-z6 raffle">
-            <app-mat-table *ngIf="table" [table]="table"></app-mat-table>
+            <app-mat-table *ngIf="completedTable" [table]="completedTable"></app-mat-table>
         </div>
     </mat-tab>
 
-    <mat-tab label="First"> 
-        
+    <mat-tab label="Ongoing Raffles"> 
+        <div class="app-mat-table mat-elevation-z6 raffle">
+            <app-mat-table *ngIf="ongoingTable" [table]="ongoingTable"></app-mat-table>
+        </div>
     </mat-tab>
 
-    <mat-tab label="First"> 
-        
+    <mat-tab label="Server Raffles">
+        <mat-tab-group>
+            <mat-tab *ngFor="let serverID of serverIDList; let i = index;" [label]="serverID">
+                <div class="app-mat-table mat-elevation-z6 raffle">
+                    <app-mat-table *ngIf="serverTables[i]" [table]="serverTables[i]"></app-mat-table>
+                </div>
+            </mat-tab>
+        </mat-tab-group> 
     </mat-tab>
 </mat-tab-group>
 

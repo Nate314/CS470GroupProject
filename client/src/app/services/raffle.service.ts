@@ -4,6 +4,8 @@ import { BaseService } from './_base.service';
 import { Observable } from 'rxjs';
 import { User } from '../_models/dtos/User';
 import { Utility } from '../_helpers/Utility';
+import { Raffle } from '../_models/dtos/Raffle';
+import { RaffleInfo } from '../_models/dtos/RaffleInfo';
 
 
 @Injectable({
@@ -15,12 +17,15 @@ export class RaffleInfoService extends BaseService {
         super(http);
     }
     //return user current or past involvement 
-    getUserData(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.API_URL}/api/raffles/discorduser.${Utility.getDiscordUserID()}`);
+    getUserRaffleData(): Observable<Raffle[]> {
+        return this.http.get<Raffle[]>(`${this.API_URL}/api/raffles/discorduser.${Utility.getDiscordUserID()}`);
     }
-    getServerID(ServerID): Observable<any[]> {
-        return this.http.get<any[]>(`${this.API_URL}/api/raffles/server.${ServerID}`);
+    getServerRaffles(ServerID): Observable<RaffleInfo[]> {
+        return this.http.get<RaffleInfo[]>(`${this.API_URL}/api/raffles/server.${ServerID}`);
     }//currently going on depending on server id passed
+    getDiscorduserServers(): Observable<any> {
+        return this.http.get<any>(`${this.API_URL}/api/dto/discorduserservers`, this.getHttpOptions());
+    }
 }
 
 //CONSOLE LOG A RESPONSE -

@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "core-js": "^2.6.5",
+    "dom-to-image-more": "^2.7.6",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
     "rxjs": "6.0.0",
