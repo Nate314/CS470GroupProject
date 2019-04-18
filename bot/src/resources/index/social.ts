@@ -1,4 +1,4 @@
-import { getSocialByUser, getSocial, addSocial } from "../../../request";
+import { getSocialByUser, getSocial, addSocial, removeSocial } from "../../../request";
 import { statusCodes } from "../config";
 
 export = ({message, prefix, ip}) => {
@@ -34,7 +34,30 @@ export = ({message, prefix, ip}) => {
                 message.channel.send(`There was a problem on our side. Please check with support. (Code ${error.statusCode}`);
             })
             break
-        case 'add': case 'set':
+        case 'remove': case 'delete':
+            if (!args.length) {
+                message.channel.send(`Uh-oh! You didn't specify a social media platform to remove. Please see \`\`\`${prefix}social @${sender.username}\`\`\``)
+                return
+            }
+            removeSocial(ip, sender, args.join(' '))
+            .then(_ => {
+                message.channel.send({
+                    embed: {
+                        title: `Successful account deletion | ${sender.username}`,
+                        description: `Please see your current accounts in \`\`\`${prefix}social @${sender.username}\`\`\``
+                    }
+                })
+            })
+            .catch(error => {
+                if (error.statusCode === 404) {
+                    message.channel.send(`Uh-oh! I couldn't find an account for that platform under your user. Please see your current accounts in \`\`\`${prefix}social @${sender.username}\`\`\``)
+                } else {
+                    message.channel.send(`Uh-oh! It seems there was a problem on our end. Please contact support for help.`);
+                    console.log(`[Error code]: ${error.statusCode}`)
+                }
+            })
+            break
+        case 'add': case 'set': case 'update':
             if (args.length < 2) {
                 message.channel.send(`Uh-oh! It doesn't look like your command is in the right format. Please try again as in the example: \`\`\`${prefix}social ${action} Twitter https://twitter.com/exampleuser...\`\`\``)
                 return
@@ -67,7 +90,8 @@ export = ({message, prefix, ip}) => {
                 return;
             }
             let [ platform ] = args;
-            getSocialByUser(ip, sender, platform)
+            console.log('Hi!')
+            getSocialByUser(ip, receiver, platform || undefined)
             .then(body => {
                 if (!body) {
                     message.channel.send({
@@ -83,7 +107,7 @@ export = ({message, prefix, ip}) => {
                             image: {
                                 url: account.Icon
                             },
-                            title: `${account.Platform} | ${sender.username}`,
+                            title: `${account.Platform} | ${receiver.username}`,
                             description: account.Link
                         }
                     })
