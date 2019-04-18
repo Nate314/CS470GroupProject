@@ -2,6 +2,7 @@ import datetime
 import random
 from helpers import Database
 from helpers import StatusCodes
+from .CommonRepository import CommonRepository
 
 # Repositories retrieve data from the database
 class RaffleRepository:
@@ -9,6 +10,7 @@ class RaffleRepository:
     # initialize RaffleRepository
     def __init__(self):
         self.db = Database()
+        self._commonRepository = CommonRepository()
     
     # returns JSON representing all of the users participating in this raffle
     def __get_discordusers_in_raffle(self, raffleID):
@@ -20,24 +22,6 @@ class RaffleRepository:
             LEFT OUTER JOIN resources ON resources.ResourceID = discordusers.ResourceID''',
             f"discorduserraffles.RaffleID = '{raffleID}'")))
     
-    def __add_currency_to_table(self, table, idcolumn, id, amount):
-        self.db.update(table, ['Currency'], {
-            'Currency': int(self.db.select(['Currency'], table,
-                f"{idcolumn} = '{id}'").getRows()[0]['Currency']) + int(amount)
-        }, f"{idcolumn} = '{id}'")
-    
-    # adds amount to specified users's currency
-    def __add_currency_to_raffle(self, raffleid, amount):
-        self.__add_currency_to_table('raffles', 'RaffleID', raffleid, amount)
-    
-    # adds amount to specified users's currency
-    def __add_to_user_currency(self, discorduserid, amount):
-        self.__add_currency_to_table('discordusers', 'DiscordUserID', discorduserid, amount)
-    
-    # subtracts amount from specified users's currency
-    def __subtract_from_user_currency(self, discorduserid, amount):
-        self.__add_to_user_currency(discorduserid, -1 * amount)
-    
     # starts a new raffle
     def start_raffle(self, rName, rDiscordUserID, rServerID, rDuration, rSeedAmount):
         try:
@@ -47,9 +31,11 @@ class RaffleRepository:
                 userCurrency = userCurrenyQuery[0]['Currency']
                 # make sure the user has enough currency to start this raffle
                 if userCurrency >= rSeedAmount:
+                    endTime = None
                     # calculate end datetime of this raffle
-                    nowtime = datetime.datetime.now().timestamp()
-                    endTime = str(datetime.datetime.fromtimestamp(int(nowtime + (rDuration / 1000))))
+                    if rDuration >= 0:
+                        nowtime = datetime.datetime.now().timestamp()
+                        endTime = str(datetime.datetime.fromtimestamp(int(nowtime + (rDuration / 1000))))
                     # create raffle in Raffles table
                     if self.db.insertOne('raffles', ['ServerID', 'Name', 'EndTime', 'Currency', 'DiscordUserID'], {
                         'ServerID': rServerID,
@@ -70,7 +56,7 @@ class RaffleRepository:
                             'JoinDate': str(datetime.datetime.now())
                         })
                         # decrement the user's currency
-                        self.__subtract_from_user_currency(rDiscordUserID, rSeedAmount)
+                        self._commonRepository.subtract_from_user_currency(rDiscordUserID, rSeedAmount)
                         # return OK
                         return '', StatusCodes.OK
                     else:
@@ -107,9 +93,9 @@ class RaffleRepository:
                             'JoinDate': str(datetime.datetime.now())
                         })
                         # update the Raffles table
-                        self.__add_currency_to_raffle(raffleID, rAmount)
+                        self._commonRepository.add_currency_to_raffle(raffleID, rAmount)
                         # decrement the user's currency
-                        self.__subtract_from_user_currency(rDiscordUserID, rAmount)
+                        self._commonRepository.subtract_from_user_currency(rDiscordUserID, rAmount)
                         # query the DB for the return statement
                         raffle = eval(str(self.db.select(['*'], 'raffles', f"RaffleID = '{raffleID}'").getRows()[0]))
                         discordusers = self.__get_discordusers_in_raffle(raffleID)
@@ -137,6 +123,27 @@ class RaffleRepository:
                 'DiscordUsers': self.__get_discordusers_in_raffle(raffle['RaffleID']),
                 'Raffle': eval(str(raffle))
             } for raffle in raffles], StatusCodes.OK
+        except:
+            # some error has occurred
+            return '', StatusCodes.INTERNAL_SERVER_ERROR
+
+
+    # returns all of the raffles that are currently available on the specified server
+    def get_historic_raffles(self, rDiscordUserID):
+        try:
+            result = self.db.select(['discorduserraffles.RaffleID',
+                'CASE WHEN rafflehistory.DiscordUserID IS NOT NULL THEN rafflehistory.DiscordUserID ELSE raffles.DiscordUserID END AS DiscordUserID',
+                'CASE WHEN rafflehistory.ServerID IS NOT NULL THEN rafflehistory.ServerID ELSE raffles.ServerID END AS ServerID',
+                'CASE WHEN rafflehistory.Name IS NOT NULL THEN rafflehistory.Name ELSE raffles.Name END AS Name',
+                'CASE WHEN rafflehistory.EndTime IS NOT NULL THEN rafflehistory.EndTime ELSE raffles.EndTime END AS EndTime',
+                'CASE WHEN rafflehistory.Currency IS NOT NULL THEN rafflehistory.Currency ELSE raffles.Currency END AS Currency',
+                'rafflehistory.WinnerDiscordUserID'], '''
+                discorduserraffles
+                LEFT JOIN rafflehistory ON discorduserraffles.RaffleID = rafflehistory.RaffleID
+                LEFT JOIN raffles ON discorduserraffles.RaffleID = raffles.RaffleID''',
+                'discorduserraffles.DiscordUserID = %s AND raffles.RaffleID IS NOT NULL', [rDiscordUserID])
+            # return list of raffleinfos
+            return eval(str(result)), StatusCodes.OK
         except:
             # some error has occurred
             return '', StatusCodes.INTERNAL_SERVER_ERROR
@@ -169,9 +176,22 @@ class RaffleRepository:
                     discordusersinraffle = self.__get_discordusers_in_raffle(raffle[0]['RaffleID'])
                     winner = random.choice(discordusersinraffle)
                     # add the total currency for this raffle to the winner's currency
-                    self.__add_to_user_currency(winner['DiscordUserID'], raffle[0]['Currency'])
+                    self._commonRepository.add_to_user_currency(winner['DiscordUserID'], raffle[0]['Currency'])
+                    nowtime = datetime.datetime.now().timestamp()
+                    endTime = datetime.datetime.fromtimestamp(int(nowtime))
+                    self.db.insertOne('rafflehistory', ['RaffleID', 'ServerID', 'Name', 'EndTime', 'Currency', 'DiscordUserID', 'WinnerDiscordUserID'], {
+                        'RaffleID': raffle[0]['RaffleID'],
+                        'ServerID': raffle[0]['ServerID'],
+                        'Name': raffle[0]['Name'],
+                        'EndTime': str(endTime),
+                        'Currency': raffle[0]['Currency'],
+                        'DiscordUserID': raffle[0]['DiscordUserID'],
+                        'WinnerDiscordUserID': winner['DiscordUserID']
+                    })
+                    print('before delete')
                     # delete the raffle
-                    self.db.delete('raffles', f"RaffleID = {raffle[0]['RaffleID']}")
+                    self.db.delete('raffles', 'RaffleID = %s', [raffle[0]['RaffleID']])
+                    print('after delete')
                     return {
                         'Winner': winner,
                         'RaffleInfo': {

@@ -1,5 +1,4 @@
 from helpers import Database
-from dtos import Server, DiscordUser
 from .DTORepository import DTORepository
 
 # Repositories retrieve data from the database
@@ -18,7 +17,7 @@ class AddBatchRepository:
             for server in servers:
                 print(server['ServerID'])
                 if server['ServerID'] in dbserverids:
-                    dtoRepository.update('servers', server, 'ServerID = \'' + server['ServerID'] + '\'')
+                    dtoRepository.update('servers', server, 'ServerID = %s', [server['ServerID']])
                 else:
                     dtoRepository.insert('servers', server)
             return True
@@ -40,7 +39,7 @@ class AddBatchRepository:
                     if not server['ServerID'] in dbserverids:
                         # add each discorduserserver relationship to the DB
                         server['DiscordUserID'] = user['DiscordUserID']
-                        self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], Server(server))
+                        self.db.insertOne('discorduserservers', ['DiscordUserID', 'ServerID', 'JoinDate'], eval(server))
                 # add user if all of the ServerIDs for that user have allready been added to the DB
                 del user['Servers']
                 # if the user is new, insert
@@ -53,12 +52,18 @@ class AddBatchRepository:
                     # add the user to the list of users to add
                     user['DiscordUserID'] = user['DiscordUserID']
                     self.db.insertOne('discordusers',
-                        ['DiscordUserID', 'UserName', 'UserHash', 'Currency', 'LastDaily', 'RaffleID'],
-                        DiscordUser(user))
+                        ['DiscordUserID', 'UserName', 'UserHash', 'Currency', 'LastDaily', 'RaffleID'], user)
+                    # insert into discordusersocialmedias
+                    self.db.insertOne('discordusersocialmedias', ['DiscordUserID', 'SocialMediaID', 'Handle'],
+                        {
+                            'DiscordUserID': user['DiscordUserID'],
+                            'SocialMediaID': '8',
+                            'Handle': f"{user['UserName']}#{user['UserHash']}"
+                        })
                 # if the user already exists in the db, update
                 else:
                     oldUser = self.db.select(['DiscordUserID', 'ResourceID'],
-                        'discordusers', 'DiscordUserID = \'' + user['DiscordUserID'] + '\'').getRows()[0]
+                        'discordusers', 'DiscordUserID = %s', [user['DiscordUserID']]).getRows()[0]
                     oldProfilePictureLink = self.db.select(['Link'], 'resources',
                         'ResourceID = \'' + str(oldUser['ResourceID']) + '\'').getRows()[0]['Link']
                     id = str(oldUser['ResourceID'])
@@ -71,6 +76,22 @@ class AddBatchRepository:
                     # update discorduser
                     dtoRepository.update('discordusers', user,
                         'DiscordUserID =  \'' + oldUser['DiscordUserID'] + '\'')
+                    # insert or update discordusersocialmedias
+                    if len(self.db.select(['*'], 'discordusersocialmedias', 'DiscordUserID = %s AND SocialMediaID = 8',
+                        [user['DiscordUserID']]).getRows()) > 0:
+                        self.db.update('discordusersocialmedias', ['DiscordUserID', 'SocialMediaID', 'Handle'],
+                            {
+                                'DiscordUserID': user['DiscordUserID'],
+                                'SocialMediaID': '8',
+                                'Handle': f"{user['UserName']}#{user['UserHash']}"
+                            }, 'DiscordUserID =  %s', [user['DiscordUserID']])
+                    else:
+                        self.db.insertOne('discordusersocialmedias', ['DiscordUserID', 'SocialMediaID', 'Handle'],
+                            {
+                                'DiscordUserID': user['DiscordUserID'],
+                                'SocialMediaID': '8',
+                                'Handle': f"{user['UserName']}#{user['UserHash']}"
+                            })
             return True
         except Exception as e:
             print(e)

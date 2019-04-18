@@ -16,3 +16,9 @@ from .CurrencyRepository import CurrencyRepository
 from .RaffleController import RaffleController
 from .RaffleMultiController import RaffleMultiController
 from .RaffleRepository import RaffleRepository
+from .CollectiblesMultiController import CollectiblesMultiController
+from .CollectiblesRepository import CollectiblesRepository
+from .CommonRepository import CommonRepository
+from .SocialMediaController import SocialMediaController
+from .SocialMediaMultiController import SocialMediaMultiController
+from .SocialMediaRepository import SocialMediaRepository

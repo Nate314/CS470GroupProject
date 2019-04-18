@@ -20,7 +20,7 @@ class CurrencyRepository:
 
     def daily(self, discordUserID, amount):
         try:
-            dt = self.db.select(['*'], 'discordusers', 'DiscordUserID = \'' + discordUserID + '\'')
+            dt = self.db.select(['*'], 'discordusers', 'DiscordUserID = %s', [discordUserID])
             user = dt.getRows()[0] if len(dt.getRows()) == 1 else None
             if user != None:
                 now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -38,7 +38,7 @@ class CurrencyRepository:
                     self.insertTransaction(0, discordUserID, now, amount)
                     self.db.update('discordusers',
                         ['Currency', 'LastDaily'], userJSON,
-                        'DiscordUserID = ' + discordUserID)
+                        'DiscordUserID = %s', [discordUserID])
                     return True
                 else:
                     return timeUntilNextDaily * 1000
@@ -50,8 +50,8 @@ class CurrencyRepository:
     def transfer(self, senderID, receiverID, amount):
         try:
             if amount > 0:
-                dt1 = self.db.select(['*'], 'discordusers', 'DiscordUserID = \'' + senderID + '\'')
-                dt2 = self.db.select(['*'], 'discordusers', 'DiscordUserID = \'' + receiverID + '\'')
+                dt1 = self.db.select(['*'], 'discordusers', 'DiscordUserID = %s', [senderID])
+                dt2 = self.db.select(['*'], 'discordusers', 'DiscordUserID = %s', [receiverID])
                 sendingUser = dt1.getRows()[0] if len(dt1.getRows()) == 1 else None
                 receivingUser = dt2.getRows()[0] if len(dt2.getRows()) == 1 else None
                 if sendingUser != None and receivingUser != None:
@@ -61,8 +61,8 @@ class CurrencyRepository:
                     sendingUserJSON['Currency'] = int(sendingUserJSON['Currency']) - amount
                     receivingUserJSON['Currency'] = int(receivingUserJSON['Currency']) + amount
                     self.insertTransaction(senderID, receiverID, now, amount)
-                    self.db.update('discordusers', ['Currency'], sendingUserJSON, 'DiscordUserID = \'' + senderID + '\'')
-                    self.db.update('discordusers', ['Currency'], receivingUserJSON, 'DiscordUserID = \'' + receiverID + '\'')
+                    self.db.update('discordusers', ['Currency'], sendingUserJSON, 'DiscordUserID = %s', [senderID])
+                    self.db.update('discordusers', ['Currency'], receivingUserJSON, 'DiscordUserID = %s', [receiverID])
                     return True
                 else:
                     return False

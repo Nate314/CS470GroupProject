@@ -6,7 +6,7 @@ from helpers import StatusCodes
 # This is another controller for a slightly different endpoint
 class AddBatchMultiController(Resource):
 
-    # initialize HelloWorldMultiController
+    # initialize AddBatchMultiController
     def __init__(self):
         self._addBatchRepository = AddBatchRepository()
     

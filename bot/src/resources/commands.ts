@@ -5,7 +5,9 @@ export = {
         "category": "standard",
         "fileReference": "echo.js",
         "hasArgs": true,
-        "isAlias": false,
+        "alias": {
+            "isAlias": false,
+        },
     },
     "manual": {
         "title": "manual",
@@ -13,7 +15,9 @@ export = {
         "category": "standard",
         "fileReference": "manual.js",
         "hasArgs": true,
-        "isAlias": false,
+        "alias": {
+            "isAlias": false,
+        },
     },
     "logmein": {
         "title": "logmein",
@@ -21,7 +25,9 @@ export = {
         "category": "standard",
         "fileReference": "logmein.js",
         "hasArgs": false,
-        "isAlias": false,
+        "alias": {
+            "isAlias": false,
+        },
     },
     "daily": {
         "title": "daily",
@@ -29,7 +35,9 @@ export = {
         "category": "currency",
         "fileReference": "daily.js",
         "hasArgs": true,
-        "isAlias": false,
+        "alias": {
+            "isAlias": false,
+        },
     },
     "transfer": {
         "title": "transfer",
@@ -37,7 +45,9 @@ export = {
         "category": "currency",
         "fileReference": "transfer.js",
         "hasArgs": true,
-        "isAlias": false,
+        "alias": {
+            "isAlias": false,
+        },
     },
     "credits": {
         "title": "credits",
@@ -45,6 +55,38 @@ export = {
         "category": "currency",
         "fileReference": "credits.js",
         "hasArgs": true,
-        "isAlias": false,
+        "alias": {
+            "isAlias": false,
+        },
     },
+    "raffle": {
+        "title": "raffle",
+        "description": "",
+        "category": "raffle",
+        "fileReference": "raffle.js",
+        "hasArgs": true,
+        "alias": {
+            "isAlias": false,
+        },
+    },
+    "collectibles": {
+        "title": "collectibles",
+        "description": "",
+        "category": "collectibles",
+        "fileReference": "collectibles.js",
+        "hasArgs": true,
+        "alias": {
+            "isAlias": false,
+        },
+    },
+    "social": {
+        "title": "social",
+        "description": "",
+        "category": "social",
+        "fileReference": "social.js",
+        "hasArgs": true,
+        "alias": {
+            "isAlias": false,
+        },
+    }
 }

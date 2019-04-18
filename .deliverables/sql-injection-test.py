@@ -1,6 +1,5 @@
 import pymysql
 import datetime
-from .Config import Config
 
 # used to interact with the database
 class Database(object):
@@ -8,11 +7,11 @@ class Database(object):
     #PUBLIC
     # initialize Database
     def __init__(self):
-        self.host = Config.host
-        self.port = Config.port
-        self.user = Config.user
-        self.passwd = Config.password
-        self.db = Config.db
+        self.host = 'localhost'
+        self.port = 3306
+        self.user = 'root'
+        self.passwd = 'root'
+        self.db = 'DiscordBot'
         print('Database object created')
 
     #PRIVATE
@@ -24,23 +23,11 @@ class Database(object):
 
     #PRIVATE
     # executes a query on this database
-    def __executesafe(self, query, values):
-        print(query)
-        print(values)
-        conn = self.__getConnection()
-        cur = conn.cursor()
-        cur.execute(query, values)
-        cur.close()
-        conn.close()
-        return cur
-
-    #PRIVATE
-    # executes a query on this database
-    def __execute(self, query):
+    def execute(self, query, parameters):
         print(query)
         conn = self.__getConnection()
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, parameters)
         cur.close()
         conn.close()
         return cur
@@ -55,19 +42,19 @@ class Database(object):
 
     #PUBLIC
     # returns DataTable for query
-    def getDataTable(self, query, values):
-        cur = self.__executesafe(query, values)
+    def getDataTable(self, query):
+        cur = self.execute(query)
         dt = DataTable(cur)
         return dt
     
     #PUBLIC
     # returns DataTable for select
-    def select(self, columns: list, table: str, where = '', values: list = []):
+    def select(self, columns: list, table: str, where = ''):
         if len(columns) > 0:
             query = 'SELECT ' + ', '.join(columns) + ' FROM ' + table
             query += ' WHERE ' + where if where != '' else ''
             query += ';'
-            dt = self.getDataTable(query, tuple(values))
+            dt = self.getDataTable(query)
             return dt
         else:
             return False
@@ -84,23 +71,24 @@ class Database(object):
             query = 'INSERT INTO ' + table + ' '
             query += '(' + ', '.join(props) + ')'
             query += ' VALUES '
-            values = []
             for entity in entities:
                 query_entity = '('
                 for key in props:
-                    query_entity += '%s, '
-                    values.append(None if str(entity[key]) == 'None' else str(entity[key]))
+                    if type(entity[key]) == type('str'):
+                        query_entity += '\'' + entity[key] + '\', '
+                    else:
+                        query_entity += str(entity[key]) + ', '
                 query_entity = query_entity[0:-2] + '),'
                 query += query_entity
             query = query[:-1] + ';'
-            self.__executesafe(query, tuple(values))
+            self.execute(query)
             return True
         except:
             return False
     
     #PUBLIC
     # returns DataTable for updating one to many items
-    def update(self, table: str, props: list, entity, where: str, values: list):
+    def update(self, table: str, props: list, entity, where: str):
         try:
             query = 'UPDATE ' + table + ' SET '
             for prop in props:
@@ -110,19 +98,19 @@ class Database(object):
                     query += prop + ' = ' + str(entity[prop]) + ', '
             query = query[0:-2] + ' WHERE ' + where
             query += ';'
-            self.__executesafe(query, tuple(values))
+            self.execute(query)
             return True
         except:
             return False
     
     #PUBLIC
     # returns DataTable for deleting one to many items
-    def delete(self, table: str, where: str, values: list):
+    def delete(self, table: str, where: str):
         try:
             dt = self.select('*', table, where)
             query = 'DELETE FROM ' + table + ' WHERE ' + where
             query += ';'
-            self.__executesafe(query, tuple(values))
+            self.execute(query)
             return dt
         except:
             return False
@@ -192,10 +180,7 @@ class DataRow(object):
 # example of how to use select, insertone, update, delete functions
 if __name__ == '__main__':
     db = Database()
-    user = DiscordUser({'UserName': 'Nate314'})
-    print(db.select(user.getProps(), 'DiscordUsers'))
-    print(db.insertOne('DiscordUsers', ['UserName'], user))
-    user2 = DiscordUser({'UserName': 'Different'})
-    print(db.update('DiscordUsers', ['UserName'], user2, 'DiscordUserID = 15'))
-    print(db.delete('DiscordUsers', 'UserName = \'Different\''))
-
+    username = 'nate314'
+    malicious_nick_name = '\'; DROP TABLE discordusers; --'
+    print(str(DataTable(db.execute('SELECT * FROM discordusers WHERE UserName = %s', (malicious_nick_name)))))
+    print(str(DataTable(db.execute('SELECT * FROM discordusers;', ()))))
