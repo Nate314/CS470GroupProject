@@ -54,19 +54,24 @@ class SocialMediaRepository:
     def get_social_media(self, rDiscordUserID, rSocialMediaName):
         print('get_social_media')
         try:
-            # SELECT Title AS Platform, Handle AS Link, Link AS ICON
-            #   FROM discordusersocialmedias
-            #   INNER JOIN socialmedias ON discordusersocialmedias.SocialMediaID = socialmedias.SocialMediaID
-            #   INNER JOIN resources ON socialmedias.ResourceID = resources.ResourceID
-            #   WHERE DiscordUserID = '123456789123456789' AND Title LIKE 'Facebook';
-            print('queryResult')
-            qeryResult = self.db.select(['Title AS Platform', 'Handle AS Link', 'Link AS ICON'], \
-                '''discordusersocialmedias
-                INNER JOIN socialmedias ON discordusersocialmedias.SocialMediaID = socialmedias.SocialMediaID
-                INNER JOIN resources ON socialmedias.ResourceID = resources.ResourceID''',
-                'DiscordUserID = %s AND Title LIKE %s', [rDiscordUserID, rSocialMediaName])
-            print('queryResult')
-            return eval(str(qeryResult)), StatusCodes.OK
+            # SELECT * FROM socialmedias WHERE Title = 'Facebook';
+            socialMedia = self.db.select(['SocialMediaID'], 'socialmedias', 'Title = %s', [rSocialMediaName]).getRows()
+            if len(socialMedia) > 0:
+                # SELECT Title AS Platform, Handle AS Link, Link AS ICON
+                #   FROM discordusersocialmedias
+                #   INNER JOIN socialmedias ON discordusersocialmedias.SocialMediaID = socialmedias.SocialMediaID
+                #   INNER JOIN resources ON socialmedias.ResourceID = resources.ResourceID
+                #   WHERE DiscordUserID = '123456789123456789' AND Title LIKE 'Facebook';
+                print('queryResult')
+                qeryResult = self.db.select(['Title AS Platform', 'Handle AS Link', 'Link AS ICON'], \
+                    '''discordusersocialmedias
+                    INNER JOIN socialmedias ON discordusersocialmedias.SocialMediaID = socialmedias.SocialMediaID
+                    INNER JOIN resources ON socialmedias.ResourceID = resources.ResourceID''',
+                    'DiscordUserID = %s AND Title LIKE %s', [rDiscordUserID, rSocialMediaName])
+                print('queryResult')
+                return eval(str(qeryResult)), StatusCodes.OK
+            else:
+                return f"'{rSocialMediaName}' was not found in the socialmedias table", StatusCodes.NOT_FOUND
         except:
             # some error has occurred
             return '', StatusCodes.INTERNAL_SERVER_ERROR

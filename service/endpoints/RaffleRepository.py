@@ -131,7 +131,8 @@ class RaffleRepository:
     # returns all of the raffles that are currently available on the specified server
     def get_historic_raffles(self, rDiscordUserID):
         try:
-            result = self.db.select(['discorduserraffles.DiscordUserID', 'discorduserraffles.RaffleID',
+            result = self.db.select(['discorduserraffles.RaffleID',
+                'CASE WHEN rafflehistory.DiscordUserID IS NOT NULL THEN rafflehistory.DiscordUserID ELSE raffles.DiscordUserID END AS DiscordUserID',
                 'CASE WHEN rafflehistory.ServerID IS NOT NULL THEN rafflehistory.ServerID ELSE raffles.ServerID END AS ServerID',
                 'CASE WHEN rafflehistory.Name IS NOT NULL THEN rafflehistory.Name ELSE raffles.Name END AS Name',
                 'CASE WHEN rafflehistory.EndTime IS NOT NULL THEN rafflehistory.EndTime ELSE raffles.EndTime END AS EndTime',
@@ -140,7 +141,7 @@ class RaffleRepository:
                 discorduserraffles
                 LEFT JOIN rafflehistory ON discorduserraffles.RaffleID = rafflehistory.RaffleID
                 LEFT JOIN raffles ON discorduserraffles.RaffleID = raffles.RaffleID''',
-                f"discorduserraffles.DiscordUserID = '{rDiscordUserID}'")
+                'discorduserraffles.DiscordUserID = %s AND raffles.RaffleID IS NOT NULL', [rDiscordUserID])
             # return list of raffleinfos
             return eval(str(result)), StatusCodes.OK
         except:
