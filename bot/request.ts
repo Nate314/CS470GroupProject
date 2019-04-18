@@ -175,7 +175,7 @@ export const getSocial = (ip: string) => {
     return HttpClient.get(`${ip}api/social`).then(JSON.parse);
 }
 
-export const getSocialByUser = (ip: string, sender: User, social?: string) => {
+export const getSocialByUser = (ip: string, sender: User, social?: string | undefined) => {
     if (social) social = social[0].toUpperCase() + social.substr(1).toLowerCase();
     return HttpClient.get(`${ip}api/social/${sender.id}${social ? '.' + social : ''}`).then(JSON.parse);
 }
@@ -188,6 +188,11 @@ export const addSocial = (ip: string, sender: User, platform: string, link: stri
         Link: link
     }
     return HttpClient.post(`${ip}api/social`, JSON.stringify(body)).then(JSON.parse);
+}
+
+export const removeSocial = (ip: string, sender: User, social: string) => {
+    if (social) social = social[0].toUpperCase() + social.substr(1).toLowerCase();
+    return HttpClient.delete(`${ip}api/social/${sender.id}${social ? '.' + social : ''}`, "").then(JSON.parse);
 }
 
 export const encode = (body: any) => jwt.encode(body, key, "RS256");
