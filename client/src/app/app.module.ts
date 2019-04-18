@@ -25,6 +25,8 @@ import { CmdService } from './services/cmd.service';
 import { UserinfoComponent } from './components/userinfo/userinfo.component';
 import { userinfoService } from './services/userinfo.service';
 import { HeadernavComponent } from './components/headernav/headernav.component';
+import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.component';
+import { RaffleInfoService } from './services/raffle.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { HeadernavComponent } from './components/headernav/headernav.component';
     MatInputComponent,
     CmdComponent,
     UserinfoComponent,
-    HeadernavComponent
+    HeadernavComponent,
+    RaffleInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { HeadernavComponent } from './components/headernav/headernav.component';
     DashboardService,
     CmdService,
     userinfoService,
+    RaffleInfoService,
     { provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

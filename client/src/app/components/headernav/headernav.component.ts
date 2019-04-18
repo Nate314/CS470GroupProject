@@ -22,6 +22,10 @@ export class HeadernavComponent implements OnInit {
         this.router.navigate(['/app/dashboard']);
     }
 
+    if(pageName === 'raffle') {
+      this.router.navigate(['/app/raffle']);
+  }
+
     if(pageName === 'login') {
         this.router.navigate(['/login']);
     }

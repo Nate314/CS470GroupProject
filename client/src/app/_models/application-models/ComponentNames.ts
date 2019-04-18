@@ -3,5 +3,6 @@ export enum ComponentNames {
     PAGE_NOT_FOUND = 'NotFoundComponent',
     PAGE_HELLO_WORLD = 'HelloWorldComponent',
     PAGE_DASHBOARD = 'DashboardComponent',
-    PAGE_CMD = 'CmdComponent'
+    PAGE_CMD = 'CmdComponent',
+    PAGE_RAFFLE = 'Raffle',
 }

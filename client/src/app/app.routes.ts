@@ -9,6 +9,7 @@ import { AuthGuard } from './_angular/guards/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CmdComponent } from './components/cmd/cmd.component';
 import { UserinfoComponent } from './components/userinfo/userinfo.component';
+import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'app/dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'app/cmd', component: CmdComponent, canActivate: [AuthGuard] },
     { path: 'app/userinfo', component: UserinfoComponent, canActivate: [AuthGuard] },
+    { path: 'app/raffle', component: RaffleInfoComponent, canActivate: [AuthGuard] },
     { path: 'app', redirectTo: '/app/dashboard', pathMatch: 'full' },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
@@ -51,4 +53,10 @@ Constants.pages.push(<Page>{
     url: '/app/cmd',
     icon: 'none',
     component: ComponentNames.PAGE_CMD
+});
+Constants.pages.push(<Page>{
+    title: 'Raffle',
+    url: '/app/Raffle',
+    icon: 'none',
+    component: ComponentNames.PAGE_RAFFLE
 });
