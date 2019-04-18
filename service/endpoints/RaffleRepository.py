@@ -141,7 +141,7 @@ class RaffleRepository:
                 discorduserraffles
                 LEFT JOIN rafflehistory ON discorduserraffles.RaffleID = rafflehistory.RaffleID
                 LEFT JOIN raffles ON discorduserraffles.RaffleID = raffles.RaffleID''',
-                'discorduserraffles.DiscordUserID = %s AND raffles.RaffleID IS NOT NULL', [rDiscordUserID])
+                'discorduserraffles.DiscordUserID = %s AND (raffles.DiscordUserID IS NOT NULL OR rafflehistory.DiscordUserID IS NOT NULL)', [rDiscordUserID])
             # return list of raffleinfos
             return eval(str(result)), StatusCodes.OK
         except:
