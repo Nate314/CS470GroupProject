@@ -8,13 +8,12 @@ import { Constants } from './_helpers/Constants';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'client';
+
   constructor(private router: Router) {
     Constants.router = this.router;
   }
-  isOnLogin() {
-    return window.location.href.includes("login");
+
+  showHeader() {
+    return !(window.location.href.includes('login') || window.location.href.includes('profile'));
   }
 }
-
-

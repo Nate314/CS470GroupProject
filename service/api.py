@@ -3,13 +3,13 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 
 from helpers import Middleware, Config
-from endpoints import HelloWorldController, HelloWorldMultiController
 from endpoints import AuthenticationController, AuthenticationMultiController
 from endpoints import DTOController, DTOMultiController
 from endpoints import AddBatchMultiController, GetUserInfoMultiController
 from endpoints import CurrencyController, CollectiblesMultiController
 from endpoints import RaffleController, RaffleMultiController
 from endpoints import SocialMediaController, SocialMediaMultiController
+from endpoints import ProfileMultiController
 
 # reads in config files so that the Config class can be used later
 def configConfig(configFilename, cryptFilename):
@@ -38,8 +38,6 @@ def initializeAPI():
 
 def addEndpoints(api):
     # this is where all of the controllers and endpoints are matched up
-    api.add_resource(HelloWorldController, '/helloworld')
-    api.add_resource(HelloWorldMultiController, '/helloworld/<int:num>')
     api.add_resource(AuthenticationController, '/auth/login')
     api.add_resource(AuthenticationMultiController, '/auth/login/<string:username>')
     api.add_resource(DTOController, '/api/dto')
@@ -52,6 +50,7 @@ def addEndpoints(api):
     api.add_resource(CollectiblesMultiController, '/api/collectibles/<string:extension>')
     api.add_resource(SocialMediaController, '/api/social')
     api.add_resource(SocialMediaMultiController, '/api/social/<string:extension>')
+    api.add_resource(ProfileMultiController, '/api/profile/<string:discorduserid>')
 
 if __name__ == '__main__':
     if configConfig('config.json', 'crypt.json'):

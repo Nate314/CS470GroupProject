@@ -1,0 +1,63 @@
+<div *ngIf="user">
+    <div class="row">
+        <div class="col-4">
+            <img mat-card-lg-image [src]="user.ProfilePictureURL"
+                height="200" [alt]="user.UserName">
+        </div>
+        <div class="col-8">
+            <div class="row">
+                <div class="col" style="text-align: right;">
+                    <h1>{{user.UserName}}</h1>
+                </div>
+                <div class="col" style="text-align: left; padding-top:20px;">
+                    <b>#{{user.UserHash}}</b>
+                </div>
+            </div>
+            <div class="row">
+                <span><b>Currency:</b></span>
+                <span>&nbsp;{{user.Currency}}</span>
+            </div>
+            <div class="row">
+                <span><b>Last Daily:</b></span>
+                <span>&nbsp;{{user.LastDaily}}</span>
+            </div>
+            <br />
+            <div *ngIf="user.Collectibles && user.Collectibles !== 'None'">
+                <div class="row">
+                    <u><b>Collectibles</b></u>
+                </div>
+                <div class="row">
+                    <div *ngFor="let key of user.Collectibles.keys()" class="col">
+                        <div class="row">
+                            {{key}}
+                        </div>
+                        <div class="row">
+                            <img mat-card-lg-image [src]="user.Collectibles.get(key)"
+                                height="50" [alt]="key">
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div *ngIf="user.SocialMedias && user.SocialMedias !== 'None'" class="row">
+        <div class="col-1"></div>
+        <div class="col-11">
+            <div class="row">
+                <u><b>Social Media</b></u>
+            </div>
+            <div class="row">
+                <div *ngFor="let key of user.SocialMedias.keys()" class="col">
+                    <div class="row">
+                        {{key}}
+                    </div>
+                    <div class="row">
+                        <img mat-card-lg-image [src]="user.SocialMedias.get(key)"
+                            height="50" [alt]="key">
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>

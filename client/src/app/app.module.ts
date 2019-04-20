@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { HelloWorldComponent } from './components/hello-world/hello-world.component';
+import { DatabaseViewComponent } from './components/database-view/database-view.component';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HelloWorldService } from './services/hello-world.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,20 +27,22 @@ import { userinfoService } from './services/userinfo.service';
 import { HeadernavComponent } from './components/headernav/headernav.component';
 import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.component';
 import { RaffleInfoService } from './services/raffle.service';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
     LoginComponent,
-    HelloWorldComponent,
+    DatabaseViewComponent,
     DashboardComponent,
     MatTableComponent,
     MatInputComponent,
     CmdComponent,
     UserinfoComponent,
     HeadernavComponent,
-    RaffleInfoComponent
+    RaffleInfoComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

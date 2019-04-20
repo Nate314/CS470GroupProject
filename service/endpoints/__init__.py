@@ -4,9 +4,6 @@ from .AuthenticationRepository import AuthenticationRepository
 from .DTOController import DTOController
 from .DTOMultiController import DTOMultiController
 from .DTORepository import DTORepository
-from .HelloWorldController import HelloWorldController
-from .HelloWorldMultiController import HelloWorldMultiController
-from .HelloWorldRepository import HelloWorldRepository
 from .AddBatchMultiController import AddBatchMultiController
 from .AddBatchMultiController import AddBatchRepository
 from .GetUserInfoMultiController import GetUserInfoMultiController
@@ -22,3 +19,5 @@ from .CommonRepository import CommonRepository
 from .SocialMediaController import SocialMediaController
 from .SocialMediaMultiController import SocialMediaMultiController
 from .SocialMediaRepository import SocialMediaRepository
+from .ProfileMultiController import ProfileMultiController
+from .ProfileRepository import ProfileRepository

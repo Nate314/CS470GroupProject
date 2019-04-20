@@ -12,7 +12,6 @@ import * as moment from 'moment';
 export class DashboardComponent implements OnInit {
 
     user: User;
-    userJSON: string;
 
     constructor(private dashboardService: DashboardService) {
     }
@@ -21,7 +20,7 @@ export class DashboardComponent implements OnInit {
         this.dashboardService.getUserData(Utility.getDiscordUserID()).subscribe(user => {
             this.user = user;
             this.user.LastDaily = moment(this.user.LastDaily).format("LLL").toString();
-            this.userJSON = JSON.stringify(user);
+            console.log(this.user);
         });
     }
 }

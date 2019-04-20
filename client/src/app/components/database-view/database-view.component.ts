@@ -4,10 +4,10 @@ import { Table } from 'src/app/_angular/components/mat-table/mat-table.component
 import { MatTableDataSource } from '@angular/material';
 
 @Component({
-    selector: 'app-hello-world',
-    templateUrl: './hello-world.component.html'
+    selector: 'app-database-view',
+    templateUrl: './database-view.component.html'
 })
-export class HelloWorldComponent implements OnInit {
+export class DatabaseViewComponent implements OnInit {
 
     error: string[] = [];
     tables: Table[] = [];
@@ -16,19 +16,18 @@ export class HelloWorldComponent implements OnInit {
     }
 
     ngOnInit() {
-        ['aliases',
-        'categories',
-        'collectibles',
+        ['collectibles',
         'commands',
-        'descriptions',
-        'discordusers',
+        'currencytransactions',
         'discordusercollectibles',
+        'discorduserraffles',
+        'discordusers',
         'discorduserservers',
         'discordusersocialmedias',
+        'rafflehistory',
         'raffles',
         'resources',
         'servers',
-        'servercategories',
         'socialmedias'].forEach(table => {
             this.helloWorldService.dtoSelectExample(table).subscribe(response => {
                 if (response.length > 0) {

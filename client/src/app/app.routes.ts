@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HelloWorldComponent } from './components/hello-world/hello-world.component';
+import { DatabaseViewComponent } from './components/database-view/database-view.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { Constants } from './_helpers/Constants';
@@ -10,11 +10,13 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CmdComponent } from './components/cmd/cmd.component';
 import { UserinfoComponent } from './components/userinfo/userinfo.component';
 import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'app/hello-world', component: HelloWorldComponent, canActivate: [AuthGuard] },
+    { path: 'app/database-view', component: DatabaseViewComponent, canActivate: [AuthGuard] },
+    { path: 'app/profile', component: ProfileComponent },
     { path: 'app/dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'app/cmd', component: CmdComponent, canActivate: [AuthGuard] },
     { path: 'app/userinfo', component: UserinfoComponent, canActivate: [AuthGuard] },
@@ -37,8 +39,8 @@ Constants.pages.push(<Page>{
     component: ComponentNames.PAGE_LOGIN
 });
 Constants.pages.push(<Page>{
-    title: 'Hello World',
-    url: '/app/hello-world',
+    title: 'Database View',
+    url: '/app/database-view',
     icon: 'none',
     component: ComponentNames.PAGE_HELLO_WORLD
 });
