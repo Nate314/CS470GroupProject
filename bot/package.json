@@ -11,6 +11,7 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^11.9.4",
     "discord.js": "^11.4.2",
+    "fs": "0.0.1-security",
     "human-interval": "^0.1.6",
     "jwt-simple": "^0.5.5",
     "minimist": "^1.2.0",
