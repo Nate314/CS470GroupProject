@@ -88,5 +88,15 @@ export = {
         "alias": {
             "isAlias": false,
         },
+    },
+    "profile": {
+        "title": "profile",
+        "description": "",
+        "category": "social",
+        "fileReference": "profile.js",
+        "hasArgs": true,
+        "alias": {
+            "isAlias": false,
+        },
     }
 }

@@ -195,6 +195,10 @@ export const removeSocial = (ip: string, sender: User, social: string) => {
     return HttpClient.delete(`${ip}api/social/${sender.id}${social ? '.' + social : ''}`, "").then(JSON.parse);
 }
 
+export const getProfileLink = (ip: string, user: User) => {
+    return HttpClient.get(`${ip}api/profile/${user.id}`).then(JSON.parse);
+}
+
 export const encode = (body: any) => jwt.encode(body, key, "RS256");
 
 /*

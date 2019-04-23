@@ -1,22 +1,23 @@
 {
-    "name": "bot",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc && node compiled/sharding.js --token='' --ip='http://136.61.166.109:575/' --prefix=''"
-    },
-    "dependencies": {
-        "@types/minimist": "^1.2.0",
-        "@types/node": "^11.9.4",
-        "discord.js": "^11.4.2",
-        "human-interval": "^0.1.6",
-        "jwt-simple": "^0.5.5",
-        "minimist": "^1.2.0",
-        "node-fetch": "^2.3.0",
-        "node-fs": "^0.1.7",
-        "request": "^2.88.0",
-        "request-promise": "^4.2.4"
-    }
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && node compiled/sharding.js --token='' --ip='http://136.61.166.109:575/' --prefix=''"
+  },
+  "dependencies": {
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^11.9.4",
+    "discord.js": "^11.4.2",
+    "human-interval": "^0.1.6",
+    "jwt-simple": "^0.5.5",
+    "minimist": "^1.2.0",
+    "node-fetch": "^2.3.0",
+    "node-fs": "^0.1.7",
+    "puppeteer": "^1.14.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
 }
