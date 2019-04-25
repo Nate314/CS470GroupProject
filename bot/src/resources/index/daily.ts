@@ -3,6 +3,7 @@ import { defaults } from "../config";
 import { transferCurrency, fetchAll } from "../../../request";
 
 import { pluralist } from "../config";
+import { defaultCipherList } from "constants";
 
 export = ({message, prefix, ip}) => {
     const sender: User = message.author;
@@ -12,7 +13,13 @@ export = ({message, prefix, ip}) => {
     
     transferCurrency(ip, sender, {}, dailyCurrency)
     .then(_ => {
-        message.channel.send(`${message.author} received ${dailyCurrency} credits!`)
+        transferCurrency(ip, receiver, sender, dailyCurrency)
+        .then(_ =>
+            message.channel.send(`${receiver} received ${dailyCurrency} credits!`)
+        )
+        .catch(_ =>
+            message.channel.send(`Uh-oh! I couldn't send it to the desired user. Instead you've received ${dailyCurrency} credits!`)
+        );
     })
     .catch(error => {
         let body = parseInt(error.error);
