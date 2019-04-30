@@ -11,6 +11,7 @@ import { CmdComponent } from './components/cmd/cmd.component';
 import { UserinfoComponent } from './components/userinfo/userinfo.component';
 import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { SocialmediasComponent } from './components/socialmedias/socialmedias.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'app/cmd', component: CmdComponent, canActivate: [AuthGuard] },
     { path: 'app/userinfo', component: UserinfoComponent, canActivate: [AuthGuard] },
     { path: 'app/raffle', component: RaffleInfoComponent, canActivate: [AuthGuard] },
+    { path: 'app/social-media', component: SocialmediasComponent },
     { path: 'app', redirectTo: '/app/dashboard', pathMatch: 'full' },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: '/not-found', pathMatch: 'full' }

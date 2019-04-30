@@ -5,4 +5,5 @@ export enum ComponentNames {
     PAGE_DASHBOARD = 'DashboardComponent',
     PAGE_CMD = 'CmdComponent',
     PAGE_RAFFLE = 'Raffle',
+    PAGE_SOCIALMEDISA = 'SocialMediasComponent'
 }

@@ -28,6 +28,8 @@ import { HeadernavComponent } from './components/headernav/headernav.component';
 import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.component';
 import { RaffleInfoService } from './services/raffle.service';
 import { ProfileComponent } from './components/profile/profile.component';
+import { SocialmediasComponent } from './components/socialmedias/socialmedias.component';
+import { MatListItem } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     UserinfoComponent,
     HeadernavComponent,
     RaffleInfoComponent,
-    ProfileComponent
+    ProfileComponent,
+    SocialmediasComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
   ],
   providers: [
     HttpClient,

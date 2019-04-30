@@ -1,0 +1,25 @@
+.raffle {
+    margin: 15px auto;    
+    width: 80%;
+    
+}
+
+img {
+    height: 90% !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
+    display: flex;
+    flex-grow: 1;
+    margin-right: 142px;
+    align-items: center;
+}
+
+.social-media-list div {
+    width: 49%;
+    float: left;
+}
+
+.clearfix-left {
+    clear: left;
+}

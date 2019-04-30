@@ -30,7 +30,7 @@ export class UserinfoComponent implements OnInit {
                         for(let profilepic of profilepics)
                             if(user.ResourceID === profilepic.ResourceID)
                                 user.ProfilePictureURL = profilepic.Link;
-                    }
+                }
                     users.forEach(user => user.UserName = user.ProfilePictureURL + ','  + user.UserName);
                 this.table = <Table> {
                     data: new MatTableDataSource(users),
