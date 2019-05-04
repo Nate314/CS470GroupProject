@@ -9,16 +9,6 @@ export = {
             "isAlias": false,
         },
     },
-    "manual": {
-        "title": "manual",
-        "description": "",
-        "category": "standard",
-        "fileReference": "manual.js",
-        "hasArgs": true,
-        "alias": {
-            "isAlias": false,
-        },
-    },
     "logmein": {
         "title": "logmein",
         "description": "",
