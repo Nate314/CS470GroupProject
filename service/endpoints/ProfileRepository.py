@@ -56,7 +56,7 @@ class ProfileRepository:
                     JOIN resources ON collectibles.ResourceID = resources.ResourceID''', 'discorduserid = %s', [discorduserid])
                 if len(dt.getRows()) > 0:
                     collectibles = eval(str(dt))
-                collectibles = []
+                # collectibles = []
                 
                 # SELECT DISTINCT socialmedias.Title, resources.Link
                 # FROM discordusersocialmedias
