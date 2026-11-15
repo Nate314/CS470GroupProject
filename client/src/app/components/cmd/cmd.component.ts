@@ -5,9 +5,9 @@ import { CmdService } from 'src/app/services/cmd.service';
 import { User } from 'src/app/_models/dtos/User';
 import { Utility } from 'src/app/_helpers/Utility';
 import { StatusCodes } from 'src/app/_models/application-models/StatusCodes';
-import { send } from 'q';
 
 @Component({
+    standalone: false,
     selector: 'app-cmd',
     templateUrl: './cmd.component.html'
 })

@@ -4,15 +4,15 @@ import { authenticate, getLoginTokenForUser } from "../../../request";
 export = ({message, prefix, ip}) => {
     authenticate(ip).then(_ => {
         let user;
-        message.client.users.forEach(u => {
+        message.client.users.cache.forEach(u => {
             if (u.username === message.author.username) {
                 user = u;
             }
         });
-        getLoginTokenForUser(ip, user.username, (token) => {
-            user.sendMessage(`use this token to log in ${JSON.stringify(token)}`)
+        return getLoginTokenForUser(ip, user.username, (token) => {
+            user.send(`use this token to log in ${JSON.stringify(token)}`)
                 .then(console.log)
                 .catch(console.error);
         });
-    });
+    }).catch(error => console.error('Could not log in to the service:', error));
 }

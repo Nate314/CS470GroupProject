@@ -1,5 +1,5 @@
 import "./resources/config";
-import { Collection, RichEmbed } from "discord.js";
+import { Collection, EmbedBuilder } from "discord.js";
 import { reload } from "./resources/config";
 
 export type Alias = {
@@ -16,7 +16,7 @@ export class RichCommand {
     constructor(
         public title:                   string,
         public category:                string,
-        public description: string | RichEmbed,
+        public description: string | EmbedBuilder,
         public hasArgs:                boolean,
         public alias:                    Alias,
         public fileReference:           string,

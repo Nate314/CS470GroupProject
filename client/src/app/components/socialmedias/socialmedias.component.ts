@@ -1,25 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { User } from 'src/app/_models/dtos/User';
-import * as decode from 'jwt-decode';
 import { userinfoService } from 'src/app/services/userinfo.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { Table } from 'src/app/_angular/components/mat-table/mat-table.component';
 import { RaffleInfoService } from 'src/app/services/raffle.service';
 import { Utility } from 'src/app/_helpers/Utility';
-import * as moment from 'moment';
+import moment from 'moment';
 import { SocialMediasService } from 'src/app/services/socialmedias.service';
 import { SocialMedias } from 'src/app/_models/dtos/Socialmedias';
 
 
 
 @Component({
+    standalone: false,
     selector: 'app-socialmedias',
     templateUrl: './socialmedias.component.html',
     styleUrls: ['./socialmedias.component.css']
 })
 export class SocialmediasComponent implements OnInit {
-    public userData: {user: User; socialMedialList: SocialMedias[]}[] = [];
+    public userData: {user: User; socialMedialList: any[]}[] = [];
+    panelOpenState = false;
     DiscordUserID: number;
     SocialMediaName: string;
     socialMediaList: any = [];

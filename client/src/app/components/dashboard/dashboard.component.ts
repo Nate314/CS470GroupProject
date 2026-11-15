@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { User } from 'src/app/_models/dtos/User';
 import { Utility } from 'src/app/_helpers/Utility';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
+    standalone: false,
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']

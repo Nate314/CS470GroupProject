@@ -61,3 +61,14 @@ Tables and columns for the DB [Information Collection and Requirements]:
 - Embeds - EmbedID, CommandID, Value
 - SocialMedias - SocialMediaID, Name, URL, Picture
 - DiscordUserSocialMedias - DiscordUserID, SocialMediaID, Handle
+
+## Running it
+
+Needs Docker. From the repo root:
+
+```
+./run.ps1    # PowerShell
+./run.sh     # Git Bash, macOS, Linux
+```
+
+This starts MySQL 8.4 (seeded from `db/discordbotdb-2019-04-05.sql`), the Python service, the Angular client and the bot through [compose-launcher](https://github.com/Nate314/compose-launcher), and prints the client URL. The client's nginx serves the API under the same origin (`/api`, `/auth`). Settings and secrets are environment variables: copy `.env.example` to `.env` and fill it in. The bot needs `DISCORD_TOKEN` and `BOT_API_TOKEN` (and the Server Members and Message Content intents enabled in the Discord developer portal). Without them it exits with a message and compose restarts it. `./run.ps1 down` stops everything.

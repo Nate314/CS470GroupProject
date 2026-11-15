@@ -11,13 +11,14 @@ class JWTHelper(object):
     
     # returns the encoded payload
     def encode(self, payload):
-        encoded = jwt.encode(payload, self.secret, algorithm=self.algorithm)
-        return str(encoded)[2:-1]
+        # PyJWT 2 returns a str (PyJWT 1 returned bytes, hence the old str(...)[2:-1])
+        return jwt.encode(payload, self.secret, algorithm=self.algorithm)
     
     # returns a dictionary representation of the payload from the token
     def decode(self, token):
         try:
-            decoded = jwt.decode(token, self.secret, algorithms = [self.algorithm], verify=True)
+            # leeway: iat is round(time.time()), up to half a second ahead, and PyJWT 2 rejects an iat in the future
+            decoded = jwt.decode(token, self.secret, algorithms = [self.algorithm], leeway = 1)
             return decoded
         except:
             return 'Token Expired'

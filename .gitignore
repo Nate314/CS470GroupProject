@@ -165,3 +165,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+# Angular build cache
+.angular/

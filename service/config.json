@@ -1,9 +1,0 @@
-{
-    "host": "localhost",
-    "port": 3306,
-    "user": "root",
-    "password": "root",
-    "db": "DiscordBot",
-    "hostip": "10.0.0.13",
-    "tokenlifetime": 3600
-}

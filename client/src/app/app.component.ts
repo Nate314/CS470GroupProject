@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Constants } from './_helpers/Constants';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

@@ -1,0 +1,68 @@
+services:
+
+    client:
+        build:
+            context: ./client
+        ports:
+            - "${CLIENT_PORT:-8080}:8080"
+        depends_on:
+            - service
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+
+    service:
+        build:
+            context: ./service
+        # No host port: the client's nginx proxies /api and /auth to it, and the bot uses the compose network.
+        environment:
+            DB_HOST: mysql-db
+            DB_PORT: 3306
+            DB_NAME: DiscordBot
+            DB_USER: ${DB_USER:-discordbot_app}
+            DB_PASSWORD: ${DB_PASSWORD:-dev-only-app-password-change-me}
+            JWT_SECRET: ${JWT_SECRET:-dev-only-jwt-secret-change-me-0123456789}
+            RSA_PUBLIC_KEY: ${RSA_PUBLIC_KEY:-}
+            TOKEN_LIFETIME: ${TOKEN_LIFETIME:-3600}
+        depends_on:
+            mysql-db:
+                condition: service_healthy
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+
+    mysql-db:
+        image: mysql:8.4
+        volumes:
+            # Seeded once, from the newest dump, when the data volume is first created.
+            - ./db/discordbotdb-2019-04-05.sql:/docker-entrypoint-initdb.d/discordbotdb-2019-04-05.sql:ro
+        environment:
+            MYSQL_ROOT_HOST: localhost
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-dev-only-root-password-change-me}
+            MYSQL_DATABASE: DiscordBot
+            MYSQL_USER: ${DB_USER:-discordbot_app}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-dev-only-app-password-change-me}
+        healthcheck:
+            test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+            interval: 5s
+            timeout: 5s
+            retries: 30
+        security_opt:
+            - no-new-privileges:true
+
+    bot:
+        build:
+            context: ./bot
+        environment:
+            DISCORD_TOKEN: ${DISCORD_TOKEN:-}
+            BOT_API_TOKEN: ${BOT_API_TOKEN:-}
+            BOT_PREFIX: ${BOT_PREFIX:-}
+            API_URL: http://service:5000/
+            CLIENT_URL: http://client:8080/
+        depends_on:
+            - service
+        restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
