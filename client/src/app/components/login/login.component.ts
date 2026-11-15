@@ -5,6 +5,7 @@ import { ComponentNames } from 'src/app/_models/application-models/ComponentName
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
+    standalone: false,
     selector: 'app-login',
     templateUrl: './login.component.html'
 })

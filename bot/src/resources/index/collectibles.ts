@@ -39,10 +39,10 @@ export = ({message, prefix, ip}) => {
                     }
                 });
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: `${receiver.username}'s collectibles | Number: ${fields.length}`,
                         fields: fields
-                    }
+                    }]
                 })
             })
             .catch(console.error);
@@ -58,10 +58,10 @@ export = ({message, prefix, ip}) => {
                     }
                 });
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: `Available collectibles`,
                         fields: fields
-                    }
+                    }]
                 })
             })
             .catch(console.error);
@@ -74,10 +74,10 @@ export = ({message, prefix, ip}) => {
             purchaseCollectible(ip, sender, collected)
             .then(resp => {
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: `Purchased collectible | by ${sender.username}`,
                         description: `You've successfully purchased the collectible \`${collected}\``
-                    }
+                    }]
                 })
             })
             .catch(error => {

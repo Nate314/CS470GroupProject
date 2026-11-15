@@ -9,34 +9,34 @@ interface Dictionary<T> {
     [index: string]: T;
 }
 
-export const responses: Dictionary<(client: Client, options: any) => Function> = {
-    'ready': (client: Client, options: any) => {
+export const responses: Dictionary<(client: Client, options: any) => (...args: any[]) => void> = {
+    'clientReady': (client: Client, options: any) => {
         return () => {
             // console.log("Shard ID:", client.shard.id);
             console.log("Ready");
             const { ip } = options;
             authenticate(ip)
              .then(_ => {
-                    const servers = client.guilds.array()
-                     .map(({id, createdAt, iconURL}) => 
+                    const servers = client.guilds.cache
+                     .map(guild => 
                         ({
-                            "ServerID":                             id,
-                            "CreationDate": dateToTimestamp(createdAt),
-                            "ServerURL":                       iconURL,
+                            "ServerID":                       guild.id,
+                            "CreationDate": dateToTimestamp(guild.createdAt),
+                            "ServerURL":                 guild.iconURL(),
                         })
                      )
                     // if (servers)
                     //     addBatch(ip, 'server', servers)
                     //      .catch(() => console.error(`AddBatch[server] did not complete its action.`));
                     
-                    const usersInfo = client.users.array()
-                            .map(({id, username, tag, displayAvatarURL, client}) =>
+                    const usersInfo = client.users.cache
+                            .map(user =>
                             ({
-                                'DiscordUserID':                  id,
-                                'UserName':                 username,
-                                'UserHash':           tag.substr(-4),
-                                'ProfilePicture':   displayAvatarURL,
-                                'Servers':      client.guilds.array()
+                                'DiscordUserID':             user.id,
+                                'UserName':            user.username,
+                                'UserHash':       user.discriminator,
+                                'ProfilePicture': user.displayAvatarURL(),
+                                'Servers':      client.guilds.cache
                                                     .map(server => ({
                                                     'ServerID':                         server.id,
                                                     'JoinDate':  dateToTimestamp(server.joinedAt),
@@ -55,7 +55,7 @@ export const responses: Dictionary<(client: Client, options: any) => Function> =
                 });
         }
     },
-    'message': (client: Client, options: any) => {
+    'messageCreate': (client: Client, options: any) => {
         return (message: Message) => {
             console.log("Called message.");
             const { ip } = options;

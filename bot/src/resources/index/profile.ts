@@ -2,10 +2,10 @@ import { launch } from "puppeteer";
 import { getProfileLink } from "../../../request";
 
 const makeProfile = async link => {
-    link = `http://136.61.166.109:4300/${link}`;
+    link = `${process.env.CLIENT_URL || 'http://136.61.166.109:4300/'}${link}`;
     console.log(link);
     const path = `./bigboy-${new Date().getTime()}.png`;
-    const browser = await launch({ handleSIGINT: false });
+    const browser = await launch({ handleSIGINT: false, args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.setViewport({
         width:          600,
@@ -28,12 +28,12 @@ export = ({message, prefix, ip}) => {
     .then(link => makeProfile(link)
         .then(imagePath => {
             message.channel.send({
-                embed: {
+                embeds: [{
                     title: `Profile | ${receiver.username}`,
-                    files: [
-                        imagePath,
-                    ],
-                }
+                }],
+                files: [
+                    imagePath,
+                ],
             });
             // wait 10 seconds to delete the file
             setTimeout(() => {

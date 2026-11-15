@@ -20,7 +20,7 @@ class Database(object):
     def __getConnection(self):
         return pymysql.connect(host = self.host,
             port = self.port, user = self.user,
-            passwd = self.passwd, db = self.db)
+            password = self.passwd, database = self.db)
 
     #PRIVATE
     # executes a query on this database

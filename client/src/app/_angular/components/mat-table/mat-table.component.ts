@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 export class Table {
     props: string[];
@@ -8,13 +10,14 @@ export class Table {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-mat-table',
   templateUrl: 'mat-table.component.html',
 })
 export class MatTableComponent implements OnInit {
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
 
     @Input() table;
 

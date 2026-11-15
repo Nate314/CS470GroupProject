@@ -1,3 +1,5 @@
+import os
+
 class Config:
 
     # db variables
@@ -10,21 +12,20 @@ class Config:
     hostip = None
     tokenlifetime = None
     # keys
-    rsaprivatekey = None
     rsapublickey = None
     secretkey = None
 
-    def __init__(self, configJSON, cryptJSON):
+    # reads the settings from environment variables (see .env.example in the repo root)
+    def __init__(self, env = os.environ):
         # setting db variables
-        Config.host = configJSON['host']
-        Config.port = configJSON['port']
-        Config.user = configJSON['user']
-        Config.password = configJSON['password']
-        Config.db = configJSON['db']
+        Config.host = env.get('DB_HOST', 'localhost')
+        Config.port = int(env.get('DB_PORT', '3306'))
+        Config.user = env['DB_USER']
+        Config.password = env['DB_PASSWORD']
+        Config.db = env.get('DB_NAME', 'DiscordBot')
         # setting server variables
-        Config.hostip = configJSON['hostip']
-        Config.tokenlifetime = configJSON['tokenlifetime']
+        Config.hostip = env.get('HOST_IP', '0.0.0.0')
+        Config.tokenlifetime = int(env.get('TOKEN_LIFETIME', '3600'))
         # setting keys
-        Config.rsaprivatekey = cryptJSON['rsaprivatekey']
-        Config.rsapublickey = cryptJSON['rsapublickey']
-        Config.secretkey = cryptJSON['secretkey']
+        Config.rsapublickey = env.get('RSA_PUBLIC_KEY', '')
+        Config.secretkey = env['JWT_SECRET']

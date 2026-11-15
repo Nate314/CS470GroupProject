@@ -23,11 +23,11 @@ export = ({message, prefix, ip}) => {
                     }
                 }) || undefined;
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: "Available platforms",
                         description: fields ? undefined : "None available at this time.",
                         fields: fields
-                    }
+                    }]
                 })
             })
             .catch(error => {
@@ -42,10 +42,10 @@ export = ({message, prefix, ip}) => {
             removeSocial(ip, sender, args.join(' '))
             .then(_ => {
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: `Successful account deletion | ${sender.username}`,
                         description: `Please see your current accounts in \`\`\`${prefix}social @${sender.username}\`\`\``
-                    }
+                    }]
                 })
             })
             .catch(error => {
@@ -66,10 +66,10 @@ export = ({message, prefix, ip}) => {
             addSocial(ip, sender, type, link)
             .then(body => {
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: `Successfully added account | ${sender.username}`,
                         description: `Your ${type} account has now been added to your list of accounts. Use ${prefix}social list to see your accounts.`
-                    }
+                    }]
                 })
             })
             .catch(error => {
@@ -95,21 +95,21 @@ export = ({message, prefix, ip}) => {
             .then(body => {
                 if (!body) {
                     message.channel.send({
-                        embed: {
+                        embeds: [{
                             title: `Accounts | ${receiver.username}`,
                             description: "No accounts linked to this user."
-                        }
+                        }]
                     })
                 }
                 for (let account of body) {
                     message.channel.send({
-                        embed: {
+                        embeds: [{
                             image: {
                                 url: account.Icon
                             },
                             title: `${account.Platform} | ${receiver.username}`,
                             description: account.Link
-                        }
+                        }]
                     })
                 }
             })

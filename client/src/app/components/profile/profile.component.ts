@@ -1,5 +1,5 @@
 import { OnInit, Component } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
 class Profile {
     UserName: string;
@@ -7,11 +7,12 @@ class Profile {
     Currency: string;
     LastDaily: string;
     ProfilePictureURL: string;
-    Collectibles: Map<string, string>[];
-    SocialMedias: Map<string, string>[];
+    Collectibles: any;
+    SocialMedias: any;
 }
 
 @Component({
+    standalone: false,
     selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.css']

@@ -1,69 +1,56 @@
-import * as jwt from 'jwt-simple';
-import * as requestPromise from 'request-promise';
-import * as crypt from './crypt.json';
 import './src/resources/config';
 import { User, Guild as Server } from 'discord.js';
 
 let globalIP: string;
-const key = crypt.rsaprivatekey;
 let token: string;
 
 
 class HttpClient {
-    public static getOptions(uri: string, body?: any) {
-        let options = {
-            uri: uri,
-            headers: {
-                "content-type": 'application/json',
-            }
+    private static request(method: string, uri: string, body?: any): Promise<string> {
+        const headers = {
+            "content-type": 'application/json',
         };
-        if (body) {
-            options['body'] = body;
-        }
         if (!uri.includes('auth') || uri.includes('auth/login/')) {
-            options.headers['Authorization'] = `Bearer ${token}`;
+            headers['Authorization'] = `Bearer ${token}`;
         }
-        console.log(options);
-        return options;
-    }
-
-    public static requestWithAuthentication(requestMethod, options) {
-        if (!options['uri'].includes('auth')) {
+        if (!uri.includes('auth')) {
             authenticate(globalIP);
         }
-        return requestMethod(options);
+        return fetch(uri, { method, headers, body: body || undefined })
+            .then(async response => {
+                const text = await response.text();
+                // request-promise rejected non-2xx answers with { statusCode, error: body }, which the commands read
+                if (!response.ok) throw { statusCode: response.status, error: text };
+                return text;
+            });
     }
 
     public static get(uri: string) {
-        return HttpClient.requestWithAuthentication(requestPromise.get, this.getOptions(uri));
-        // return requestPromise.get(this.getOptions(uri));
+        return HttpClient.request('GET', uri);
     }
 
     public static post(uri: string, body: any) {
-        return HttpClient.requestWithAuthentication(requestPromise.post, this.getOptions(uri, body));
-        // return requestPromise.post(this.getOptions(uri, body));
+        return HttpClient.request('POST', uri, body);
     }
 
     public static put(uri: string, body: any) {
-        return HttpClient.requestWithAuthentication(requestPromise.put, this.getOptions(uri, body));
-        // return requestPromise.put(this.getOptions(uri, body));
+        return HttpClient.request('PUT', uri, body);
     }
 
     public static delete(uri: string, body: any) {
-        return HttpClient.requestWithAuthentication(requestPromise.delete, this.getOptions(uri, body));
+        return HttpClient.request('DELETE', uri, body);
     }
 }
 
 export const authenticate = (ip: string): Promise<any> => {
     if (ip) globalIP = ip;
     else ip = globalIP;
-    const body = JSON.stringify({token:crypt.token, username: '', password: ''}) || encode({ "E.A.": "Sports" });
-    console.log(`${ip}: ${body}`);
+    // BOT_API_TOKEN is a JWT signed with the service's JWT_SECRET (see .env.example)
+    const body = JSON.stringify({token: process.env.BOT_API_TOKEN || '', username: '', password: ''});
+    console.log(`${ip}auth/login`);
     return HttpClient.post(`${ip}auth/login`, body)
     .then(body => {
-        console.log(`${body}`);
         token = JSON.parse(body)['jwt'];
-        console.log(token);
         return token;
     });
 }
@@ -198,8 +185,6 @@ export const removeSocial = (ip: string, sender: User, social: string) => {
 export const getProfileLink = (ip: string, user: User) => {
     return HttpClient.get(`${ip}api/profile/${user.id}`).then(JSON.parse);
 }
-
-export const encode = (body: any) => jwt.encode(body, key, "RS256");
 
 /*
 https://stackoverflow.com/questions/23714383/what-are-all-the-possible-values-for-http-content-type-header

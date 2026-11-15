@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { Component, AfterViewInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -11,10 +11,11 @@ export interface State {
   }
 
 @Component({
+  standalone: false,
   selector: 'app-mat-input',
   templateUrl: 'mat-input.component.html',
 })
-export class MatInputComponent implements OnInit {
+export class MatInputComponent implements AfterViewInit {
     formCtrl = new FormControl();
     filteredOptions: Observable<any[]>;
 
@@ -26,7 +27,7 @@ export class MatInputComponent implements OnInit {
     @Input() label: string;
     @Input() placeholder: string;
     @Input() autofocus: boolean;
-    @Input() options: string[];
+    @Input() options: any[];
     @Input() filterkey: string;
     @Input() imgkey: string;
     @Input() displaykey: string;
@@ -49,7 +50,8 @@ export class MatInputComponent implements OnInit {
         return this.options.filter(option => option[this.filterkey].toLowerCase().indexOf(filterValue) === 0);
     }
 
-    ngOnInit(): void {
+    // the input sits inside *ngIf, so it only exists once the view is initialized
+    ngAfterViewInit(): void {
         if (this.autofocus) {
             this.input.nativeElement.focus();
         }

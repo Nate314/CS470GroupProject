@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HelloWorldService } from 'src/app/services/hello-world.service';
 import { Table } from 'src/app/_angular/components/mat-table/mat-table.component';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
+    standalone: false,
     selector: 'app-database-view',
     templateUrl: './database-view.component.html'
 })
