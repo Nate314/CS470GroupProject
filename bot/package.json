@@ -5,7 +5,8 @@
   "main": "compiled/sharding.js",
   "scripts": {
     "build": "tsc",
-    "start": "node compiled/sharding.js"
+    "start": "node compiled/sharding.js",
+    "test": "tsc && node test/auth-401.js"
   },
   "dependencies": {
     "discord.js": "^14.28.1",

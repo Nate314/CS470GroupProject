@@ -52,7 +52,8 @@ export const responses: Dictionary<(client: Client, options: any) => (...args: a
                             .then(body => console.log(`Resultant batch of users on servers: ${body}`))
                             .catch(console.error);
                     }
-                });
+                })
+                .catch(error => console.error('Could not log in to the service:', error));
         }
     },
     'messageCreate': (client: Client, options: any) => {

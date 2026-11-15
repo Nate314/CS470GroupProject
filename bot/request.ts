@@ -6,15 +6,16 @@ let token: string;
 
 
 class HttpClient {
-    private static request(method: string, uri: string, body?: any): Promise<string> {
+    private static async request(method: string, uri: string, body?: any): Promise<string> {
+        if (!uri.includes('auth')) {
+            // a failed re-login is logged, the call below then answers with its own error
+            await authenticate(globalIP).catch(error => console.error('Re-authentication failed:', error));
+        }
         const headers = {
             "content-type": 'application/json',
         };
         if (!uri.includes('auth') || uri.includes('auth/login/')) {
             headers['Authorization'] = `Bearer ${token}`;
-        }
-        if (!uri.includes('auth')) {
-            authenticate(globalIP);
         }
         return fetch(uri, { method, headers, body: body || undefined })
             .then(async response => {

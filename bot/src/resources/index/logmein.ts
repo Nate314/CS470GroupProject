@@ -9,10 +9,10 @@ export = ({message, prefix, ip}) => {
                 user = u;
             }
         });
-        getLoginTokenForUser(ip, user.username, (token) => {
+        return getLoginTokenForUser(ip, user.username, (token) => {
             user.send(`use this token to log in ${JSON.stringify(token)}`)
                 .then(console.log)
                 .catch(console.error);
         });
-    });
+    }).catch(error => console.error('Could not log in to the service:', error));
 }
