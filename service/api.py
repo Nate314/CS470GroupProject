@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_cors import CORS
@@ -10,22 +11,6 @@ from endpoints import CurrencyController, CollectiblesMultiController
 from endpoints import RaffleController, RaffleMultiController
 from endpoints import SocialMediaController, SocialMediaMultiController
 from endpoints import ProfileMultiController
-
-# reads in config files so that the Config class can be used later
-def configConfig(configFilename, cryptFilename):
-    configJSON = None
-    cryptJSON = None
-    with open(configFilename) as reader:
-        configJSON = eval(reader.read())
-    with open(cryptFilename) as reader:
-        cryptJSON = eval(reader.read())
-    print(configJSON)
-    print(cryptJSON)
-    if configJSON != None and cryptJSON != None:
-        Config(configJSON, cryptJSON)
-        return True
-    else:
-        return False
 
 # initializing api
 def initializeAPI():
@@ -53,13 +38,12 @@ def addEndpoints(api):
     api.add_resource(ProfileMultiController, '/api/profile/<string:discorduserid>')
 
 if __name__ == '__main__':
-    if configConfig('config.json', 'crypt.json'):
-        app, api = initializeAPI()
-        addEndpoints(api)
-        # starts the api in debug mode
-        app.run(debug = True, host = Config.hostip)
-    else:
-        print('unsuccessful in reading configuration files')
+    # reads the settings from environment variables so that the Config class can be used later
+    Config()
+    app, api = initializeAPI()
+    addEndpoints(api)
+    # debug mode (with its interactive debugger) only when FLASK_DEBUG=1
+    app.run(debug = os.environ.get('FLASK_DEBUG') == '1', host = Config.hostip)
 
 # ---RESOURCES---
 #https://www.youtube.com/watch?v=s_ht4AKnWZg

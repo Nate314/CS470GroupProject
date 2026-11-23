@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { User } from 'src/app/_models/dtos/User';
-import * as decode from 'jwt-decode';
 import { userinfoService } from 'src/app/services/userinfo.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { Table } from 'src/app/_angular/components/mat-table/mat-table.component';
 
 @Component({
+    standalone: false,
     selector: 'app-userinfo',
     templateUrl: './userinfo.component.html',
     styleUrls: ['./userinfo.component.css']

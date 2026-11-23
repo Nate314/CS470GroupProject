@@ -18,8 +18,9 @@ class Middleware(object):
         shouldCheckForValidJWT = (not environ['PATH_INFO'].startswith('/auth'))
         shouldCheckForValidJWT = shouldCheckForValidJWT or environ['PATH_INFO'].startswith('/auth/login/')
         if shouldCheckForValidJWT:
-            if not ('OPTIONS' in str(environ['werkzeug.request'])):
-                token = str(environ['HTTP_AUTHORIZATION'])
+            # CORS preflight requests carry no token (Werkzeug no longer puts werkzeug.request in environ)
+            if environ['REQUEST_METHOD'] != 'OPTIONS':
+                token = str(environ.get('HTTP_AUTHORIZATION'))
                 if len(token.split(' ')) > 1:
                     token = token.split(' ')[1]
                 jwt = JWTHelper(Config.secretkey, 'HS256')

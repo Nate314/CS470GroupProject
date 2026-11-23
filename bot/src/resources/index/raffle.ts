@@ -39,8 +39,8 @@ export = ({message, prefix, ip}) => {
                 if (confirm("Would you like to set a deadline for this raffle?", message)) {
                     message.channel.send("Please send an amount of time for your raffle to complete. This operation will cancel automatically in 30 seconds and your raffle can only end manually.")
                     let millis: number;
-                    message.channel.createMessageCollector(
-                        m => {
+                    message.channel.createMessageCollector({
+                        filter: m => {
                             if (m.author !== sender || millis) return false;
                             try {
                                 console.log(`Here.`)
@@ -54,11 +54,9 @@ export = ({message, prefix, ip}) => {
                                 return false;
                             }
                         },
-                        {
-                            max: 1,
-                            time: 30000,
-                        }
-                    )
+                        max: 1,
+                        time: 30000,
+                    })
                     .on('end', collected => {
                         const msg = collected.first();
                         const duration: number = msg ? millis : -1;
@@ -67,10 +65,10 @@ export = ({message, prefix, ip}) => {
                         .then(_ => {
                             const time = (duration !== -1) ? `${duration} millis` : `no end date`;
                             message.channel.send({
-                                embed: {
+                                embeds: [{
                                     title: `Started Raffle | ${name}`,
                                     description: `Creator: ${sender.username}\nAmount: ${amount}\nDuration: ${duration}`
-                                }
+                                }]
                             });
                         })
                         .catch(error => {
@@ -89,9 +87,9 @@ export = ({message, prefix, ip}) => {
                     .then(response => {
                         console.log(response)
                         message.channel.send({
-                            embed: {
+                            embeds: [{
                                 title: `[Testing] Duration: no end date.`
-                            }
+                            }]
                         })
                     })
                     .catch(error => {
@@ -127,9 +125,9 @@ export = ({message, prefix, ip}) => {
                 addToRaffle(ip, sender, server, amount, name)
                 .then(_ => {
                     message.channel.send({
-                        embed: {
+                        embeds: [{
                             title: `${sender.username} added ${amount} credit${pluralist(amount)} to ${name}`
-                        }
+                        }]
                     })
                 })
                 .catch(error => {
@@ -166,11 +164,11 @@ export = ({message, prefix, ip}) => {
                 const { UserName, UserHash, DiscordUserID } = Object(Winner);
 
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         color: 0xff00ff,
                         title: `Completed Raffle | ${Name}`,
                         description: `${UserName}#${'0'.repeat(4 - UserHash.toString().length)}${UserHash} won the raffle and has gained ${Currency} credit${pluralist(parseInt(Currency))}! ${numParticipants} participant${pluralist(numParticipants)} in this raffle.`
-                    }
+                    }]
                 })
             })
             .catch(error => {
@@ -189,10 +187,10 @@ export = ({message, prefix, ip}) => {
             .then(response => {
                 if (!response) {
                     message.channel.send({
-                        embed: {
+                        embeds: [{
                             title: `Open raffles | Queried by ${sender}`,
                             description: "None found"
-                        }
+                        }]
                     });
                     return;
                 }
@@ -207,10 +205,10 @@ export = ({message, prefix, ip}) => {
                     }
                 });
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                         title: `Open raffles | Queried by ${sender.tag}`,
                         fields: raffles,
-                    }
+                    }]
                 })
                 return response;
             })
@@ -254,10 +252,10 @@ export = ({message, prefix, ip}) => {
                 const numParticipants = Object(DiscordUsers).length;
                 
                 message.channel.send({
-                    embed: {
+                    embeds: [{
                     title: `Name: ${Name} | by ID: ${DiscordUserID}`,
                     description: `Pool: ${Currency}\nParticipants: ${numParticipants}\nEnds in: ${EndTime}`
-                    }
+                    }]
                 });
             })
             .catch(error => {

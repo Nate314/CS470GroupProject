@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DatabaseViewComponent } from './components/database-view/database-view.component';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HelloWorldService } from './services/hello-world.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AddHeaderInterceptor } from './_angular/interceptors/AddHeaderInterceptor';
@@ -29,7 +29,6 @@ import { RaffleInfoComponent } from './components/raffleinfo/raffleinfo.componen
 import { RaffleInfoService } from './services/raffle.service';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SocialmediasComponent } from './components/socialmedias/socialmedias.component';
-import { MatListItem } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -54,12 +53,11 @@ import { MatListItem } from '@angular/material';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
   ],
   providers: [
-    HttpClient,
+    provideHttpClient(withInterceptorsFromDi()),
     AuthGuard,
     HelloWorldService,
     AuthenticationService,

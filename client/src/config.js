@@ -1,1 +1,2 @@
-window['hostip'] = '136.61.166.109:575'; 
+// The API is served from the same origin: nginx proxies /api and /auth to the service.
+window['hostip'] = window.location.host;

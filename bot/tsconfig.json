@@ -3,9 +3,10 @@
         "module": "commonjs",
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "skipLibCheck": true,
         "outDir": "compiled",
-        "target": "es6",
-        "lib": ["es6", "dom"],
+        "target": "es2022",
+        "lib": ["es2022", "dom"],
         "types": ["node"]
     }
 }
